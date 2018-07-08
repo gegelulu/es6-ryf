@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>字符串扩展</title>
+</head>
+<body>
+    <script>
+        //用codePointAt来判断一个字符是两字节还是四字节
+        function is32bit(c){
+            return c.codePointAt(0) > 0xFFFF;
+        } 
+
+        console.log(is32bit("𠮷"));
+        console.log(is32bit("a"));
+    </script>
+    <script>
+        /* fromCodePoint和codePointAt相反
+            fromCodePoint定义在String对象上
+            codePointAt定义在字符串实例对象上
+        */
+        let s = String.fromCodePoint("0x20BB7");
+        console.log(s);//𠮷
+    </script>
+    <script>
+        /* 1,for...of可循环遍历 
+            2,for...of可识别大于0xFFFF的码点*/
+        for(let i of '码点'){
+            console.log(i);
+        }
+
+        let text = String.fromCodePoint(0x20BB7);
+        for(let i of text){
+            console.log(i);
+        }
+    </script>
+    <script>
+        /* s.startsWith(str,index):从s的index位置开始str，向后找str，能否马上找到;
+        s.endsWidth(str,index):从s的第index-1个位置开始，向前找str，能否马上找到;
+        s.includes(str,index):从s的第index个位置开始，向后找str，是否存在*/
+        let s1 = "hello world!";
+        let flag1 = s1.startsWith("hello");//true
+        let flag2 = s1.endsWith("hello",5);//true
+        let flag3 = s1.includes('world',6);//true
+        let flag4 = s1.endsWith('hello',4);//false
+        let flag5 = s1.startsWith('hello',1);//false
+        console.log(flag1,flag2,flag3,flag4,flag5);
+    </script>
+    <script>
+        /* str.repeat(param):返回新的字符串，原字符串重复n次
+        1, param: 整数时，str重复param次
+        2，param：小数时，param取整，str重复取整后的整数次
+        3，param: isNaN(param)为true(非数字)时，param等同于0
+        4, param: 为布尔值时，true时，重复一次；false时，重复0次 */
+        let strRepeat = "ok";
+        let s1Re = strRepeat.repeat(3);//okokok
+        let s2Re = strRepeat.repeat(3.1);//okokok
+        //let s3Re = strRepeat.repeat(-1);//报错
+        
+        let s3Re = strRepeat.repeat('str');//""
+        let s4Re = strRepeat.repeat(false);
+        console.log(s1Re,s2Re,s3Re,s4Re); //ok
+    </script>
+    <script>
+        /* padStart()头部补全，padEnd()尾部补全
+        1,第2个参数如果不给，默认用空格补零
+        2,第2个参数的长度+str的长度，大于第一个参数的值，则截取第二个参数
+        3，常见用途：补0操作，例如日期补0
+        */
+       /* number转化为string的3种方法： 
+       1,toString方法number.toString()  null和undefined不能用，不推荐
+       2，num + ‘’加一个空字符串‘’，null和undefined相加后，是‘null’和‘undefined’
+       */
+       let s1Pad = 'x'.padStart(5,'ab');
+       let s2Pad = 'x'.padEnd(5,'ac');
+       let s3Pad = 'xx'.padStart(6);//'    xx'
+       let s4Pad = 'xxxx'.padEnd(3,'aa');//'xxxx'
+       let s5Pad = 'xxxx'.padStart(6,'012345');
+       console.log(s1Pad,s2Pad,s3Pad,s4Pad,s5Pad);
+       
+       let nowDate = new Date();
+       let y = String(nowDate.getFullYear());
+       let m = String(nowDate.getMonth()+1).padStart(2,'0');
+       let d = (nowDate.getDate()).toString().padStart(2,'0')
+       console.log(y,m,d);
+    </script>
+    <script>
+        /* 反引号的作用：
+        1，输入多行字符:会保留字符的格式，如果要去掉前后的空格，用请在``定义的字符串后面用trim()方法
+        2，字符串嵌入变量：${变量}
+        3, 引入变量时，大括号之内能用函数和表达式 
+        
+        */
+
+        let info = {
+            name: 'joy',
+            age: '23'
+        }
+        let strTpl =`${info.name} and ${info.age},you are so smart ,do you know?`
+        
+        console.log(strTpl);
+
+        function fnTpl(){
+            return 'hello,chenke!'
+        }
+        let strTpl2 = `I want to say: ${fnTpl()}`
+
+        let strTpl3 = 'return' + '`Hello ${name}!`';
+        let func = new Function('name',strTpl3);
+        
+
+        let strTpl4 = '(name) => `你好啊， ${name}!`';
+        let func2 = eval.call(null,strTpl4);
+        func2('Joy')
+    </script>
+    
+    <script>
+        /* 能记住哪些东西？ */
+        /* 
+        1,遍历字符码大于0xFFFF的字符用for(let x in str)
+        2,字符串里传变量，反引号+${}，`数量是${amount}`
+        3,反引号``总的字符串，会带格式，如果想去掉最前和最后的换行符，用trim()方法去掉
+        */
+       /* 没记住的：
+       1， es2017引入，头部补全和尾部补全，str.padStart(5,'ab'),str.padEnd(4)。第一个参数必须，第二个参数可为空，若为空，则补的是空格' '。常用的场景是：字符串的补零，如日期补零。
+       2,str.repeat(param) :param为整数，小数，负数，布尔值，字符串
+       3，除了indexOf之外，字符串找位置的其他方法：str.startsWith(param,index) 往后找 str.endsWith(param,index) 往前找  str.includes(param,index) 往后找，包含
+       4，for...of除了遍历字符码大于0xFFFF的字符，还能遍历字符串
+       5，codePointAt和fromCodePoint
+       6，matchAll(),正则表达式全部匹配*/
+    </script>
+</body>
+</html>
