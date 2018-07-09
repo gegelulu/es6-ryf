@@ -62,5 +62,36 @@
         'a1a2a3'.match(/a\d/y);// ["a1", index: 0, input: "a1a2a3", groups: undefined]
         'a1a2a3'.match(/a\d/gy);// ['a1','a2','a3']
     </script>
+    <script>
+    /* 还记得哪些？
+    1，new RegExp() 可以有2个参数，第一个是正则，第二个是修饰符
+    2，u修饰符：点号；i修饰符；/\u{32}/u 花括号表示Unicode码时；
+    3，y修饰符：'粘连'的意思。y和g修饰符下，搜索时，是从lastIndex开始搜索。如果和match使用，要返回全部匹配结果的数组，要和g一起使用 */
+    /* 没记住的：
+    1，u字符的基础用法：用来处理大于\uFFFFde unicode字符
+    2，Unicode字符表示方法；在预定义模式中使用u */    
+    </script>
+    <script>
+        //sticky属性判断正则是否用了y修饰符
+        let r = /hello\d/y;
+        r.sticky;//true;
+    </script>
+    <script>
+        //flags返回正则表达式的修饰符
+        /abc/ig.source;//'abc',source属性返回正文
+        /abc/ig.flags;//'gi',flags属性返回修饰符
+    </script>
+    <script>
+    /* s修饰符的dotAll模式
+    1, 点号无法匹配四字节的utf-16字符，用 u解决；
+    2，点好无法匹配终止符（换行符，回车符，行分隔符，段分隔符）*/
+    //s修饰符，修饰.时，可匹配任意字符
+    /foo.bar/s.test('foo\nbar')//true
+    //dotAll属性，可识别dotAll
+    const reDot = /foo.bar/s;
+    reDot.test('foo\nbar');//true
+    reDot.dotAll;//true
+    reDot.flags;///'s'
+    </script>
 </body>
 </html>
