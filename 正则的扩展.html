@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则的扩展</title>
+</head>
+<body>
+    <script>
+        //RegExp构造函数:第一个参数是个正则时，允许有第二个参数，且第二个参数会覆盖原来的修饰符
+        //var regex = new RegExp(/xyz/ig,'i');
+    </script>
+    <script>
+        //u修饰符：处理码点大于\uFFFF的unicode字符
+        //1，码点大于0xFFFF的Unicode字符，点字符识别不了，要加u
+        var s = '𠮷';
+        /^.$/.test(s);//不加u的话，false
+        /^.$/u.test(s);//加u，true
+
+        //2, 含括号的Unicode，不然可能是
+        /\u{61}/u.test('a');//true
+
+        //3,量词，用u修饰符后，能识别码点大于0xFFFF的Unicode字符
+        /a{2}/.test('aabb'); //true
+        /𠮷{2}/.test('𠮷𠮷'); //false
+        /𠮷{2}/u.test('𠮷𠮷'); // true
+
+        //4,预定义模式。 \S虽然能匹配所有非空字符，但是码点大于0xFFFF匹配不出来,加u才行
+        //返回字符串真实长度
+        function codePointLength(text){
+            let result = text.match(/[\s\S]/gu);
+            return result ? result.length : 0;
+        }
+        let test = '𠮷𠮷';
+        console.log(test.length);  //4,错误的
+        console.log(codePointLength(test));//2,正确
+        //5，i修饰符。（i表示执行对大小写不敏感）
+        /[a-z]/i.test('\u212A'); //false
+        /[a-z]/iu.test('\u212A'); //true
+    </script>
+    <script>
+        //加了u修饰符后的正则，可以从unicode属性辨别
+        const r1 = /hello/;
+        const r2 = /myWorld/u;
+        r1.unicode;//false
+        r2.unicode;//true
+    </script>
+    <script>
+        //y修饰符：粘连匹配，必须从剩余的第一个位置开始匹配
+        //g修饰符：只要剩余位置存在匹配即可
+        var strY = 'aaa_aa_a';
+        var rY1 = /a+/g;
+        var rY2 = /a+/y;
+
+        //lastIndex属性:下一次开始匹配的位置
+        const REGEX = /a/g;
+        REGEX.lastIndex = 2;
+        const match = REGEX.exec('xaya');
+
+        //y单用时，只会返回第一个匹配项数组，和g修饰符一起用才会返回所有
+        'a1a2a3'.match(/a\d/y);// ["a1", index: 0, input: "a1a2a3", groups: undefined]
+        'a1a2a3'.match(/a\d/gy);// ['a1','a2','a3']
+    </script>
+</body>
+</html>

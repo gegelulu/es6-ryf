@@ -8,6 +8,11 @@
 </head>
 <body>
     <script>
+        /* es6中，可以将码点放入大括号 */
+        '\u{20BB7}'//𠮷
+        '\u20BB7' //7
+    </script>
+    <script>
         //用codePointAt来判断一个字符是两字节还是四字节
         function is32bit(c){
             return c.codePointAt(0) > 0xFFFF;
@@ -114,8 +119,7 @@
         let strTpl4 = '(name) => `你好啊， ${name}!`';
         let func2 = eval.call(null,strTpl4);
         func2('Joy')
-    </script>
-    
+    </script>    
     <script>
         /* 能记住哪些东西？ */
         /* 
@@ -130,6 +134,16 @@
        4，for...of除了遍历字符码大于0xFFFF的字符，还能遍历字符串
        5，codePointAt和fromCodePoint
        6，matchAll(),正则表达式全部匹配*/
+    </script>
+    <script>
+        //利用模板字符串生成模板
+        let template = `
+        <ul>
+            <% for(let i = 0; i < data.supplies.length; i ++) { %>
+            <li><%= data.supplies[i] %</li>
+            <%}%>
+        </ul>
+        `
     </script>
 </body>
 </html>
