@@ -93,5 +93,64 @@
     reDot.dotAll;//true
     reDot.flags;///'s'
     </script>
+    <script>
+    /* 
+    先行断言：x在y之前，才匹配。/x(?=y)/
+    后行断言：x在y之后，才匹配。/(?<=y)x/*/
+    /\d+(?=%)/.test('100% percent love you.'); //true
+    /(?<=\$)\d+/.exec('$99 is not cheap!');//['99']
+    </script>
+    <script>
+        /* unicode属性类：
+        1， /\p{propertyName=propertyValue}/  匹配符合unicode属性的所有字符
+        2，/\P{propertyName=propertyValue}/ 是上面的反向匹配 */  
+        const regexGreek = /\p{Script=Greek}/u;//匹配所有希腊字符
+        regexGreek.test('π');//true
+        const regexDecimal = /\p{Decimal_Number}/u;//匹配所有十进制数
+        regexDecimal.test('89898');//true
+        const regexSpace = /\p{White_Space}/u;//匹配所有空格
+        regexSpace.test('    ');//true
+    </script>
+    <script>
+        /* 具名组匹配：给每个组匹配指定一个名字
+        步骤：改怎么分组怎么分组，分组的左括号后，加上命名的名称，?+尖括号+name，的方式 */
+        //const regDate = /(\d{4})-(\d{2})-(\d{2})/;
+        const regDate = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+        const matchObj = regDate.exec('2018-07-10');
+        const year = matchObj.groups.year;//2018
+        const month = matchObj.groups.month;//07
+        const nowday = matchObj.groups.day;//10        
+    </script>
+    <script>
+        /* 解构赋值和替换 */
+        /* 解构赋值：对groups参数属性进行赋值 */
+        /*replace替换：第二个参数用$<组名>的方式 */
+        let {groups:{one,two}} = /^(?<one>.*):(?<two>.*)$/u.exec('foo:bar');//one: 'foo';two: 'bar'
+        let reJg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+        '2018-09-10'.replace(reJg,'$<day>/$<month>/$<year>');//10/09/2018
+    </script>
+    <script>
+        /* 正则表达式内使用组名，语法是： \k<组名> */
+        const re_twice = /^(?<word>[a-z]+)!\k<word>$/;
+        re_twice.test('abc!abc');//true
+        re_twice.test('abc!ab');//false
+        //134行的效果，和下面效果一样
+        const re_twice2 = /^(?<word>[a-z]+)!\1$/;        
+    </script>
+    <script>
+        //提案：matchAll:一次性取出所有匹配，返回的是遍历器，用for...of来遍历
+        let reMatch = /t(e)(st(\d?))/g;
+        let string = 'test1abtest2test3te';
+        let matches = [];
+        let matchtmp;
+        while(matchtmp = reMatch.exec(string)){
+            matches.push(matchtmp);
+        }
+
+        for(const item of string.matchAll(reMatch)){
+            console.log(item);
+        }
+        //遍历器转化为数组：[...String.matchAll(reMatch)]和Array.from(string.matchAll(regex));
+    </script>
 </body>
 </html>
