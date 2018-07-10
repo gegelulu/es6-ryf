@@ -76,7 +76,7 @@
         Math.clz32(10,23);//28  ;小数时，只考虑整数部分
         Math.clz32(Infinity);//32  ；Number(Infinity)是Infinity
         /* 
-        5,Math.imul(num1,num2): 返回两个值相乘的和,返回的是一个整数
+        5,Math.imul(num1,num2): 返回两个值相乘的值,返回的是一个整数
         num1和num2先Number下，如果有一个是NaN，返回结果是0*/
         Math.imul(2,6); //12
         Math.imul('3','32a'); //0  ‘32a’Number后是NaN
@@ -93,7 +93,27 @@
         Math.hypot(2,'3',6);//7
     </script>
     <script>
-        
+        /* 还记得哪些？
+        1，Number.isNaN,Number.isInfinite,所有数的平方和的开方，两数的乘积，最大数和最小数
+        2，Number.parseInt(),Number.parseFloat(),全局的函数，变改为Number下的函数
+        */
+        /* 没记住的：
+        1，Number(0b101),Number(0o411),Number()将二进制和八进制，转为10进制
+        2，Number.isInteger  除了正负整数，其他一律false
+        3，Number.EPSILON是一个常数，用来指定计算精度值
+        4，Math.trunc,取整；Math.sign,判断正负;Math.cbrt(8)：立方根;Math.clz32:转化为二进制，前面多少0 */
+
+    </script>
+    <script>
+        /* Math.expm1:e^x -1
+        Math.log1p():1+x自然对数
+        Math.log10(x)：10为底，x对数
+        Math.log2(x)：2为底，x对数 */
+    </script>
+    <script>
+    /* 指数运算符：** */
+    let a = 4;
+    console.log(a ** 3);
     </script>
 </body>
 </html>
