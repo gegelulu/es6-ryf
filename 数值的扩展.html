@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数值的扩展</title>
+</head>
+<body>
+    <script>
+        //Number将8进制和12进制转化为10进制
+        console.log(Number('0b111'));//二进制
+        console.log(Number('0o14'));//8进制
+    </script>
+    <script>
+        /* 1,Number.isFinite(val),检查val是否有限，有限的数值返回true，其他一律false
+        2,Number.isNaN(val),检查val是否是NaN，NaN返回true，其他一律false 
+        3，Number.isNaN()和isNaN()的区别是：isNaN会先将val先Number一下
+        4，Number.isFinite(val)和isFinite(val)的差异与上面相同*/
+        isNaN('123');//false,'123'会首先转化为123
+        Number.isNaN('123'); //false,'123'不会转，但是，'123'不是NaN
+        isFinite('12');//true,'12'先转化为12,12是有限的
+        Number.isFinite('123');//false,'123'字符串，不是数值，直接是false
+    </script>
+    <script>
+        /* Number.parseFloat等价于parseFloat，
+        Number.parseInt等价于parseInt */
+        Number.parseFloat('123.5a');//123.5
+        Number.parseInt('12a');//12
+    </script>
+    <script>
+        /* Number.isInteger:判断一个数值是否为整数，除了正负整数，其他通通返回false
+        精度最多到53个二级制位，精度要求太高时，不适合用isInteger判断整数 */
+    </script>
+    <script>
+        /* Number.EPSILON:常量，是1和大于1最小浮点数只差，是2的-52次方 。
+        用于设置浮点数计算的误差范围。 */
+        function acceptError(left,right){
+            return Math.abs(left-right) < Number.EPSILON*Math.pow(2,2);//精度是2的-52次方乘2的2次方，即2的50次方
+        }
+        let resError = acceptError(0.1+0.2,0.3);//true
+    </script>
+    <script>
+        /* js只能表示2^-53到2^53之间的数
+        1，Number.MAX_SAFE_INTEGER 最大上限整数，Number.MIN_SAFE_INTEGER最小下限整数
+        2，Number.isSafeInteger()判断是否是上下限之间的值
+        3，验证某个运算结果是否在安全整数内，计算的数和结果都要检测*/
+        function trusty(left,right,result){
+            if(Number.isSafeInteger(left)&&
+            Number.isSafeInteger(right)&&
+            Number.isSafeInteger(result)
+            ){
+                return result;
+            }
+            throw new RangeError('Operation cannot be trusted!');
+        }        
+    </script>
+    <script>
+        /* Math对象扩展：
+        1，Math.trunc(val) :去除val的小数部分。在运算之前，会先将val先Number一下*/
+        Math.trunc(' ');//0,空字符串或空格字符串，Number之后，是0
+        Math.trunc('11a');//NaN,‘11a’Number后，是NaN
+        /* 
+        2,Math.sign(val) :判断数的正负，返回值有5个结果 0，-0,1，-1，NaN */
+        Math.sign(true);//1
+        Math.sign(false);//0,类似的还有Math.sign(' ');//0
+        Math.sign('12a');//NaN
+        /* 
+        3,Math.cbrt(val) :计算一个数的立方根，返回结果是个数值或NaN
+        先Number，再计算
+         */
+        Math.cbrt(8);//2
+        /* 
+        4,math.clz32(val):  val被Number后，前面有多少个先导0*/
+        Math.clz32(10);//28  ；10二进制是0b1010，前面补了28个0
+        Math.clz32(10,23);//28  ;小数时，只考虑整数部分
+        Math.clz32(Infinity);//32  ；Number(Infinity)是Infinity
+        /* 
+        5,Math.imul(num1,num2): 返回两个值相乘的和,返回的是一个整数
+        num1和num2先Number下，如果有一个是NaN，返回结果是0*/
+        Math.imul(2,6); //12
+        Math.imul('3','32a'); //0  ‘32a’Number后是NaN
+        Math.imul('3.1',2.6);//6 ; 等价于3*2
+        /* 
+        6,Math.fround(val) :将64位双精度浮点数，转化为32位单精度浮点数 */
+        Math.fround(true);//1
+        Math.fround(null);//0
+        Math.fround('5');//5
+        /*
+        7,Math.hypot(val1,val2,val3) :返回val1，val2，val3的平方和的平方根 
+        如果有一个值number后是NaN，返回NaN*/
+        Math.hypot(1,2,2);//3
+        Math.hypot(2,'3',6);//7
+    </script>
+    <script>
+        
+    </script>
+</body>
+</html>
