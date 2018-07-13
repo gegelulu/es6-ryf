@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数组的扩展</title>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script>
+    /* 扩展运算符：
+    ...：将数组转化为参数序列，rest参数逆运算
+    应用：主要用在函数的调用（参数部分） */
+    console.log(1,...[2,3,4],5);//1 2 3 4 5
+    function add(x,y){
+        return x+y;
+    }
+    const numbers = [4,654];
+    add(...numbers);//658  ;
+    //扩展运算符的几个使用场景
+    /*1，与正常函数结合  
+    function f(a,b,c,d,e){};
+        const arggs = [0,1];
+        f(-1,...arggs,2,...[-3]); */
+    /*2，后面放表达式
+    const arr = [
+        ...(x>0?['a']:[]),
+        'b',
+    ]*/
+    </script>
+    <script>
+    /* 取代apply，展开数组，转化为函数的参数 */
+    function fApply(x,y,z){  }
+    let args = [0,1,2];
+    fApply(...args);
+    //球数组的最大元素
+    Math.max(...[2,8,4]);//8
+    //将一个数组加到另一个数组的尾部,push可一次push多个元素
+    let arr1 = [2,4,5];
+    let arr2 = [15,3,1];
+    arr1.push(...arr2);//6  ;arr1为[2,4,5,15,3,1]
+    </script>
+    <script>
+    /* 扩展运算符的应用：
+    1，复制数组 */
+    //数组复制的es5写法
+    const a1 = [1,2];
+    const a2 = a1.concat();
+    a2[0] = 2;
+    //数组赋值的es6写法
+    const b1 = [3,4];
+    const b2 = [...b1];
+    const [...c2] = b1;
+    /* 2，合并数组
+    扩展运算符进行合并:浅拷贝*/
+    const arrOne = ['a','b'];
+    const arrTwo = ['c',1];
+    const arrThree = ['d',true];
+    //arrOne.concat(arrTwo,arrThree);//es5合并方法
+    //[...arrOne,...arrTwo,...arrThree];//es6合并方法
+    /* 3，与解构赋值结合 */
+    const [first,...second] = [4,5,6,6,9];//first:4,second:[5,6,6,9];
+    //const [...butlast,last] = [1,2,3,4,5];//报错，只能放在参数的最后
+    /* 4，字符串
+    字符串转化为数组；字符串长度；颠倒位置 */
+    [...'hello'];//['h','e','l','l','o'];
+    //[...str].length   //错误结果
+    //[...str].reverse().join(''); //正确结果
+    /* 5，Iterator: 任何Iterator接口对象，用扩展运算符将Iterator转化为真正的数组*/
+    let nodeList = document.querySelectorAll('div');//NodeList对象，是个类数组，但不是真的数组
+    let array = [...nodeList];//数组
+    /*6， Map和Set，Generator函数存在Iterator,能用扩展运算符 */
+    let mapItera = new Map([
+        [1,'one'],
+        [2,'two'],
+        [3,'three']
+    ])
+    let arrKeys = [...mapItera.keys()];//[1,2,3]
+    const go = function*(){
+        yield 1;
+        yield 2;
+        yield 3;
+    };
+    [...go()];//[1,2,3]
+    </script>
+    <script>
+    /* Array.from()：将类似数组(NodeList,arguments)和可遍历对象转化为真正数组 */
+    //类数组
+    let arrayLike = {'0':'a','1':'b','2':'c',length:3};
+    arres5 = [].slice.call(arrayLike);//["a", "b", "c"]
+    arres6 = Array.from(arrayLike);//["a", "b", "c"]
+    
+    function fooArr(){
+        var argsFoo = Array.from(arguments);
+        console.log(argsFoo);
+    }
+    fooArr(1,2,3,'a',5);//[1,2,3,'a',5]
+
+    //Array.from接第二个参数
+    let arrPara2 = Array.from(arrayLike,x=> x + x);//["aa", "bb", "cc"]
+    let arrPara3 = Array.from([1,,2,3,,],(n)=>n || 0);//[1,0,2,3,0],将数组中的false转化为0
+    //返回各种数据的类型
+    function typesof(){
+        return Array.from(arguments,value=>typeof value)
+    }
+    //字符串转化为数组，并返回字符串长度
+    function countSymbols(string){
+        return Array.from(string).length;
+    }
+    </script>
+    <script>
+    /* Array.of :将一组值，转化为数组*/
+    Array.of();//[]
+    Array.of(4);//[4]
+    Array.of(5,'a','3f');//[5,'a','3f']
+    </script>
+    <script>
+    /* 数组实例的copyWithin()
+    target(必须)：从此位置开始替换数据，可以是负值。 
+    start:从此位置开始读取，可以为负值
+    end:从此位置开始读取，可以为负*/
+    //Array.prototype.copyWithin(target,start=0,end=this.length)
+    </script>
+    <script>
+    /* find:
+    find(回调函数)：找出第一个回调函数返回true的成员，无，则返回undefined */
+    [1,4,-3,-10].find(n => n<0);//-3
+    let resFind = [1,5,10,15].find(function(value,index,arr){
+        return value>9 && index>2
+    });//15
+    /* findIndex:返回第一个符合条件数组的位置，如果无符合的，返回-1
+    findIndex(回调函数) */
+    let resFind2 = [1,5,-6,-10].findIndex(function (value,index,arr) {
+        return value>1&&index<2
+    })//1
+    /* find和findIndex可以接受第二个参数，绑定回调函数的this。下面，回调fnV中的this指向person对象 */
+    function fnV(v){
+        return v>this.age;
+    }
+    let person = {name:'John',age:21};
+    [10,13,34,16].find(fnV,person);//34 this.age中的this，指向的是person对象
+    /* findIndex可以发现NaN,indexOf是不行的 */
+    [NaN].findIndex(y => Object.is(NaN,y));//0
+    </script>
+    <script>
+    /* fill（val,start,end）:使用给定值，填充一个数组。数组里原有的值将会被覆盖
+    val：必填，将要填充的值，如果val是对象，赋值的是对象的地址，而不是深拷贝
+    start: 非必须，开始位置
+    end: 非必须，结束位置的后一位 */
+    let arrFill = new Array(3);
+    arrFill.fill('a');//['a','a','a']
+    arrFill.fill('b',1,2);//['a','b','a']
+    </script>
+    <script>
+    /*7. 数组实例的entries(),keys(),values() */
+    for(let i of ['a','b','c'].values()){
+        console.log(i);
+    }//打印出a,b,c
+    //不实用for...of遍历时，可以用next方法
+    let letters = ['a','b','c'];
+    let entries = letters.entries();
+    console.log(entries.next().value);//[0, "a"]
+    console.log(entries.next().value);//[1, "b"]
+    console.log(entries.next().value);//[2, "c"]
+    </script>
+    <script>
+    /* 8.数组实例的includes()
+    indluces第二个参数，表示搜索的起始位置 */
+    [1,2,3].includes(2);//true
+    [1,2,3].includes(4);//false
+    </script>
+</body>
+</html>

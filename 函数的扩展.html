@@ -255,7 +255,61 @@
     addThenMult(6);
     //上面的管道等价于：
     plus2(plus1(5));
-
+    </script>
+    <script>
+    /* 双冒号运算符：
+    1,双冒号左边是一个对象，右边是一个函数。双冒号自动将左边的对象绑定到右边的函数。
+    2,左边为空，右边是foo.bar类型的对象方法，表示将改方法绑定给此对象
+    3，
+     */
+    //foo::bar; 等同于bar.bind(foo);
+    //obj = {};
+    //var method = ::obj.foo;
+    </script>
+    <script>
+    /* 尾用调用：一个函数的最后一步是调用另一个函数 
+    尾调用优化：内层函数不再用到外层函数的内部变量时，才能进行尾调用优化*/
+    //例子：m和n都是尾用调用
+    function f(x){
+        if(x > 0){
+            return m(x);
+       }
+       return n(x);
+    }
+    function addOne(a){
+        var one = 1;
+        function inner(b){
+            return b + one;
+        }
+        return inner(a);
+    }//inner用到了外层变量one，因此不能进行尾调用优化
+    </script>
+    <script>
+    /* 尾递归：尾调用自身 */
+    //尾递归实现阶乘，复杂度是O(1)
+    function factorial(n,total){
+        if(n == 1) return total;
+        return factorial(n-1,n*total);
+    }
+    //尾递归实现斐波拉契数列
+    //非递归方法
+    function fb1(n){
+        if(n <= 1){
+            return 1;
+        }
+        return fb1(n-1)+fb1(n-2);
+    }
+    //递归方法
+    //ac1暂存上一个值，ac2暂存处理结果
+    function fb(n,ac1=1,ac2=1){
+        if(n <= 1){
+            return ac2;
+        }
+        return fb(n-1,ac2,ac1+ac2);
+    }
+    </script>
+    <script>
+    /* 尾调用下，func.arguments和func.caller失效，严格模式下刚好这两个变量失效，因此，尾调用模式只在严格模式下生效*/
     </script>
 </body>
 </html>
