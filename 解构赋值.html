@@ -8,8 +8,43 @@
 </head>
 <body>
     <script>
-    /* 解构赋值的基本用法：
+    /* 数组解构赋值的基本用法：
+    模式匹配：等号两边模式相同，左边变量会被赋值对应值
+    tips:只要右边的
      */
+    //完全解构的部分实例：
+    let [x,,z] = [1,2,4];//x=1,z=4
+    let [head,...tail] = [1,2,3];//head:1 tail: [2,3]
+    let [x,y,...z] = ['a'];//x:'a' y:undefined z:[] 解构不成功时，变量值为undefined
+    //不完全解构实例：
+    let [x,y] = [1,2,4];//x:1 y:2
+    let[a,[b],d] = [1,[2,3],4];//a:1 b:2 d:4
+    //有Iterator接口的数据解构(map,set,Generator)，都能进行数组解构赋值。
+    let [x,y,z] = new Set(['a','b','c']);//x:'a' y:'b'  z:'c'
+    
+    /* 解构赋值和默认值一起： */
+    //当数组成员严格等于undefined时，默认值才会生效
+    let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
+    //默认值是表达式时，表达式惰性求值，用到才会执行
+    function f(){
+        console.log('aaa');
+    }
+    let [x = f()] = [8];//x:8  函数f根本不会执行
+    </script>
+
+    <script>
+    /* 对象的解构赋值
+    对象的解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。真正被赋值的是后者，而不是前者。
+    */
+    //对象的机构不需要次序一致；但变量名必须和属性一致
+    let {bar,foo} = {foo:'aaa',bar:'bbb'};//foo: 'aaa'   bar: 'bbb'
+    //如果不一致时，请将变量的值设为同名同名属性的值，如下
+    let {foo:baz} =  {foo:'aaa',bar:'bbb'};//baz: 'aaa'  foo是匹配的模式，baz才是变量
+    //对象的嵌套赋值：
+    let obj = {};
+    let arr = [];
+    ({foo:obj.prop,bar:arr[0]} = {foo:123,bar:true})
+
     </script>
 </body>
 </html>
