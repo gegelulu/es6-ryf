@@ -36,7 +36,7 @@
         /* Number.EPSILON:常量，是1和大于1最小浮点数只差，是2的-52次方 。
         用于设置浮点数计算的误差范围。 */
         function acceptError(left,right){
-            return Math.abs(left-right) < Number.EPSILON*Math.pow(2,2);//精度是2的-52次方乘2的2次方，即2的50次方
+            return Math.abs(left-right) < Number.EPSILON*Math.pow(2,2);//精度是2的-52次方乘2的2次方，即2的-50次方
         }
         let resError = acceptError(0.1+0.2,0.3);//true
     </script>
