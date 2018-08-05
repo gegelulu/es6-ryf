@@ -35,7 +35,7 @@
         let test = '𠮷𠮷';
         console.log(test.length);  //4,错误的
         console.log(codePointLength(test));//2,正确
-        //5，i修饰符。（i表示执行对大小写不敏感）
+        //5，i修饰符。（i表示执行对大小写不敏感）有些字符编码不同，但是字形是相同的.
         /[a-z]/i.test('\u212A'); //false
         /[a-z]/iu.test('\u212A'); //true
     </script>
@@ -84,7 +84,7 @@
     <script>
     /* s修饰符的dotAll模式
     1, 点号无法匹配四字节的utf-16字符，用 u解决；
-    2，点好无法匹配终止符（换行符，回车符，行分隔符，段分隔符）*/
+    2，点号无法匹配终止符（换行符，回车符，行分隔符，段分隔符）*/
     //s修饰符，修饰.时，可匹配任意字符
     /foo.bar/s.test('foo\nbar')//true
     //dotAll属性，可识别dotAll
