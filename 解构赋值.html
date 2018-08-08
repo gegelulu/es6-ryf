@@ -43,7 +43,13 @@
     //对象的嵌套赋值：
     let obj = {};
     let arr = [];
-    ({foo:obj.prop,bar:arr[0]} = {foo:123,bar:true})
+    // ({foo:obj.prop,bar:arr[0]} = {foo:123,bar:true})
+
+    //当左边的变量在右边找不到时，解构为undefined
+
+    //左边的变量能给设定一个默认值。默认值生效的条件：①左边的变量在右边找不到  ②在右边找得到，但是是undefined
+    let {x1=112,x2,x3=345} = {x1:undefined ,x2:21}
+    console.log(x1,x2,x3);  //112 21 345
 
     </script>
 </body>
