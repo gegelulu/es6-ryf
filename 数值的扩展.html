@@ -73,7 +73,7 @@
         /* 
         4,math.clz32(val):  val被Number后，前面有多少个先导0*/
         Math.clz32(10);//28  ；10二进制是0b1010，前面补了28个0
-        Math.clz32(10,23);//28  ;小数时，只考虑整数部分
+        Math.clz32(10.23);//28  ;小数时，只考虑整数部分
         Math.clz32(Infinity);//32  ；Number(Infinity)是Infinity
         /* 
         5,Math.imul(num1,num2): 返回两个值相乘的值,返回的是一个整数
