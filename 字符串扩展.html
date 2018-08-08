@@ -48,7 +48,7 @@
         let s1 = "hello world!";
         let flag1 = s1.startsWith("hello");//true
         let flag2 = s1.endsWith("hello",5);//true
-        let flag3 = s1.includes('world',6);//true
+        let flag3 = s1.includes('world',1);//true
         let flag4 = s1.endsWith('hello',4);//false
         let flag5 = s1.startsWith('hello',1);//false
         console.log(flag1,flag2,flag3,flag4,flag5);
@@ -82,7 +82,7 @@
        let s2Pad = 'x'.padEnd(5,'ac');
        let s3Pad = 'xx'.padStart(6);//'    xx'
        let s4Pad = 'xxxx'.padEnd(3,'aa');//'xxxx'
-       let s5Pad = 'xxxx'.padStart(6,'012345');
+       let s5Pad = 'xxxx'.padStart(6,'012345');//"01xxxx"
        console.log(s1Pad,s2Pad,s3Pad,s4Pad,s5Pad);
        
        let nowDate = new Date();
@@ -144,6 +144,24 @@
             <%}%>
         </ul>
         `
+    </script>
+    <script>
+    function is32Bit(ch){
+        return(ch.codePointAt(0)> 0xFFFF);
+    }
+    console.log(is32Bit('𠮷'));
+    console.log(is32Bit('a'));
+    </script>
+    <script>
+    function getToday(){
+        var now = new Date();
+        let year = now.getFullYear();
+        let month = (now.getMonth()+1+'').padStart(2,'0');
+        let day = (now.getDate()+'').padStart(2,'0');
+        return(year+'-'+month+'-'+day);
+    }
+    // getToday();
+    console.log(`today is: ${getToday()}`);
     </script>
 </body>
 </html>

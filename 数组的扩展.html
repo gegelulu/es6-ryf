@@ -79,6 +79,7 @@
         [3,'three']
     ])
     let arrKeys = [...mapItera.keys()];//[1,2,3]
+    let arrValues = [...mapItera.values()];//["one", "two", "three"]
     const go = function*(){
         yield 1;
         yield 2;
@@ -159,7 +160,7 @@
     for(let i of ['a','b','c'].values()){
         console.log(i);
     }//打印出a,b,c
-    //不实用for...of遍历时，可以用next方法
+    //不使用for...of遍历时，可以用next方法
     let letters = ['a','b','c'];
     let entries = letters.entries();
     console.log(entries.next().value);//[0, "a"]

@@ -40,4 +40,9 @@ const fn = function(v){
 `function add(...numbers){}` numbers是数组
 7. arguments，super，new.target也是指向对应变量
 
+## 2018-7-14<br>
+## 字符串的扩展：
+## 还记得哪些？
+------------
+1. 字符串的遍历
     
