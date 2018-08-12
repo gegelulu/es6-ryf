@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>对象的扩展</title>
+</head>
+<body>
+    <script>
+    //script no.1
+    //属性的简洁表示法：直接写入变量和函数，作为对象的属性和方法
+    let strOne = 'chen';
+    let strOne2 = 'ke';
+    const objOne = {strOne,strOne2};//{strOne: "chen", strOne2: "ke"}
+    //直接写变量名时，对象的属性名是变量名，属性值为变量的值。
+    function fnOne(x,y){
+        return {x,y}
+    }
+    let objOne2 = fnOne(3,4); //{x: 3, y: 4}
+
+    //方法的简写：
+    const o = {
+        method(){
+            return 'hello';
+        }
+    };
+    //上面方法的缩写，等价于：
+    // const o = {
+    //     method:function(){
+    //         return 'hello';
+    //     }
+    // }
+    </script>
+
+    <script>
+    //script no.2
+    //属性名表达式
+    let objTwo = {};
+    objTwo.foo = true;//{foo: true}
+    objTwo['a'+'bc'] = false;
+
+    //字面量定义对象时，能使用表达式作为变量属性名
+    let proKey = 'kkkk';
+    //字面量定义对象
+    let objTwo2 = { //{kkkk: true, a2: 2324}
+        [proKey]:true,
+        ['a'+2]:2324
+    }
+
+    //表达式也可以用来定义方法名：
+    let objTwo3 = {
+        ['h'+'ello'](){
+            return 'hi'
+        }
+    }
+    let strThree = objTwo3.hello();//hi
+
+    //属性名表达式和简洁表示法不能同时使用
+    
+    //属性名表达式如果是对象，默认会自动将对象转化为[object Object]
+    const keyA = {a: 1};
+    const keyB = {b: 2};
+
+    const myObject = {
+    [keyA]: 'valueA',
+    [keyB]: 'valueB'
+    };
+    //myObject是： {[object Object]: "valueB"}
+    </script>
+</body>
+</html>
