@@ -66,7 +66,155 @@
     [keyA]: 'valueA',
     [keyB]: 'valueB'
     };
-    //myObject是： {[object Object]: "valueB"}
+    /* 
+    keyA和keyB都是对象，作为属性名时，都会转化为[object Object]，后面一个会覆盖前面的。因此myObject是： {[object Object]: "valueB"}
+     */
+    </script>
+    <script>
+    //script no.3
+    //方法的name属性
+    const person = {
+        sayName(){
+            console.log('hello!');
+        }
+    }
+    //若对象的方法使用了取值（getter）或存值（setter)函数。则name属性在改方法的属性的描述对象的set和get属性上面。返回值方法钱加set和get
+    const objThree = {
+        get foo(){},
+        set foo(x){}
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(objThree,'foo');
+
+    let valThree1 = descriptor.set.name;//set foo
+    let valThree2 = descriptor.get.name;//get foo
+
+    //bind方法返回，bound加函数名；Function构造函数，返回anonymous
+    let fnName = (new Function()).name; //"anonymous"
+    let doSomething = function(){
+
+    }
+    let fnNameThree = doSomething.bind().name; //"bound doSomething"
+    </script>
+    <script>
+    //script no.4
+    //Object.is用法：和严格相等运算符（===）的行为基本一致，区别在NaN和正负零
+    let valFour1 = parseInt('a12');
+    let valFour2 = parseInt('a32');
+    '123' == 123; //true
+    '123' === 123; //false
+    valFour1 === valFour2; //false
+    Object.is(valFour1,valFour2); //true
+    Object.is(+0,-0); //false
+    +0 === -0;// true
+    </script>
+    <script>
+    //script no.5
+    //Object.assign(target,source1,source2)  将源对象的所有可枚举属性复制到目标对象。第一个参数是目标对象，后面参数是源对象
+    const target = {a:1};
+    const source1 = {a:2,b:3,e:6};
+    const source2 = {b:4,d:5};
+
+    //source和target有同名属性，或多个源对象有同名属性，后面会覆盖前面 
+    //source2中的a属性的值，会覆盖掉target中的a属性的值；source2中b属性的值，会覆盖source1中b属性值
+    let target2 = Object.assign(target,source1,source2); //{a: 2, b: 4, e: 6, d: 5}
+
+    //参数只有一个，且是对象，则返回此对象；若该参数不是对象，则先转化为对象
+    let target3 = Object.assign(target);//返回的是原对象，target3 === target;//true
+    let target4 = Object.assign('us'); //String {"us"}  typeof target4得到的是 "object"
+    
+    //undefined和null由于无法转化为对象，作为第一个参数，就会报错。但是，第2个及后面的参数，如无法转化为对象，会直接跳过
+    let objFive = {a:1};
+    let objFive2 = Object.assign(objFive,null); //objFive2 === objFive //true
+    let objFive3 = Object.assign(objFive,undefined); //objFive3 === objFive //true
+
+    //其他类型的值，string，boolen，number，不作为第一个参数，也不会报错，但是，只有可枚举的对象可以拷贝到目标对象，其他类型不行进行拷贝
+    let strFive = 'chen';
+    let booleneFive = true;
+    let numFive = 321;
+    //字符串会作为数组，拷贝到目标对象
+    let objFive4 = Object.assign({},strFive,booleneFive,numFive);//{0: "c", 1: "h", 2: "e", 3: "n"}
+
+    //Object.assign 拷贝的限制：只拷贝源对象自身的属性，不拷贝不可枚举的属性。
+    </script>
+
+    <script>
+    //script no.6
+    /* Object.assign()注意的点：
+    1：用此方法是浅拷贝
+    2：同名属性是替换，不是添加
+    3：数组的处理：可以用来处理数组，但是会把数组视为对象处理
+    4：取值函数的处理,如果源对象是个函数，那么先执行函数，再将执行结果插入到目标对象中 */
+    const objSix = {a:{b:1}};
+    const objSix2 = Object.assign(objSix);
+    objSix.a.b = 12;
+    //改变b的值，objSix2同时也会改变
+    //objSix2:{a:{b:12}}
+
+    let objSix3 = {a:{b:1,c:3}};
+    let objSix4 = {a:{b:'hello'}};
+    let objSix5 = Object.assign(objSix3,objSix4); //objSix4中a属性的值，直接覆盖objSix3中a属性的值 {a:{b:'hello'}}
+
+    //[1,2,3]转化为对象是 {0:1,0:2,0:3} ,[4,5]转化为对象是{0:4,1:5},同名属性的值，后面会覆盖前面，so结果是{0:4,0:5,0:3}
+    let objSix6 = Object.assign([1,2,3],[4,5]);
+
+    const sourceSix = {
+        get fooNew(){
+            return 1;
+        }
+    }
+    const targetSix = {};
+    let objSix7 = Object.assign(targetSix,sourceSix);
+    </script>
+
+    <script>
+    //script no.7
+    /* Object.assign方法的常见用途 
+    1,为对象添加属性
+    2，为对象添加方法
+    3，克隆对象
+    4，合并多个对象
+    5，为属性指定默认值*/
+
+    //合并多个对象
+    let targetSeven = {id:12,name:'cc'};
+    let sourceSeven = [{name:12},{id:11,name:'kk'},{age:34}];
+    const mergeSeven = (...sourceSeven) => Object.assign({},...sourceSeven);
+
+    //为属性指定默认值
+    /* defaults是默认参数,options是用用户提供的值
+    options = Object.assign({},defaults,options)
+    */ 
+    let defaults = {id:12,url:'www.xiao.com'}
+    let options = {url:'www.xm.com'};
+    options = Object.assign({},defaults,options);//{id: 12, url: "www.xm.com"}
+    </script>
+
+    <script>
+    //script no.8
+    //对象的每个属性都有一个描述对象,获取方法是 Object.getOwnPropertyDescriptor(objEight,'foo');
+    let objEight = {foo:123};
+    //foo属性的描述  {value: 123, writable: true, enumerable: true, configurable: true}
+    /* enumerable是“可枚举性” ，忽略enumerable为false的操作有四个，分别是：
+    for...in ,  Object.keys() ,JSON.stringify() ,Object.assign()
+    其中，只有for...in会返回继承的可枚举属性，其他都只返回自身的可枚举属性。因此，如果要获取自身的可枚举属性的话，最好用Object.keys()*/    
+    </script>
+
+    <script>
+    //属性的遍历方法：
+    /* 1，for...in   
+    2, Object.keys(obj)  
+    3，Object.getOwnPropertyNames(obj)  
+    4，Object.getOwnPropertySymbols(obj)
+    5，Reflect.ownKeys(obj)
+    遍历的规则是：
+    1，首先遍历所有数值键，按照数值升序排列。
+    2，其次遍历所有字符串键，按照加入时间升序排列。
+    3，最后遍历所有Symbol键，按照加入时间升序排列。
+    */
+    </script>
+
+    <script>
+    // Object.getOwnPropertyDescriptors()
     </script>
 </body>
 </html>
