@@ -240,6 +240,67 @@
     </script>
     <script>
     //script no.11
+    /* super关键字：指向当前对象的原型对象
+    注意：super表示原型对象时，只能用在对象的方法中，其他地方（对象的属性中、用在一个函数里，然后赋值给foo）会报错 */
+    const proto11 = {
+        foo:'hello'
+    }
+    const obj11 = {
+        foo:'world',
+        find(){
+            return super.foo;//返回的是原型对象的foo属性
+        }
+    };
+    Object.setPrototypeOf(obj11,proto11);
+    let str11 = obj11.find(); //"hello"
+    </script>
+    <script>
+    //script no.12
+    /* Object.keys() 返回对象的可遍历属性(不含继承的)
+    注意：这三个方法，均会过滤掉属性名为 Symbol值的属性 */
+    let obj12 = {foo:'bar', baz:'31'}
+    let arr12 = Object.keys(obj12); // ["foo", "baz"]
+
+    //Object.keys(),object.values,Object.entries()和解构赋值，以及for...of一起使用
+    let {keys,values,entries} = Object;
+    let obj12Two = {a:51,b:2,c:31};
+
+    //Object.keys()返回[1, 2, 3]
+    for(let key of keys(obj12Two)){
+        console.log(key);
+    }
+    
+    //Object.values()["a", "b", "c"]
+    for(let val of values(obj12Two)){
+        console.log(val);
+    }
+
+    //Object.entries()返回的是[key,value]键值对数组
+    for(let entry of entries(obj12Two)){
+        console.log(entry);
+    }
+
+    /* Object.entries()的用途有：遍历对象的属性；将对象转化为map结构 */
+    let obj12Three = { one: 1, two: 2 };
+    for(let [k,v] of Object.entries(obj12Three)){
+        console.log(
+            `${JSON.stringify(k)}:${JSON.stringify(v)};${k}:${v};`
+        );
+    }
+    </script>
+    <script>
+    //script no.13
+    /* 对象的扩展运算符 */
+    //扩展运算符在解构赋值中，只能放在最后
+    let {x13,y13,...z13} = {x13:1,y13:2,a13:'c',d13:'b'};//z13的值 {a13: "c", d13: "b"}
+    /* let {x13,...y13,z13} = {x13:1,y13:2,a13:'c',d13:'b'};} 报错，因为扩展运算符没有放在最后*/
+
+    //解构赋值的拷贝是浅拷贝
+    let obj13 = {a:{b:1}};
+    let {...x} = obj13;
+    obj13.a.b = 2;
+
+    //扩展运算符，不能复制继承自原型对象的属性
     
     </script>
 </body>
