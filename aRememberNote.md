@@ -1,5 +1,6 @@
 ## 2018-7-12<br>
 [markdown语法](https://www.jianshu.com/p/191d1e21f7ed)<br/>
+[markdown语法2](https://www.jianshu.com/p/b03a8d7b1719)<br/>
 ## 函数的扩展：
 ## 还记得哪些？
 ------------
