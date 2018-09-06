@@ -21,15 +21,13 @@
 
     //用toString方法，判断
     function type(obj){
-        if(obj === null){
-            return "null";
-        }else if(obj === undefined){
-            return "undefined";
-        }
         return Object.prototype.toString.call(obj).slice(8,-1);
     }
-    let m = undefined;
-    console.log(type(m));
+    let m = {};
+    let s = type(m)
+    console.log(s);
+    console.log(typeof s);
+
 
     
     /* Object.prototype.toString.call(para) 返回的是"[object para的类型]" ，如para是123，则返回 "[object Number]" ，对返回的这个字符串进行截取slice（8，-1)，即可得到Number*/
