@@ -128,5 +128,14 @@
     let paraObj = {x:4,y:3,z:6,m:21,n:6};
     console.log('getMultiple: '+ getMultiple(paraObj));
     </script>
+
+    <script>
+    //参数的解构赋值的补充,传对象
+    function getParams({xa:x,ya:y}){
+        return x+'='+y;
+    }
+    let xa = 9,ya = 13;
+    console.log(getParams({xa,ya}))
+    </script>
 </body>
 </html>
