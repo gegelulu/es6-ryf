@@ -108,5 +108,34 @@
     ⑦输入模块的指定方法
     */
     </script>
+    <script>
+    //声明过的变量进行解构赋值
+    //数组
+    let announce1 ,announce2;
+    [announce1,announce2] = [2,3,4];
+    //对象:加括号
+    let obj1,obj2;
+    ({obj1,obj2} = {obj1:23,obj2:45});
+
+    </script>
+    <script>
+    //函数的参数解构，实例
+    function getMultiple({x,y,z}){
+        console.log(x,y,z);
+        return x*y*z;
+    }
+    
+    let paraObj = {x:4,y:3,z:6,m:21,n:6};
+    console.log('getMultiple: '+ getMultiple(paraObj));
+    </script>
+
+    <script>
+    //参数的解构赋值的补充,传对象
+    function getParams({xa:x,ya:y}){
+        return x+'='+y;
+    }
+    let xa = 9,ya = 13;
+    console.log(getParams({xa,ya}))
+    </script>
 </body>
 </html>
