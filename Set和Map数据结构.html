@@ -1,17 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>set和map</title>
 </head>
+
 <body>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>4</div>
     <script>
         /* 
         1，Set本身是一个构造函数，生成Set数据结构
-        2，
+        2，添加：通过add向Set结构加成员，但是Set结构不会加重复的值
+        3，遍历：方法一：可以用for...of遍历Set结构；方法二：... 用扩展运算符遍历
          */
+        const s = new Set();
+        [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+
+        console.log(s);
+
+        for (let i of s) {
+            console.log(i);
+        }
+    </script>
+
+    <script>
+        /* 
+    set结构初始化：
+    1，数组作为参数
+    2, 以类数组作为参数
+     */
+        const s2 = new Set([3, 2, 1, 2, 2, 1]);
+        console.log(s2)
+        console.log(s2.size); //3
+
+        let divs = document.querySelectorAll('div');
+        const s3 = new Set(divs);
+
+        console.log(s3)
+        console.log(s3.size); //5
+    </script>
+
+    <script>
+        /* 
+    去除数组重复成员方法：
+    1，set方法去重
+     */
+        let arr1 = [2, 1, 1, 5, 2];
+        let arr2 = [...new Set(arr1)];
+        console.log(arr2)
+    </script>
+
+    <script>
+        /*
+    1，set加入值时，不会发生类型转换
+    2，set内部判断值相等，类似于===，但是和精确相等运算符不同的是，NaN等于自身
+    3，两个对象总是不等  */
+        const s4 = new Set();
+        let a = NaN;
+        let b = NaN;
+        s4.add(a);
+        console.log(s4.size); //1
+        s4.add(b);
+        console.log(s4.size); //1
+
+        const s5 = new Set();
+        s5.add({});
+        console.log(s5.size); //1
+
+        s5.add({});
+        console.log(s5.size); //2
+    </script>
+
+    <script>
+        /* 
+    set实例的属性和方法
+    1，set实例属性：
+        ① set.prototype.constructor:构造函数，默认是Set函数
+        ② set.prototype.size: 返回size实例的成员总数
+    2，set实例方法：
+        操作方法：
+        ① add(value) 添加某个值，返回set结构本身
+        ② delete(value)  删除某个值，返回布尔值，表示删除是否成功
+        ③ has(value)  返回一个布尔值，标识该值是否为Set的成员
+        ④ clear() 清除所有成员，无返回值
+     */
+
+        const s6 = new Set();
+        s6.add(1).add(2);
+        s6.add(1).add(2).add(2);
+
+        let flag = s6.delete('1'); //当s6中有delete需要删除的参数时，flag是true，否则flag是false
+        let flag2 = s6.has(2); //true
+
+        let res1 = s6.clear(); //undefined  clear()方法无返回值
+        let flag3 = s6.has(1); //false
+    </script>
+
+    <script>
+        //对象是否包含某个属性（并不是总能判断正确，要根据someName的值的类型对应的布尔值来判断）：obj[someName];  set是否包含某个属性：setName[someName]
+
+        let obj = {
+            'width': 1,
+            'height': 1
+        }
+        console.log(obj['name']);
+        if (obj['width']) {
+            console.log('包含');
+        } else {
+            console.log('不包含');
+        }
+
+        //set写法
+        let s7 = new Set();
+        s7.add('width');
+        s7.add('height');
+        if (s7.has('width')) {
+            console.log('set包含width')
+        }
+    </script>
+
+    <script>
+        /* 
+    1, Array.from将Set转化为数组
+    2, 结合Array.from ，对数组进行去重
+    
+     */
+        const items = new Set([1, 2, 3, 4, 5]);
+        console.log(Array.from(items));
+
+        function dedupe(arr) {
+            return Array.from(new Set(arr));
+        }
+        console.log(dedupe([1, '2', 2, 2, 3, 4, 3])); // [1, "2", 2, 3, 4]
+    </script>
+
+    <script>
+        /* 
+    Set结构的遍历方法：
+    keys(), 返回键名遍历器
+    values(), 返回键值遍历器
+    entries(),  返回键值对
+    forEach()，使用回调函数遍历每个成员    
+     */
+        let se = new Set(['red', 'yellow', 'blue']);
+        for (let item of se.keys()) {
+            console.log(item);
+        }
     </script>
 </body>
+
 </html>
