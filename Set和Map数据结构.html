@@ -153,6 +153,19 @@
         for (let item of se.keys()) {
             console.log(item);
         }
+        for(let item of se.entries()){
+            console.log(item);//["red", "red"] ["yellow", "yellow"] ["blue", "blue"]
+        }
+
+    
+    </script>
+    
+    <script>
+    /* Set 结构的实例默认可遍历，可以省略values方法，使用for...of循环遍历 Set */
+    let se1 = new Set([12,34,14]);
+    se1.forEach((item,key) => {
+        console.log(item,key)
+    })
     </script>
 </body>
 
