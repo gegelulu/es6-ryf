@@ -116,7 +116,7 @@
 
     //source和target有同名属性，或多个源对象有同名属性，后面会覆盖前面 
     //source2中的a属性的值，会覆盖掉target中的a属性的值；source2中b属性的值，会覆盖source1中b属性值
-    let target2 = Object.assign(target,source1,source2); //{a: 2, b: 4, e: 6, d: 5}
+    Object.assign(target,source1,source2); //{a: 2, b: 4, e: 6, d: 5}
 
     //参数只有一个，且是对象，则返回此对象；若该参数不是对象，则先转化为对象
     let target3 = Object.assign(target);//返回的是原对象，target3 === target;//true
@@ -127,7 +127,7 @@
     let objFive2 = Object.assign(objFive,null); //objFive2 === objFive //true
     let objFive3 = Object.assign(objFive,undefined); //objFive3 === objFive //true
 
-    //其他类型的值，string，boolen，number，不作为第一个参数，也不会报错，但是，只有可枚举的对象可以拷贝到目标对象，其他类型不行进行拷贝
+    //其他类型的值，string，boolen，number，不作为第一个参数，也不会报错，但是，只有可枚举的对象可以拷贝到目标对象，其他类型不进行拷贝
     let strFive = 'chen';
     let booleneFive = true;
     let numFive = 321;
@@ -159,6 +159,7 @@
 
     const sourceSix = {
         get fooNew(){
+          console.log("get fooNew")
             return 1;
         }
     }
@@ -178,6 +179,7 @@
     //合并多个对象
     let targetSeven = {id:12,name:'cc'};
     let sourceSeven = [{name:12},{id:11,name:'kk'},{age:34}];
+    Object.assign(targetSeven, ...sourceSeven)
     const mergeSeven = (...sourceSeven) => Object.assign({},...sourceSeven);
 
     //为属性指定默认值

@@ -860,6 +860,270 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
 ③    接受2个参数，第一个是值，第二个是起始搜索的位置，默认是0
 
+## 对象的扩展：
+
+1. 属性和方法的简写方法，分别给出例子。
+
+   属性的简写：直接写变量和函数，作为对象的属性和方法
+
+   ```javascript
+   // 直接写变量，已知变量 strOne, strTwo
+   const objOne = {strOne, strTwo}
+   // 直接写函数，已知函数fnObj返回的是一个对象
+   const objTwo = fnObj(1,2)
+   ```
+
+   ```javascript
+   const o = {
+       method(){
+           return "hello"
+       }
+   }
+   ```
+
+   
+
+2. 字面量定义对象时，如何用表达式定义属性和方法名？
+
+   ```javascript
+   // 定义属性
+   let proKey = "kkkk"
+   let obj = {
+       [proKey]:true
+   } //{kkkk: true}
+   ```
+
+   ```javascript
+   // 定义方法名
+   let objTwo3 = {
+       ['h'+'ello'](){
+           return 'hi'
+       }
+   }
+   let strThree = objTwo3.hello()
+   ```
+
+   
+
+3. 属性名表达式和简洁表示法能一起使用吗？
+
+   不能
+
+4. 属性表达式如果是对象，结果是多少？
+
+   默认转化为[object object]字符串
+
+   ```javascript
+       const keyA = {a: 1};
+       const keyB = {b: 2};
+   
+       const myObject = {
+       [keyA]: 'valueA',
+       [keyB]: 'valueB'
+       };
+   // myObject得到的结果是：
+   {[object Object]: "valueB"}
+   ```
+
+   
+
+5. 给对象的方法加存值和取值函数是什么意思？例子说明。
+
+   在对象的方法名前加get或set方法( 关于set和get的方法，后续还需要复习一下文档完善 )
+
+   ```javascript
+   const objThree = {
+     get foo(){  },
+     set foo(x){  }
+   }
+   
+   ```
+
+   
+
+6. ES6里面，严格相等，用什么方法？这个和 === 符号有什么区别？和 == 呢？
+
+   严格相等用Object.is(  )方法
+
+   Object.is( )方法和  ====  的区别主要在于 NaN和 +0，-0
+
+   == 在等的时候会进行类型转换
+
+   ```javascript
+   Object.is(parseInt("abc"), parseInt("123"))  //true
+   Object.is(+0, -0) // false
+   
+   parseInt("abc") === parseInt("123") // false
+   +0 === -0 // true
+   
+   "123" == 123
+   ```
+
+   
+
+7. Object.assign(  )可以将源对象的所属性复制到目标对象吗？
+
+   不是的。Object.assign(  )只能复制可枚举属性。（什么是可枚举属性？）
+
+   ```javascript
+   Object.assign(targetObj, sourceObj1, sourceObj2)
+   ```
+
+   除了第一个是目标对象，后面几个都是源对象。
+
+   可枚举属性就是Object.keys（ ）方法可以遍历到的属性。
+
+8. 多个sourceObj中，属性有重名的，怎么处理？
+
+   排在后面的同名属性的值，会覆盖排在前面的，看例子
+
+   ```javascript
+   const target = {a:1};
+   const source1 = {a:2,b:3,e:6};
+   const source2 = {b:4,d:5};
+   Object.assign(target,source1,source2) // target是 {a: 2, b: 4, e: 6, d: 5}
+   ```
+
+9. 参数只有一个，且是对象时，返回值是什么？
+
+   源对象。
+
+   无论参数是几个，返回值都是源对象。看例子：
+
+   ```javascript
+   let res = Object.assign(target,source1,source2)
+   res === target //true
+   ```
+
+10. Object.assign()对参数的类型有限制吗？拷贝过程有限制吗？
+
+    **参数类型的限制：**
+
+    第一个参数需要能转化为对象。后面的参数不做限制。
+
+    null和undefined不能转化为对象，因此不能作为第一个参数。后面的参数中如果有null或者undefined时，会自动忽略掉。
+
+    非null和undefined的参数，会先转化为对象，再参与运算
+
+    **拷贝过程的限制：**
+
+    只有拷贝源对象自身的属性，即可枚举的属性
+
+11. 字符串可以拷贝到目标对象吗？结合代码说明。
+
+    可以，字符串会先转化为数组，再进行拷贝。
+
+    ```javascript
+    let obj_3 = Object.assign({},"chen")  
+    // 对象obj_3的值是： {0: "c", 1: "h", 2: "e", 3: "n"}
+    ```
+
+12. Object.assign( )是浅拷贝还是深拷贝？
+
+    浅拷贝
+
+13. 同名属性的拷贝是替换还是添加？
+
+    替换。
+
+    下面例子中，objSix3的值被直接替换了。因此，如果不想修改objSix3的值，目标对象最好设为空对象`{}`
+
+    即：`Object.assign({}, objSix3, objSix4)`
+
+    ```javascript
+    let objSix3 = {a:{b:1,c:3}};
+    let objSix4 = {a:{b:'hello'}};
+    let objSix5 = Object.assign(objSix3,objSix4);
+    
+    ```
+
+14. 可以对两个数组做Object.assign(  )操作吗？
+
+    可以。表现形式时，将数组转为对象，然后进行拷贝。例子如下:
+
+    ```javascript
+    let arr1 = [1, 2, 3]
+    let arr2 = ["a", "b", "c"]
+    let obj = Object.assign({}, arr1, arr2) // {0: "a", 1: "b", 2: "c"}
+    ```
+
+15. Object.assign(  )中的源对象中与取值函数时，是怎么处理的？
+
+    如果源对象是个函数，那么先执行函数，再将执行结果插入到目标对象中
+
+    ```javascript
+    const sourceSix = {
+    	get fooNew(){
+         	console.log("get new thing~~")   
+            return 1
+        }	
+    }
+    const targetSix = {}
+    let objSix7 = Object.assign(targetSix, sourceSix)
+    // get fooNew
+    // {fooNew: 1}
+    ```
+
+16. Object.assign(  )有哪些使用场景，以例子说明
+
+     ①为对象或类添加属性
+
+    ```javascript
+    class Point {
+    	constructor(x,y){
+            Object.assign(this, {x, y})
+        }
+    }
+    ```
+
+    ②为对象添加方法
+
+    例如给prototype属性添加方法
+
+    ```JavaScript
+    function Animal(name, age){
+        this.name = name
+        this.age = age
+    }
+    Object.assign(Animal.prototype, {
+        getName(){
+            return this.name
+        },
+        getAge(){
+            return this.age
+        }
+    })
+    let dog = new Animal("lily", 10)
+    ```
+
+    ③为对象克隆
+
+    ```javascript
+    function clone(origin){
+        return Object.assign({}, origin)
+    }
+    ```
+
+    ④合并多个对象
+
+    ⑤为属性加默认值
+
+    ```javascript
+    const Defaults = {
+        logLevel: 0,
+        outputFormat: "html"
+    }
+    function processContent(options){
+        options = Object.assign({},Defaults,options )
+    }
+    ```
+
+    
+
+17. 如何获取对象属性的描述对象
+
+18. 
+
 ## 解构赋值：
 
 1.        数组解构赋值的匹配模式是怎样的？
@@ -1253,3 +1517,163 @@ let point = new Point(3, 4)
      ```
 
      
+
+## class的继承：
+
+前置方法
+
+```javascript
+    class Point {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+      }
+      toString() {
+        return `(${this.x},${this.y})`
+      }
+      /* 静态方法 */
+      static hello() {
+        console.log("hello world!")
+      }
+    }
+
+    // 子类实例的构建，基于父类实例
+    // super 方法调用父类的实例。使用了super后，才能用this
+    class ColorPoint extends Point {
+      constructor(x, y, color) {
+        super(x, y) // super作为方法，用在子类的构造,必须在this之前先调用
+        this.color = color
+      }
+      toString() {
+        //  super作为对象（对象调用方法），指向的是父类的原型对象即Point.prototype
+        console.log(Point.prototype.toString === super.toString) // true
+        return `color: ${this.color}, ${super.toString()}`
+      }
+    }
+```
+
+1. 子类和父类是通过什么关键字实现继承？父类是Point，子类是ColorPoint如何写？
+
+   通过extends关键字 
+
+   ```javascript
+   class ColorPoint extends Point{
+       
+   }
+   ```
+
+2. 子类的属性和方法中，哪个关键字是必须的？这个关键字怎么用？为什么要这么用？
+
+   super关键字必须。
+
+   super关键字有两种用法，作为方法和作为对象。
+
+   作为方法时，用在constructor方法中（用于子类的构造），必须在this之前调用。
+
+   作为对象时，用在其他方法中，调用父类的方法用。指向的是父类的原型对象。
+
+   ```javascript
+   Point.prototype.toString === super.toString // true
+   /*
+   super作为对象时，不能不调用方法，直接拿来用，比如  Point.prototype === super 就会控制台报错
+   */
+   ```
+
+   
+
+3. `ColorPoint.hello()`会输出什么？为什么？
+
+   会输出 hello world!  因为`ColorPoint`是`Point`的子类，会继承它的所有方法。`hello()`是`Point`的静态方法，也会被子类`ColorPoint`继承。
+
+4. 如何从子类获取父类？代码演示
+
+   ```javascript
+   Object.getPrototypeOf(ColorPoint) === Point   //true
+   ```
+
+   用`Object.getPrototypeOf(childClass)` 的方法可以判断一个类是否继承了另一个类
+
+5. 简述一下super的两种使用场景
+
+   super可作为方法，也可作为 对象
+
+   方法：子类的constructor中使用。
+
+   对象：在子类的其他方法中使用。普通方法  = >  指向父类原型对象（父类的方法全部定义在原型对象上）；   静态方法  =>  指向父类
+
+6. 子类的`__proto__`属性，指向的是什么？
+
+   子类的`__proto__`属性指向**父类**
+
+   ```javascript
+   colorPoint.__proto__ === Point // true
+   // 构造函数的继承
+   ```
+
+7. 子类的prototype属性的`__proto__`属性指向什么?
+
+   子类的prototype属性的`__proto__`属性指向父类的prototype属性
+
+   ```javascript
+   colorPoint.prototype.__proto__ === Point.prototype  // true
+   // 类的方法的继承
+   ```
+
+   
+
+8. 原生构造函数有哪些？
+
+   ```javascript
+   Boolean()  
+   Boolean 对象是一个布尔值的对象包装器。当需要判断一个对象是正负时，可以这么做
+   将非布尔值转化为布尔值，用Boolean方法，Boolean(exp) 或者 !!(exp)
+   ```
+
+   ```javascript
+   Number()
+   
+   ```
+
+   ```javascript
+   String()
+   
+   ```
+
+   ```javascript
+   Array()
+   
+   ```
+
+   ```javascript
+   Date()
+   
+   ```
+
+   ```javascript
+   Function()
+   
+   ```
+
+   ```javascript
+   Regexp()
+   ```
+
+   ```javascript
+   Error()
+   ```
+
+   ```javascript
+   Object()
+   ```
+
+   
+
+9. ES5的方法实现继承，可以继承到原生的构造函数吗？为什么？
+
+   ES5是先新建子类的实例对象this，再将父类的属性添加到子类上。由于父类的内部属性无法获取，导致无法继承原生的构造  函数。
+
+10. ES6的方法实现继承，可以继承到原生的构造函数吗？为什么？
+
+    ES6 是先新建父类的实例对象this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。
+
+    
