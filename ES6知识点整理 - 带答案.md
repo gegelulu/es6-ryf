@@ -1120,9 +1120,98 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     
 
-17. 如何获取对象属性的描述对象
+17. 如何获取对象属性的描述对象？
 
-18. 
+    用Object.getOwnPropertyDescriptor
+
+    `Object.getOwnPropertyDescriptor(objEight,'foo')`
+
+18. 对象`objEight = {foo:123}`， 属性foo的描述对象包含哪4个属性？
+
+    ```javascript
+    {value: 123, writable: true, enumerable: true, configurable: true}
+    ```
+
+19. `enumerable`是描述对象的什么属性？`Object.keys(  )`跟它有什么关系？
+
+    `enumerable`是可枚举属性。为`true`时表示可枚举，为`false`时表示不可枚举。
+
+    `Object.keys(  )`遍历对象时会忽略掉不可枚举的属性。其他几个和`Object.keys(  )`有相同表现形式的有 `for ...in`,`Object.keys(  )`,`JSON.stringify()`,`Object.assign()`
+
+    `for...in`会返回继承的可枚举属性。`Object.keys(  )`不会返回，所以获取自身的可枚举属性，用`Object.keys(  )`。看下面的例子：
+
+    ```javascript
+    let obj = {name: "xiaokeai"}
+    let targetObj = Object.create(obj)
+    targetObj.age = 30 // name是继承的属性,age是自身的属性
+    console.log( Object.keys(targetObj)) // ["age"] ,  Object.keys只能获取自身属性
+    for(let key in targetObj){
+        console.log(key, targetObj[key]) // for ... in还可以获取继承属性
+    }
+    // 
+    ```
+
+20. 属性有哪些遍历方法？
+
+    四种方法。
+
+    ①   Object.keys(  )
+
+    ②   for ... in // 继承属性也会遍历出来
+
+    ③   Object.getOwnPropertyNames(obj)  // 和Object.keys(  )结果一样
+
+    ④   Object.getOwnPropertySymbols(obj)  //是 [ ]
+
+    ⑤   Reflect.ownKeys(obj)  // 和Object.keys(  )结果一样
+
+    
+
+21. 属性的遍历规则是什么？（从数值，字符串，symbol考虑）
+
+    数值键： 按升序排列
+
+    字符串 ：按加入时间升序
+
+    Symbol键：按照加入时间升序
+
+22. `Object.getOwnPropertyDescriptors()`是用来干嘛？
+
+    解决Object.assign（ ）无法正确拷贝set和get属性的问题
+
+    ```JavaScript
+    let objNine2 = Object.getOwnPropertyDescriptors(objNine)
+    ```
+
+23. 如何设置和读取对象的prototype对象？如何将已有对象为原型，创建新对象？
+
+    设置对象的原型对象： `Object.setPrototypeOf({  })`
+
+    获取对象的原型对象：`Object.getPrototypeOf( {  } )`
+
+    以新对象为原型对象，创建新对象： `Object.create(obj)`
+
+24. 什么关键字指向的是当前对象的原型对象？
+
+    super关键字。看下面的例子：
+
+    ```javascript
+    const proto11 = {
+        foo : "hello"
+    }
+    const obj11 = {
+        foo: "world",
+        find(){
+            return super.foo //原型对象的foo属性，即 hello
+        }
+    }
+    Object.setPrototype(obj11,proto11)
+    obj11.find() // "hello"
+    ```
+
+    
+
+25. 
 
 ## 解构赋值：
 
