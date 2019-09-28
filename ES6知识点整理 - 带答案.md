@@ -1,10 +1,10 @@
 ## let和const：
 
-1.        let有哪三点需要注意的？
+1.let有哪三点需要注意的？
 
 ①    无变量提升  ②需要先声明再使用（存在一个暂时死去）③相同作用域内不能重复声明 ④如果外层声明了变量，内层用let重新声明，那么变量属于内层。所以变量使用仍然应在声明之后，否则报错。
 
-2.        const和let有哪些异同？如何让const变量的属性也不让变？Object.freeze怎么用？
+2.const和let有哪些异同？如何让const变量的属性也不让变？Object.freeze怎么用？
 
 ①    同：都有作用域、相同作用域内不能重复声明、无变量提升  
 
@@ -14,13 +14,13 @@
 
 ④    Object.freeze，用于
 
-3.        es6有几种变量声明方法，分别是什么？
+3.es6有几种变量声明方法，分别是什么？
 
 function var let const import export   一共6种方法
 
 ## 字符串扩展：
 
-1.        ES5中，如何用unicode码表示一个字符？在es6中做了什么改进？为什么要做这个改进？
+1.ES5中，如何用unicode码表示一个字符？在es6中做了什么改进？为什么要做这个改进？
 
 ①    es5中，unicode码表示一个字符的方法：\uxxxx 的方式表示一个字符，可以表示\u0000到\uFFFF之间的字符，超过FFFF的只能用双字节来表示
 
@@ -28,19 +28,19 @@ function var let const import export   一共6种方法
 
 ③    这样做可读取码点超过\uFFFF的字符
 
-2.        ES5是以什么格式存储字符的，每个字符多少字节？对于4字节的字符，在ES6中是用哪一个新增的方法处理的？
+2.ES5是以什么格式存储字符的，每个字符多少字节？对于4字节的字符，在ES6中是用哪一个新增的方法处理的？
 
 ①    ：UTF-16 的方式，存储字符，一个字符2字节。
 
 ②    4字节的字符，es6中codePointAt方法处理
 
-3.        codePointAt返回的是码点是多少进制的？如何转化为16进制？
+3.codePointAt返回的是码点是多少进制的？如何转化为16进制？
 
 ①    codePointAt返回的码点是十进制
 
 ②    转化为16进制，toString一下
 
-4.        如何解决codePointAt在使用时如果有4字节字符，码点不对的问题？
+4.如何解决codePointAt在使用时如果有4字节字符，码点不对的问题？
 
 ①    用for…of循环
 
@@ -52,7 +52,7 @@ function var let const import export   一共6种方法
 
 **}**
 
-5.        如何检测一个字符是2字节还是4字节？请写函数is32Bit(c).
+5.如何检测一个字符是2字节还是4字节？请写函数is32Bit(c).
 
 **function** is32bit**(**ch**){**
 
@@ -60,7 +60,7 @@ function var let const import export   一共6种方法
 
 **}**
 
-6.        es5如何从码点返回一个对应的字符串？这个方法有什么局限？es6又是如何实现的？
+6.es5如何从码点返回一个对应的字符串？这个方法有什么局限？es6又是如何实现的？
 
 ①    es5中，码点返回字符串，formCharCode
 
@@ -68,7 +68,7 @@ function var let const import export   一共6种方法
 
 ③    es6实现：fromCodePoint实现
 
-7.        简述一下startsWith（param1，param2），endsWith（param1，param2）和includes（param1，param2）用法？
+7.简述一下startsWith（param1，param2），endsWith（param1，param2）和includes（param1，param2）用法？
 
 ①    s.startsWith（str,index） 从字符串s的index位置开始，向后找str，能马上找到返回true，否则false
 
@@ -76,15 +76,15 @@ function var let const import export   一共6种方法
 
 ③    s.includes（str,index）从是的index位置开始找，能否找到str，能找到返回true，不能，返回false
 
-8.        ES6将字符转化为为码点的方法  codePointAt  ，将码点转化为字符 fromCodePoint 
+8.ES6将字符转化为为码点的方法  codePointAt  ，将码点转化为字符 fromCodePoint 
 
-9.        如何将字符串重复n次，用的是什么函数？此函数的param取正整数，非正整数，字符串，布尔值时，分别表示重复了多少次？
+9.如何将字符串重复n次，用的是什么函数？此函数的param取正整数，非正整数，字符串，布尔值时，分别表示重复了多少次？
 
 ①    重复n次：repeat函数。使用方法：str.repeat(count)  str重复count次。
 
 ②    浮点数时，count会取整；非负数字符串时，count=0；布尔值true时，count=1；布尔false时，count=0 ；负数或负数字符串是时，报错
 
-10.     头部补全和尾部补全，用的是什么方法？用补全的方法，写一个例子，取当天日期，格式是‘yyyy-mm-dd’
+10.头部补全和尾部补全，用的是什么方法？用补全的方法，写一个例子，取当天日期，格式是‘yyyy-mm-dd’
 
 ①    头部补零：s.padStart(len,str)：将字符串s头部用str补充，直到长度是len，返回新字符串
 
@@ -106,31 +106,31 @@ function var let const import export   一共6种方法
 
  
 
-11.     反引号是怎么用的？用在什么场合？（两个基本使用方法）
+11.反引号是怎么用的？用在什么场合？（两个基本使用方法）
 
 ①    `  `
 
 ②    场合：换行和赋值  换行时，可在两个反引号中写html代码。赋值时使用美元符+花括号的形式，如：${ param }
 
-12.     数字转化为字符串有哪几种方法？（三种）
+12.数字转化为字符串有哪几种方法？（三种）
 
 toString()方法： num.toString() num为null或者undefined时，会报错
 
-String()方法:         String(num)  num为null时，转化为“null”，为undefined时，转化为“undefined”
+String()方法: String(num)  num为null时，转化为“null”，为undefined时，转化为“undefined”
 
 num+” ” : 结果同String( )方法
 
 ## 正则的扩展：
 
-1.        ES5中正则表达式的两种声明方式是什么？分别用两种方式，声明正则表达式 /xyz/ig
+1.ES5中正则表达式的两种声明方式是什么？分别用两种方式，声明正则表达式 /xyz/ig
 
 ①    两种声明方式：直接写表达式var re = /xyz/ig; 等价于var re = new RegExp(/xyz/ig)   ;使用new方法，传入一个字符串和修饰符。var re = new RegExp(‘xyz’,’ig’)；
 
-2.        ES6对RegExp函数做了哪些修正，这给正则的声明带来了什么好处？
+2.ES6对RegExp函数做了哪些修正，这给正则的声明带来了什么好处？
 
 当RegExp的第一个参数是正则时，可以有第二个参数，且第二个参数会覆盖正则中的修饰符。new RegExp(/xyz/ig,’i’); 的修饰符是u  const r1 = /hello/u r1.unicode
 
-3.        ES6用什么修饰符处理码点大于\uFFFF的unicode字符？什么属性可以判断正则是否用了此修饰符？这个修饰符最基本用法是哪些地方（5个），分别给个例子。写一个codePointLength函数返回字符串的真实长度。
+3.ES6用什么修饰符处理码点大于\uFFFF的unicode字符？什么属性可以判断正则是否用了此修饰符？这个修饰符最基本用法是哪些地方（5个），分别给个例子。写一个codePointLength函数返回字符串的真实长度。
 
 ①    es6用u修饰符处理码点大于\uFFFF的Unicode字符。
 
@@ -138,7 +138,7 @@ num+” ” : 结果同String( )方法
 
 ③    unicode使用的地方：一：点字符（. 识别码点大于0xFFFF时会失效），二：{ }花括号表示法 ，三：量词，四：预定义模式（\S能匹配所有非空字符，码点大于0xFFFF的除外） 五：i修饰符
 
-4.        什么是粘性匹配？粘性匹配的修饰符是什么？它和g修饰符的区别在哪里？哪个属性可以判断是否使用了粘性修饰符？
+4.什么是粘性匹配？粘性匹配的修饰符是什么？它和g修饰符的区别在哪里？哪个属性可以判断是否使用了粘性修饰符？
 
 ①    粘性匹配：（sticky）必须从剩余的第一个位置开始匹配，修饰符是y。
 
@@ -146,23 +146,23 @@ num+” ” : 结果同String( )方法
 
 ③    sticky属性可判断粘性修饰符。为true时，存在y修饰符，为false时，不存在y修饰符。
 
-5.        lastIndex是什么？在粘性修饰符和g修饰符中有什么用？
+5.lastIndex是什么？在粘性修饰符和g修饰符中有什么用？
 
 ①    lastIndex是正则下一次匹配的位置。在y和g修饰符中，都能通过修改lastIndex的值，指定下一次匹配的位置。在粘性模式下，lastIndex开始值是0
 
-6.        用粘性修饰符匹配“a1a2a3”，得到[a1,a2,a3]。写出计算过程。
+6.用粘性修饰符匹配“a1a2a3”，得到[a1,a2,a3]。写出计算过程。
 
 **let** s1 **=** "a1a2a3"**;**
 
 **let** arr **=**  s1**.**match**(****/a\d/gy****);//[a1,a2,a3]**
 
-7.        如何返回正则/Abc/gi的正文和修饰符。正文返回的是什么？修饰符返回的又是什么？
+7.如何返回正则/Abc/gi的正文和修饰符。正文返回的是什么？修饰符返回的又是什么？
 
 ①    正文：source属性.  **/Abc/gi.**source  //”Abc”
 
 ②    修饰符：flags属性  **let** flags **=** **/Abc/gi.**flags  //’gi’
 
-8.        修饰符中，点号有什么局限，如果点号要匹配所有字符，该使用什么修饰符解决？如果正则中用了此修饰符，有什么属性能判断。
+8.修饰符中，点号有什么局限，如果点号要匹配所有字符，该使用什么修饰符解决？如果正则中用了此修饰符，有什么属性能判断。
 
 ①    点号不能匹配码点超过0xFFFF的字符, 用u修饰符解决。点号无法匹配行终止符（断行、回车、行分隔、段分隔符），可用s修饰符解决。
 
@@ -170,13 +170,13 @@ num+” ” : 结果同String( )方法
 
 /foo.bar/s.dotAll   结果就是true
 
-9.        什么是先行断言和后行断言，它们分别的正则表达式是怎样的？分别写正则，识别“100% percent”和“$99 is not cheap”
+9.什么是先行断言和后行断言，它们分别的正则表达式是怎样的？分别写正则，识别“100% percent”和“$99 is not cheap”
 
 ①    先行断言：x在y前面才匹配，基本js语法就支持。语法格式/x(?=y)/ 
 
 ②    后行断言：x在后面，才匹配,es2018引入。写法是：/(?<=y)x/
 
-10.     正则表达式如何匹配符合Unicode某种属性的所有字符？如何匹配所用空格和十进制字符？
+10.正则表达式如何匹配符合Unicode某种属性的所有字符？如何匹配所用空格和十进制字符？
 
 ①    匹配符合unicode属性的所有字符：/\p{propertyName =paropertValue}/
 
@@ -184,7 +184,7 @@ num+” ” : 结果同String( )方法
 
 ③    匹配所有空格：**const** regexSpace **=** **/\p{White_Space}/u;**
 
-11.     什么是具名组匹配？这种匹配的写法是怎样的？匹配‘2018-11-02’，返回y，m和d，请尝试用解构赋值的方式获取y，m，d的值。用replace将日期改成2018/11/02
+11.什么是具名组匹配？这种匹配的写法是怎样的？匹配‘2018-11-02’，返回y，m和d，请尝试用解构赋值的方式获取y，m，d的值。用replace将日期改成2018/11/02
 
 ①    具名组匹配：该怎么分就怎么分，分完后，左括号加上？+尖括号+name。例子：const regDate = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
 
@@ -206,7 +206,7 @@ num+” ” : 结果同String( )方法
 
  
 
-12.     正则表达式内，如何使用组名？结合ES5，使用组名的两种方法是什么。匹配’abc!abc!’，进行实例分析。
+12.正则表达式内，如何使用组名？结合ES5，使用组名的两种方法是什么。匹配’abc!abc!’，进行实例分析。
 
 ①    正则表达式内，引用组名，使用\k<组名>
 
@@ -230,23 +230,23 @@ num+” ” : 结果同String( )方法
 
 ## 数值的扩展：
 
-1.        二进制和八进制分别如何表示？使用二进制和八进制表示10。如何将二进制和八进制转化为十进制？
+1.二进制和八进制分别如何表示？使用二进制和八进制表示10。如何将二进制和八进制转化为十进制？
 
 ①    二进制：0b1010  八进制：0o14  
 
 ②    Number，二进制或八进制转化为十进制  Number(0b1010)
 
-2.        Number.isFinite( )和Number.isNaN( )如何用，他们和isFinite()和isNaN的差别?
+2.Number.isFinite( )和Number.isNaN( )如何用，他们和isFinite()和isNaN的差别?
 
 ①    Number.isFinite( )是否无限，Number.isNaN( )是否为NaN  
 
 ②    Number.isFinite(para )直接判断para满足条件否，isFinite(para)会将para先Number一下，再看是否满足条件。
 
-3.        Number,parseInt()、Number.parseFloat()与parseInt()和parseFloat()的区别是什么？
+3.Number,parseInt()、Number.parseFloat()与parseInt()和parseFloat()的区别是什么？
 
 ①    ：Number.parseInt()和parseInt（）等价  同理，Number.parseFloat()和parseFloat（）也是等价
 
-4.        如何判断一个数是否是正整数？Number.EPSILON是什么？它的应用场景又是什么? 写一下函数acceptError(left,right) 返回值是2的-50次方
+4.如何判断一个数是否是正整数？Number.EPSILON是什么？它的应用场景又是什么? 写一下函数acceptError(left,right) 返回值是2的-50次方
 
 ①    判断一个数是否正整数：Number.isInteger(para) 
 
@@ -254,17 +254,17 @@ num+” ” : 结果同String( )方法
 
 ③    应用场景：浮点数计算的误差范围
 
-​        function **acceptError**(left,right){
+​function **acceptError**(left,right){
 
-​                  return Math.**abs**(left - right) < **Number**.EPSILON*Math.**pow**(2,2);
+​  return Math.**abs**(left - right) < **Number**.EPSILON*Math.**pow**(2,2);
 
-​        }*//**精度是**2**的**-50**次方*
+​}*//**精度是**2**的**-50**次方*
 
-​        let resError = **acceptError**(0.1+0.2,0.3);
+​let resError = **acceptError**(0.1+0.2,0.3);
 
  
 
-5.        js能表示的数的上限和下限是多少？最大上限整数和最小下限整数分别是多少？在上下限之间的安全整数又如何表示？如何验证某个计算结果是安全整数内？
+5.js能表示的数的上限和下限是多少？最大上限整数和最小下限整数分别是多少？在上下限之间的安全整数又如何表示？如何验证某个计算结果是安全整数内？
 
 ①    JS能表示的下限和上限：2^-53到2^53之间的数  
 
@@ -276,25 +276,25 @@ num+” ” : 结果同String( )方法
 
 function **trusty**(left,right,result){
 
-​            if(**Number**.**isSafeInteger**(left)&&
+​    if(**Number**.**isSafeInteger**(left)&&
 
-​            **Number**.**isSafeInteger**(right)&&
+​    **Number**.**isSafeInteger**(right)&&
 
-​            **Number**.**isSafeInteger**(result)
+​    **Number**.**isSafeInteger**(result)
 
-​            ){
+​    ){
 
-​                return result;
+​return result;
 
-​            }
+​    }
 
-​            throw new **RangeError**('Operation cannot be trusted!');
+​    throw new **RangeError**('Operation cannot be trusted!');
 
-​        } 
+​} 
 
  
 
-6.        Math.trunc(val)是什么意思？如何判断某数的正、负、0？如何计算一个数的立方根？如何算一个数有多少个先导0？如何计算两数的乘积？如何将64位双精度浮点数转化为32为单精度浮点数？如何求几个数的平方和的平方根？
+6.Math.trunc(val)是什么意思？如何判断某数的正、负、0？如何计算一个数的立方根？如何算一个数有多少个先导0？如何计算两数的乘积？如何将64位双精度浮点数转化为32为单精度浮点数？如何求几个数的平方和的平方根？
 
 ①    Math.trunc(val)的意思是：去除val的小数部分。运算前，会先把val Number一下
 
@@ -310,7 +310,7 @@ function **trusty**(left,right,result){
 
 ⑦    几个数的平方和的平方根：Math.hypot(val1,val2,val3) Math.hypot(1,2,2,4)， 返回5
 
-7.        如何计算ex-1?如何计算1+x的自然对数？如何返回10为底x的对数?如何返回2为底，x的对数？如何进行指数计算，如2的3次方？
+7.如何计算ex-1?如何计算1+x的自然对数？如何返回10为底x的对数?如何返回2为底，x的对数？如何进行指数计算，如2的3次方？
 
 ①    计算 ex-1  ：  Math.expm1（x）
 
@@ -324,7 +324,7 @@ function **trusty**(left,right,result){
 
 ## 函数的扩展：
 
-1.        说一下，函数参数默认值声明时，几点注意事项？（3点）
+1.说一下，函数参数默认值声明时，几点注意事项？（3点）
 
 函数声明注意事项：
 
@@ -334,7 +334,7 @@ function **trusty**(left,right,result){
 
 ③    参数的默认值是惰性求值，每调用一次，参数重新计算一次
 
-2.        分析一下function m1({x=0,y=0} = {}) { return [x,y]; }和function m2({x,y} = {x:0,y:0}) { return [x,y]; }，传值不同时，分别输出什么?
+2.分析一下function m1({x=0,y=0} = {}) { return [x,y]; }和function m2({x,y} = {x:0,y:0}) { return [x,y]; }，传值不同时，分别输出什么?
 
 ①    m1和m2都对参数设了默认值。m1的参数默认是{},m2是{x:0,y:0}
 
@@ -342,7 +342,7 @@ function **trusty**(left,right,result){
 
 ③    当不传值，传{x:0,y:0}或者传其他参数时，效果一样。但是传一个参数时，不一样
 
-3.        在函数调用中，传值时，什么样的参数能省略，什么样的参数不能省略？在定义函数时，如何表明函数的某个参数是能省略的？
+3.在函数调用中，传值时，什么样的参数能省略，什么样的参数不能省略？在定义函数时，如何表明函数的某个参数是能省略的？
 
 ①    尾部的默认参数能省略
 
@@ -350,17 +350,17 @@ function **trusty**(left,right,result){
 
 ③    显示传入undefined，触发此参数等于默认值   f(1,undefined,2)
 
-4.        函数的length属性时如何计算的？能否包括默认参数和rest属性？
+4.函数的length属性时如何计算的？能否包括默认参数和rest属性？
 
 ①    length:预期传入的参数个数。要用参数的总个数-默认参数和它后面参数一起，总参数个数
 
 ②    不包括默认参数和rest属性
 
-5.        函数声明初始化时，什么是作用域？
+5.函数声明初始化时，什么是作用域？
 
 ①    当有默认参数时。函数声明初始化时，会形成单独的作用域。初始化结束，作用域消失。
 
-6.        具名函数和赋值的匿名函数，name属性的值是多少？
+6.具名函数和赋值的匿名函数，name属性的值是多少？
 
 ①    具名函数的name属性是function后的名称
 
@@ -368,11 +368,11 @@ function **trusty**(left,right,result){
 
 ③    构造函数，返回的是anonymous
 
-7.        箭头函数和解构赋值一起用时，const full =（{first,last}）=>(first + ‘-‘ +last)；full({first：‘chen’,last:’ke’}) 调用结果是啥？
+7.箭头函数和解构赋值一起用时，const full =（{first,last}）=>(first + ‘-‘ +last)；full({first：‘chen’,last:’ke’}) 调用结果是啥？
 
 ①    调用结果：chen-ke  参数传的是个对象，并且用了最基本的对象解构赋值
 
-8.        箭头函数的this指向的是什么？箭头函数自身有没有this？arguments,super,new.target，这些在箭头函数内部存在吗？什么是函数的管道机制？
+8.箭头函数的this指向的是什么？箭头函数自身有没有this？arguments,super,new.target，这些在箭头函数内部存在吗？什么是函数的管道机制？
 
 ①    箭头函数this指向：箭头函数定义生效时，所在的对象。箭头函数无this，this指向的是外层变量。
 
@@ -380,21 +380,21 @@ function **trusty**(left,right,result){
 
 ③    管道机制：前一个函数的输出是后一个函数的输入
 
-9.        什么是尾用调用？尾用调用优化的原则是什么？
+9.什么是尾用调用？尾用调用优化的原则是什么？
 
 ①    尾用调用：一个函数的最后一步调用了另一个函数。
 
 ②    尾用调用的原则：内层函数不再用到外层函数的内部变量时，才能进行尾调用优化
 
-10.     用尾递归实现阶乘和斐波拉切的累加和。
+10.用尾递归实现阶乘和斐波拉切的累加和。
 
 ①    尾递归实现阶乘：
 
 ​    function **factorial**(n,total=1){
 
-​        if(n == 1) return total;
+​if(n == 1) return total;
 
-​        return **factorial**(n-1,n*total);
+​return **factorial**(n-1,n*total);
 
 ​    }
 
@@ -404,13 +404,13 @@ function **trusty**(left,right,result){
 
 function **fb**(n,ac1=1,ac2=1){
 
-​        if(n <= 1){
+​if(n <= 1){
 
-​            return ac2;
+​    return ac2;
 
-​        }
+​}
 
-​        return **fb**(n-1,ac2,ac1+ac2);
+​return **fb**(n-1,ac2,ac1+ac2);
 
 ​    }
 
@@ -418,7 +418,7 @@ function **fb**(n,ac1=1,ac2=1){
 
 ## 数组的扩展：
 
-1.        什么是扩展运算符？数组运算符通常的应用场景是？
+1.什么是扩展运算符？数组运算符通常的应用场景是？
 
 rest参数：将数字序列转化为数组，常用于给函数传参数。
 
@@ -434,7 +434,7 @@ function **add**(...values){ }
 
 ②    数组运算符应用场景：主要用在函数的调用（参数部分）
 
-2.        用扩展运算符求一个数组的最大值。将数组arr1[1,2,3]，加到数组[‘a’,’b’,’c’]的尾部
+2.用扩展运算符求一个数组的最大值。将数组arr1[1,2,3]，加到数组[‘a’,’b’,’c’]的尾部
 
 ①    扩展运算符，求数组最大值：
 
@@ -442,9 +442,9 @@ let maxVal = Math.**max**(...[12,45,8,]);
 
 ②    将数组arr[1,2,3]，加到数组arr1[‘a’,’b’,’c’]
 
-​      let newArr = arr1.**push**(...arr);
+​ let newArr = arr1.**push**(...arr);
 
-3.        用ES5的方法实现数组复制。3种方法，用ES6实现数组复制。以上方法是浅拷贝还是深拷贝？如何实现深拷贝？
+3.用ES5的方法实现数组复制。3种方法，用ES6实现数组复制。以上方法是浅拷贝还是深拷贝？如何实现深拷贝？
 
 ①    用ES5方法实现数组复制（一维数组）：
 
@@ -452,7 +452,7 @@ let maxVal = Math.**max**(...[12,45,8,]);
 
 ​    let arrTwo2 = arrTwo.**concat**();
 
-​              一维数组深拷贝。当arrTwo改变时，arrTwo2没变
+​ 一维数组深拷贝。当arrTwo改变时，arrTwo2没变
 
 ②    用ES6实现数组复制：
 
@@ -484,23 +484,23 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneArr**(arr){
 
-​        let out = [],len = arr.length;
+​let out = [],len = arr.length;
 
-​        for(let i = 0; i < len; i ++){
+​for(let i = 0; i < len; i ++){
 
-​            if(arr[i] instanceof **Array**){
+​    if(arr[i] instanceof **Array**){
 
-​                out[i] = **deepCloneArr**(arr[i]);
+​out[i] = **deepCloneArr**(arr[i]);
 
-​            }else{
+​    }else{
 
-​                out[i] = arr[i];
+​out[i] = arr[i];
 
-​            }
+​    }
 
-​        }
+​}
 
-​        return out;
+​return out;
 
 ​    }
 
@@ -508,29 +508,29 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneArrObj**(arr){
 
-​        let out = [],len = arr.length;
+​let out = [],len = arr.length;
 
-​        for(let i=0; i < len; i ++){
+​for(let i=0; i < len; i ++){
 
-​            if(arr[i].constructor === **Array**){
+​    if(arr[i].constructor === **Array**){
 
-​                out[i] = **deepCloneArr**(arr[i]);
+​out[i] = **deepCloneArr**(arr[i]);
 
-​            }else if(arr[i].constructor === **Object**){
+​    }else if(arr[i].constructor === **Object**){
 
-​                let str = JSON.**stringify**(arr[i]);
+​let str = JSON.**stringify**(arr[i]);
 
-​                out[i] = JSON.**parse**(str);
+​out[i] = JSON.**parse**(str);
 
-​            }else{
+​    }else{
 
-​                out[i] = arr[i];
+​out[i] = arr[i];
 
-​            }
+​    }
 
-​        }
+​}
 
-​        return out;
+​return out;
 
 ​    }
 
@@ -540,27 +540,27 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneObj**(obj){
 
-​        var newobj;
+​var newobj;
 
-​        if(typeof obj != "object"){
+​if(typeof obj != "object"){
 
-​            newobj = obj;
+​    newobj = obj;
 
-​        }
+​}
 
-​        else{
+​else{
 
-​            newobj = obj.constructor == **Array** ? [] : {};
+​    newobj = obj.constructor == **Array** ? [] : {};
 
-​            var str = JSON.**stringify**(obj);
+​    var str = JSON.**stringify**(obj);
 
-​            newobj = JSON.**parse**(str);
+​    newobj = JSON.**parse**(str);
 
-​        }
+​}
 
-​        return newobj;}
+​return newobj;}
 
-4.        用ES5,ES6的方法，对三个数组arr1，arr2，arr3进行数组合并。
+4.用ES5,ES6的方法，对三个数组arr1，arr2，arr3进行数组合并。
 
 ①    ES5实现三个数组合并
 
@@ -574,13 +574,13 @@ let arr = [].**concat**(arr1,arr2,arr3)
 
 let [...arr] = [...arr1,...arr2,...arr3];
 
-​       方法二：
+​  方法二：
 
-​       let arrOne = [...arr1,...arr2,...arr3];
+​  let arrOne = [...arr1,...arr2,...arr3];
 
  
 
-5.        扩展运算符可以和解构赋值相结合，生成数组。这种写法，得到的first，middle，last，分别是多少？const [first, ...middle, last] = [1, 2, 3, 4, 5]，这种写法呢？const [first, ...rest] = [1, 2, 3, 4, 5]
+5.扩展运算符可以和解构赋值相结合，生成数组。这种写法，得到的first，middle，last，分别是多少？const [first, ...middle, last] = [1, 2, 3, 4, 5]，这种写法呢？const [first, ...rest] = [1, 2, 3, 4, 5]
 
 ①    扩展运算符和结构赋值相结合
 
@@ -592,7 +592,7 @@ let [first,...last] = [1,2,3,4];*//first: 1  last:[2,3,4]*
 
 ③    const [first, ...rest] = [1, 2, 3, 4, 5] *//first: 1  last:[2,3,4,5]*
 
-6.        字符串如何转化为数组，并求其长度。
+6.字符串如何转化为数组，并求其长度。
 
 ①    字符串转化为数组
 
@@ -604,7 +604,7 @@ let [first,...last] = [1,2,3,4];*//first: 1  last:[2,3,4]*
 
 ​    for(let i of strFour){
 
-​        arrFour.**push**(i);
+​arrFour.**push**(i);
 
 ​    }
 
@@ -622,7 +622,7 @@ let [first,...last] = [1,2,3,4];*//first: 1  last:[2,3,4]*
 
 strSix.length  或者 [...strSix].length
 
-7.        字符串如何翻转？用es5和es6的方法实现。两种方法求出来的值都是准确的吗？
+7.字符串如何翻转？用es5和es6的方法实现。两种方法求出来的值都是准确的吗？
 
 ①    字符串如何翻转？
 
@@ -640,7 +640,7 @@ strSix.length  或者 [...strSix].length
 
  
 
-8.        扩展运算符和Iterator的接口有什么关系?请问，如何实现页面上div的数组？
+8.扩展运算符和Iterator的接口有什么关系?请问，如何实现页面上div的数组？
 
 ①    扩展运算符和Iterator接口关系：部署了Iterator接口，就能用扩展运算符
 
@@ -652,17 +652,17 @@ let divArr = [...divs];
 
  
 
-9.        请定义一个map对象，并遍历它的key和value，用数组形式返回。
+9.请定义一个map对象，并遍历它的key和value，用数组形式返回。
 
 ①    用map创建一个对象：
 
 ​    let mapItera1 = new **Map**([
 
-​        [5,'one'],
+​[5,'one'],
 
-​        [9,'two'],
+​[9,'two'],
 
-​        [13,'three']
+​[13,'three']
 
 ​    ]) //  {5 => "one", 9 => "two", 13 => "three"}
 
@@ -676,7 +676,7 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let mapValues = [...mapItera1.**values**()];
 
-10.     Array.from( )是用来干什么用？它的第二个参数是干嘛用的？写个例子，将类数组[1,,3,,4]中,空出来的数，转化为0
+10.Array.from( )是用来干什么用？它的第二个参数是干嘛用的？写个例子，将类数组[1,,3,,4]中,空出来的数，转化为0
 
 ①    Array.from将类似数组或者可遍历对象（有Iterator接口）转化为数组。
 
@@ -688,7 +688,7 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arr2 = **Array**.**from**(div2).**filter**(divEl => {
 
-​        return divEl.innerHTML.length > 2
+​return divEl.innerHTML.length > 2
 
 ​    })
 
@@ -696,19 +696,19 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arrLike = {
 
-​        0:'a',
+​0:'a',
 
-​        1:'b',
+​1:'b',
 
-​        2:'c',
+​2:'c',
 
-​        length:2*//**必不可少*
+​length:2*//**必不可少*
 
 ​    }
 
 ​    let arr3 = **Array**.**from**(arrLike,(item,index) => {
 
-​        return item+item+index
+​return item+item+index
 
 ​    }) // ["aa0", "bb1"]
 
@@ -724,15 +724,15 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arrFour1 = **Array**.**from**(arrFour,(item)=>{
 
-​        *// return item === undefined ? 0:item;  //**写法一*
+​*// return item === undefined ? 0:item;  //**写法一*
 
-​        return item || 0;*//**写法二*
+​return item || 0;*//**写法二*
 
 ​    })
 
  
 
-11.     如何将一组值转化为数组（两种方法，ES5和ES6分别一种）？
+11.如何将一组值转化为数组（两种方法，ES5和ES6分别一种）？
 
 ES5中有new Array(para)方法，ES6中有array.of(para)方法
 
@@ -760,7 +760,7 @@ ES5中有new Array(para)方法，ES6中有array.of(para)方法
 
  
 
-12.     copyWithin( ) 方法如何用？详细解释下，它的几个参数。
+12.copyWithin( ) 方法如何用？详细解释下，它的几个参数。
 
 ①    copyWithin( ) 的用法：数组中将指定位置的元素覆盖其他位置的元素。会改变被操作的数组
 
@@ -776,7 +776,7 @@ end（可选）：被复制的结束位置(复制时，不包括此位置)。复
 
 ​    arrSix.**copyWithin**(2,0);*//["a", "b", "a", "b", "c", "d", "e"]*
 
-​       *//**分析：从**arrSix[2]**开始，到后面的元素，被**arrSix**从第一个元素开始覆盖*
+​  *//**分析：从**arrSix[2]**开始，到后面的元素，被**arrSix**从第一个元素开始覆盖*
 
  
 
@@ -786,7 +786,7 @@ end（可选）：被复制的结束位置(复制时，不包括此位置)。复
 
  
 
-13.     数组的find和findIndex如何用？它们的返回值是多少？可以接收几个参数？
+13.数组的find和findIndex如何用？它们的返回值是多少？可以接收几个参数？
 
 ①    find：返回数组中满足条件的第一个数，没有就返回undefined
 
@@ -794,7 +794,7 @@ end（可选）：被复制的结束位置(复制时，不包括此位置)。复
 
 ​    let itemSeven = arrSeven.**find**(item => {
 
-​        return item < 0;
+​return item < 0;
 
 ​    });*//-6*
 
@@ -808,7 +808,7 @@ find可接收的参数是函数。函数有三个参数.function(currentVal,curr
 
 ​    function **fnV**(v){
 
-​        return v>this.age;
+​return v>this.age;
 
 ​    }
 
@@ -818,7 +818,7 @@ find可接收的参数是函数。函数有三个参数.function(currentVal,curr
 
  
 
-14.     fill函数如何用?可以接收几个参数，每个参数是什么意思？
+14.fill函数如何用?可以接收几个参数，每个参数是什么意思？
 
 ①    fill(val,start,end)的用法：按给定的值，将数组指定位置的值进行覆盖
 
@@ -828,7 +828,7 @@ find可接收的参数是函数。函数有三个参数.function(currentVal,curr
 
 ​    arrFill.**fill**('b',1,2);*//['a','b','a']*
 
-​       
+​  
 
 ②    val：必填，填充的值
 
@@ -836,7 +836,7 @@ start：非必填，起始位置，默认是0
 
 end：非必填，结束位置的后一位，默认是数组最后一位的下一位
 
-15.     如何遍历数组的key，value，以及key:value键值对。用什么属性，使用这个属性，用2种方式来实现数组的遍历。
+15.如何遍历数组的key，value，以及key:value键值对。用什么属性，使用这个属性，用2种方式来实现数组的遍历。
 
 ①    遍历数组的key：arr.keys()  遍历数组的arr.values() 遍历key：value 值对，arr.entries()
 
@@ -846,13 +846,13 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
 ​    for(let item of keysArrEight){
 
-​        **console**.**log**(item);
+​**console**.**log**(item);
 
 ​    }
 
  
 
-16.     includes表示什么意思？返回值是什么？可以接收几个参数？
+16.includes表示什么意思？返回值是什么？可以接收几个参数？
 
 ①    includes表示是否包含某个值
 
@@ -875,9 +875,9 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
    ```javascript
    const o = {
-       method(){
-           return "hello"
-       }
+  method(){
+   return "hello"
+  }
    }
    ```
 
@@ -889,16 +889,16 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    // 定义属性
    let proKey = "kkkk"
    let obj = {
-       [proKey]:true
+  [proKey]:true
    } //{kkkk: true}
    ```
 
    ```javascript
    // 定义方法名
    let objTwo3 = {
-       ['h'+'ello'](){
-           return 'hi'
-       }
+  ['h'+'ello'](){
+   return 'hi'
+  }
    }
    let strThree = objTwo3.hello()
    ```
@@ -914,13 +914,13 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    默认转化为[object object]字符串
 
    ```javascript
-       const keyA = {a: 1};
-       const keyB = {b: 2};
+  const keyA = {a: 1};
+  const keyB = {b: 2};
    
-       const myObject = {
-       [keyA]: 'valueA',
-       [keyB]: 'valueB'
-       };
+  const myObject = {
+  [keyA]: 'valueA',
+  [keyB]: 'valueB'
+  };
    // myObject得到的结果是：
    {[object Object]: "valueB"}
    ```
@@ -933,8 +933,8 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
    ```javascript
    const objThree = {
-     get foo(){  },
-     set foo(x){  }
+get foo(){  },
+set foo(x){  }
    }
    
    ```
@@ -1054,9 +1054,9 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
     ```javascript
     const sourceSix = {
     	get fooNew(){
-         	console.log("get new thing~~")   
-            return 1
-        }	
+ 	console.log("get new thing~~")   
+    return 1
+}	
     }
     const targetSix = {}
     let objSix7 = Object.assign(targetSix, sourceSix)
@@ -1066,13 +1066,13 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
 16. Object.assign(  )有哪些使用场景，以例子说明
 
-     ①为对象或类添加属性
+①为对象或类添加属性
 
     ```javascript
     class Point {
     	constructor(x,y){
-            Object.assign(this, {x, y})
-        }
+    Object.assign(this, {x, y})
+}
     }
     ```
 
@@ -1082,16 +1082,16 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     ```JavaScript
     function Animal(name, age){
-        this.name = name
-        this.age = age
+this.name = name
+this.age = age
     }
     Object.assign(Animal.prototype, {
-        getName(){
-            return this.name
-        },
-        getAge(){
-            return this.age
-        }
+getName(){
+    return this.name
+},
+getAge(){
+    return this.age
+}
     })
     let dog = new Animal("lily", 10)
     ```
@@ -1100,7 +1100,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     ```javascript
     function clone(origin){
-        return Object.assign({}, origin)
+return Object.assign({}, origin)
     }
     ```
 
@@ -1110,11 +1110,11 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     ```javascript
     const Defaults = {
-        logLevel: 0,
-        outputFormat: "html"
+logLevel: 0,
+outputFormat: "html"
     }
     function processContent(options){
-        options = Object.assign({},Defaults,options )
+options = Object.assign({},Defaults,options )
     }
     ```
 
@@ -1146,7 +1146,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
     targetObj.age = 30 // name是继承的属性,age是自身的属性
     console.log( Object.keys(targetObj)) // ["age"] ,  Object.keys只能获取自身属性
     for(let key in targetObj){
-        console.log(key, targetObj[key]) // for ... in还可以获取继承属性
+console.log(key, targetObj[key]) // for ... in还可以获取继承属性
     }
     // 
     ```
@@ -1197,69 +1197,295 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     ```javascript
     const proto11 = {
-        foo : "hello"
+foo : "hello"
     }
     const obj11 = {
-        foo: "world",
-        find(){
-            return super.foo //原型对象的foo属性，即 hello
-        }
+foo: "world",
+find(){
+    return super.foo //原型对象的foo属性，即 hello
+}
     }
     Object.setPrototype(obj11,proto11)
     obj11.find() // "hello"
     ```
 
+    super作为关键字时，只能放在对象的方法里。用在属性里就会报错。
+
+25. Object.keys( )遍历的对象属性有什么特点？
+
+    都是可遍历属性；不含继承属性；都会过滤掉Symbol值的属性
+
+26. Object.keys()， Object.values()和Object.entries()返回值分别是什么？给出他们三个和解构赋值，for...of一起用的例子？
+
+    ```javascript
+    let { keys, values, entries } = Object
+    for(let key of entries(obj)){
+consle.log(key)
+    }
+    ```
+
     
 
-25. 
+27. ``Object.entries()`有哪两种用途？
+
+    1. 遍历对象，得到`[key, value]`键值对组成的数组
+
+    2. 将对象转化为真正的map解构。看例子：
+
+  ```javascript
+  const obj = {foo: "bar", baz:42}
+  const map = new Map(Object.entries(obj))
+  ```
+
+  
+
+28. 对象中可以用扩展运算符吗？
+
+    可以用。但是扩展运算符只能用在尾部。看例子：
+
+    ```javascript
+    let { x13, y13, ...z13} = { x13: 1, y13: 2, a13: "c", d13: "b"}  
+    // z13的值是：{a13: "c", d13: "b"}
+    ```
+
+    
+
+29. 扩展运算符能不能继承原型对象的属性？
+
+    不行。扩展运算符只能复制对象自身的属性，不能复制继承属性。例如下面代码中，obj有b属性，但是targetObj没有。因为b属性是继承自obj的原型对象proObj。
+
+    ```javascript
+    let obj = {a: 1}
+    let proObj = {b: 2}
+    Object.setPrototypeOf(obj, proObj)
+    let {...targetObj} = obj
+    obj.b  //2
+    targetObj.b // undefined
+    ```
+
+## set和map:
+
+1. Set是什么？
+
+   Set是一个构造函数。可以用new Set( )用于生成Set数据结构。
+
+2. Set结构有什么特点？
+
+   不会添加重复的值。
+
+3. 如何向Set结构中添加成员？
+
+   通过add方法，向Set解构的实例中添加成员。看例子：Set和Map
+
+   ```javascript
+   let s = new Set()
+   [2,3,4,5,5,1,2].forEach(item=>s.add(item))
+   // s是  Set(5) {2, 3, 4, 5, 1}
+   ```
+
+   
+
+4. 如何遍历Set实例？
+
+   两种方法： for...of方法遍历；扩展运算符遍历。看例子：
+
+   ```javascript
+   for(let i of s){
+  console.log(i) // 依次打印 2,3,4,5,1
+   }
+   console.log(...s) // 结果是数组： [2, 3, 4, 5, 1]
+   ```
+
+   
+
+5. Set结构如何初始化？
+
+   传数组
+
+   ```javascript
+   const s2 = new Set([3,2,1,2,2,1])
+   s2.size// 3
+   ```
+
+   传类数组：
+
+   ```javascript
+   let divs = document.querySelectorAll("div")
+   const s3 = new Set(divs)
+   ```
+
+   
+
+6. 给数组去重的方法？
+
+   set方法
+
+   ```javascript
+   let arr1 = [2,1,1,5,2]
+   let arr2 = [...new Set(arr1)]
+   // arr2 [2, 1, 5]
+   ```
+
+   上面，计算arr2时用扩展运算符或者用`Array.from()`都可以
+
+   `Array.from(new Set(arr1))`
+
+7. set实例中加入数据时，会对数据进行类型转换吗？
+
+   加入数据时，不会发生类型转换。
+
+8. Set实例内部判断相等时，判断的条件是什么？
+
+   类似于===，但是NaN等于自身。也就是跟Object.is( )类似
+
+   加对象时，比的是对象的地址。所以，两个相同元素的对象，不相等，会add两次。
+
+9. Set的实例s（下文中的s都是代指Set实例）有哪些属性？
+
+   `s.prototype.constructor` 指向的是构造函数，默认的是Set构造函数
+
+   `s.prototype.size`返回的是s的成员总数
+
+10. Set的实例s有哪些方法？
+
+    `add(value)`给s添加成员，返回s实例
+
+    `delete(value)`删除成员`value`，返回的是布尔值，表示删除是否成功
+
+    `has(value)`返回布尔值，表示是否有成员`value`。有的话是true，没有是false
+
+    `clear()`清除所有成员，无返回值
+
+    ```javascript
+    let s = new Set()
+    let arr = ["kk","172", "female"]
+    arr.forEach(item => {
+s.add(item)
+    })
+    s.has("172") // true
+    s.delete("172") // 删除“172”选项
+    s.clear() // 清空所有成员，得到的是一个空set结构
+    ```
+
+    
+
+11. Set实例可以用链式写法吗？为嘛？哪些可以用？
+
+    部分可以。`add`方法可以用，因为方法的返回值是新的实例`s`。看例子：
+
+    ```javascript
+    s.add(2).add(34)  // Set(2) {2, 34}
+    ```
+
+12. 判断是否含某个键值时，对象和s分别怎么判断？
+
+    对象直接用 `obj[property]`
+
+    s用has方法，`s.has(property)`
+
+13. 数组去重可以怎么做？
+
+    `Array.from`和 `s`结合使用，看例子:
+
+    ```javascript
+    // Set构造函数可以传数组，也可以传类数组
+    // 有重复元素的数组传进去，得到的是去重后的set结构
+    // set结构，经过Array.from（）的处理转化为真正的数组
+    Array.from(new Set([1,2,3,4,1,2,3]))  //[1, 2, 3, 4]
+    // 注意，Array.from()可以传2个参数，第二个参数是对得到的数组做map操作
+    ```
+
+    
+
+14. s有哪些遍历方法？
+
+    `keys()` 返回键名遍历器
+
+`values()` 返回键值遍历器 .由于Set结构的键名和键值是同一个值，因此 
+
+    `entries()`  返回键值对
+
+    `forEach()` 使用回调函数遍历每个成员
+
+    具体用法，看例子：
+
+    ```javascript
+    let s = new Set(["orange", "blue", "red", "green"])
+    for(let item of s.keys()){
+    	console.log(item)
+    }
+    // 依次输出 orange，blue，red，green
+    // 用s.keys()得到的是 键名构造器： SetIterator {"orange", "blue", "red", "green"}
+    
+    for(let item of s.values()){
+console.log(item)
+    }
+    // 依次输出 orange，blue，red，green
+    // 用s.values()得到的是 键值构造去： SetIterator {"orange", "blue", "red", "green"}
+    
+    for(let item of s.entries()){
+console.log(item)
+    }
+    //依次输出 4个数组  ["orange", "orange"] ["blue", "blue"] ["red", "red"] ["green", "green"]
+    
+    s.forEach((item, key) => {
+console.log(item) // "orange"
+console.log(key) // "orange"
+    })
+    
+    ```
+
+    
+
+15. 其他
 
 ## 解构赋值：
 
-1.        数组解构赋值的匹配模式是怎样的？
+1.数组解构赋值的匹配模式是怎样的？
 
 ①    数组匹配模式：左边和变量和右边数组的数据，按顺序匹配
 
-2.        如何完全解构，获取数组的第一个和最后一个元素 [1,2,3,4]?
+2.如何完全解构，获取数组的第一个和最后一个元素 [1,2,3,4]?
 
 ①    完全解构获取第一个和最后一个元素。 let [x21,,,x22] = [1,2,3,4]
 
 (中间不需要的参数，全部空出来)
 
-3.        如何用不完全解构，获取数组的第一个和第二个元素[1,2,3,4]？
+3.如何用不完全解构，获取数组的第一个和第二个元素[1,2,3,4]？
 
 ①    不完全解构。let [x31,x32] = [1,2,3,4]  
 
-4.        数组解构时，默认值是表达式时有什么特点？
+4.数组解构时，默认值是表达式时有什么特点？
 
 ①    默认值是表达式时，惰性赋值。只有取到默认值时，表达式才会执行。不取默认值时不执行。
 
-5.        如何触发解构赋值的默认值（两种方式）？
+5.如何触发解构赋值的默认值（两种方式）？
 
 ①    左边的变量，设了默认值，同时，变量在右边没找到
 
 ②    左边的变量，设了默认值，同时，变量在右边找到了，但值为undefined
 
-6.        对象的解构赋值的内部机制是什么？
+6.对象的解构赋值的内部机制是什么？
 
 ①    左边的变量，在右边找相应的key值。如果找到了，将此key的value值，赋给左边对应的变量
 
-7.        对象解构赋值，默认值生效的条件是什么？
+7.对象解构赋值，默认值生效的条件是什么？
 
 ①    左边的变量在右边找不到 ②在右边找到了，但是是undefined
 
-8.        对象解构赋值时，先声明再赋值怎么做？
+8.对象解构赋值时，先声明再赋值怎么做？
 
 ①    用圆括号，将赋值的语句括起来。如图：
 
 ({x4,y4} = {x4:1,y4:21}) 
 
-9.        如何将Math.floor和Math.abs解构到floor和abs上？
+9.如何将Math.floor和Math.abs解构到floor和abs上？
 
 ①    解构赋值的方式，解构到floor和abs上，如图：
 
 let {floor,abs} = Math;
 
-10.     如何用对象解构的方式，获取数组【1,2,3,4】的第一位和最后一位数值？
+10.如何用对象解构的方式，获取数组【1,2,3,4】的第一位和最后一位数值？
 
 ①    数组也可以用对象解构的方式，来进行赋值。如图：
 
@@ -1269,7 +1495,7 @@ let {floor,abs} = Math;
 
  
 
-11.     字符串为什么可以进行解构赋值？解构一个数组，试着解构下数组的length属性
+11.字符串为什么可以进行解构赋值？解构一个数组，试着解构下数组的length属性
 
 ①    字符串有length属性，能转化为类似数组。
 
@@ -1277,17 +1503,17 @@ let {floor,abs} = Math;
 
 ③    解构数组的length属性： let {length:len} = arr1  数组是对象，并且数组对象有length属性
 
-12.     试着分析下下面两个函数，当传值不同时，他们分别输出什么？
+12.试着分析下下面两个函数，当传值不同时，他们分别输出什么？
 
 function **moveFn**({x =0,y=0}={}){
 
-​        return [x,y];
+​return [x,y];
 
 ​    }    
 
 ​    function **moveFn2** ({x,y} = {x:0,y:0}){
 
-​        return [x,y];
+​return [x,y];
 
 }
 
@@ -1299,13 +1525,13 @@ function **moveFn**({x =0,y=0}={}){
 
 ③    moveFn参数的解构赋值中，x和y的默认值是0，moveFn2中x和y无默认值
 
-13.     列举下变量解构赋值的用途。（7种）
+13.列举下变量解构赋值的用途。（7种）
 
 ①    数据的交换 
 
 let x1 = 12,y1 = 14;
 
-​     [x1,y1] = [y1,x1];
+​[x1,y1] = [y1,x1];
 
  
 
@@ -1315,7 +1541,7 @@ let x1 = 12,y1 = 14;
 
 function **fnPara**({x,y,z}){
 
-​        return x*y+z;
+​return x*y+z;
 
 ​    }
 
@@ -1327,13 +1553,13 @@ function **fnPara**({x,y,z}){
 
 function **returnPara**(pa){
 
-​        let x = pa+1;
+​let x = pa+1;
 
-​        let y = pa*2;
+​let y = pa*2;
 
-​        let z = pa*3;
+​let z = pa*3;
 
-​        return[x,y,z]
+​return[x,y,z]
 
 ​    }
 
@@ -1345,17 +1571,17 @@ function **returnPara**(pa){
 
 let datas = {
 
-​        url:'www.baidu',
+​url:'www.baidu',
 
-​        time:'2018-8-8 17:59:58',
+​time:'2018-8-8 17:59:58',
 
-​        data:[12,23,34]    }
+​data:[12,23,34]    }
 
  
 
 ​    let {url:target,time,data:number} = datas;
 
-​       target，time和number的值，对应datas的url，time和data
+​  target，time和number的值，对应datas的url，time和data
 
 ⑤    函数参数的默认值
 
@@ -1369,7 +1595,7 @@ map结构的变量可以用for…of进行遍历
 
 ​    }
 
-​    for(let [,value] of map){        
+​    for(let [,value] of map){
 
 ​    }
 
@@ -1379,7 +1605,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
  
 
-14.     一个变量已经声明过，如何进行结构赋值。分别举个数组和对象的实例
+14.一个变量已经声明过，如何进行结构赋值。分别举个数组和对象的实例
 
 ①    声明过的变量，进行数组解构赋值
 
@@ -1402,11 +1628,11 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 ```javascript
 class Point {
     constructor(x,y){
-        this.x = x
-        this.y = y // 实例自己的
+this.x = x
+this.y = y // 实例自己的
     }
     toString(){
-        return `${this.x}, ${this.y}` // 类的
+return `${this.x}, ${this.y}` // 类的
     }
 }
 // 实例
@@ -1427,8 +1653,8 @@ let point = new Point(3, 4)
 
    ```javascript
    let f = function (){
-     this.a = 1
-     this.b = 2
+this.a = 1
+this.b = 2
    }
    
    let o = new f()
@@ -1466,15 +1692,15 @@ let point = new Point(3, 4)
 
    ```javascript
    class MyClass {
-     constructor() {
-       // ...
-     }
-     get prop() {
-       return 'getter';
-     }
-     set prop(value) {
-       console.log('setter: '+value);
-     }
+constructor() {
+  // ...
+}
+get prop() {
+  return 'getter';
+}
+set prop(value) {
+  console.log('setter: '+value);
+}
    }
    ```
 
@@ -1487,7 +1713,7 @@ let point = new Point(3, 4)
     ```javascript
     let methodName = "something"
     [methodName](){
-        
+
     }
     ```
 
@@ -1499,12 +1725,12 @@ let point = new Point(3, 4)
 
     ```javascript
     let person = new class Me{
-       constructor(name){
-           this.name = name
-       } 
-       sayName(){
-           consle.log(this.name)
-       }
+  constructor(name){
+   this.name = name
+  } 
+  sayName(){
+   consle.log(this.name)
+  }
     }("joy")
     ```
 
@@ -1536,76 +1762,76 @@ let point = new Point(3, 4)
 
 11. 类的方法中的this指向的是什么？如果将方法单独提出来呢？怎么让this指向实例？
 
-     类的方法的this指向的是类实例。如果单独提出来指向的是undefined。让this指向实例有3种方法： ①构造函数绑定this（函数的bind方法） ②用箭头函数  ③用proxy，获取方法的时候，自动绑定this
+类的方法的this指向的是类实例。如果单独提出来指向的是undefined。让this指向实例有3种方法： ①构造函数绑定this（函数的bind方法） ②用箭头函数  ③用proxy，获取方法的时候，自动绑定this
 
 12. 什么是静态方法，举例说明？如何调用静态方法？
 
-     一个方法前加了static，它就是静态方法。如下：
+一个方法前加了static，它就是静态方法。如下：
 
-     ```javascript
-     class Foo{
-         static classMethod(){
-             return "hello"
-         }
-     }
-     Foo.classMethod() //静态方法在类上调用
-     ```
+```javascript
+class Foo{
+ static classMethod(){
+return "hello"
+ }
+}
+Foo.classMethod() //静态方法在类上调用
+```
 
-     静态方法直接通过了来调用
+静态方法直接通过了来调用
 
 13. 类中定义的方法，都会被实例继承吗？
 
-     类中定义的非静态方法都会被实例继承。
+类中定义的非静态方法都会被实例继承。
 
 14. 静态方法中的this，指向什么？
 
-     指向类
+指向类
 
 15. 实例的属性除了写在constructor中，还能写在哪里？
 
-     写在constructor 或者写在顶层，效果一样。
+写在constructor 或者写在顶层，效果一样。
 
 16. 静态属性如何定义？
 
-     写在类的外面 `Foo.prop = 1`或者在属性前加static修饰符  `static prop= 2 `
+写在类的外面 `Foo.prop = 1`或者在属性前加static修饰符  `static prop= 2 `
 
 17. 什么是私有属性和私有方法? 如何区别他们和别的属性或方法。
 
-     私有方法和私有属性，是只能在类的内部访问的方法和属性，外部不能访问。私有属性的方法：
+私有方法和私有属性，是只能在类的内部访问的方法和属性，外部不能访问。私有属性的方法：
 
-     ①命名区别  ②方法移除到模块外  ③利用Symbol值的唯一
+①命名区别  ②方法移除到模块外  ③利用Symbol值的唯一
 
-     私有属性的提案：
+私有属性的提案：
 
-     在属性和方法前面加#，表示私有
+在属性和方法前面加#，表示私有
 
 18. new.target属性的应用场景？
 
-     ES6 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，返回new命令作用于的那个构造函数。
+ES6 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，返回new命令作用于的那个构造函数。
 
-     能写出不能独立使用、必须继承后才能使用的类
+能写出不能独立使用、必须继承后才能使用的类
 
-     ```javascript
-     class Shape {
-       constructor() {
-         if (new.target === Shape) {
-           throw new Error('本类不能实例化');
-         }
-       }
-     }
-     
-     class Rectangle extends Shape {
-       constructor(length, width) {
-         super();
-         // ...
-       }
-     }
-     
-     var x = new Shape();  // 报错
-     var y = new Rectangle(3, 4);  // 正确
-     ```
+```javascript
+class Shape {
+  constructor() {
+ if (new.target === Shape) {
+   throw new Error('本类不能实例化');
+ }
+  }
+}
 
-     
+class Rectangle extends Shape {
+  constructor(length, width) {
+ super();
+ // ...
+  }
+}
+
+var x = new Shape();  // 报错
+var y = new Rectangle(3, 4);  // 正确
+```
+
+
 
 ## class的继承：
 
@@ -1613,31 +1839,31 @@ let point = new Point(3, 4)
 
 ```javascript
     class Point {
-      constructor(x, y) {
-        this.x = x
-        this.y = y
-      }
-      toString() {
-        return `(${this.x},${this.y})`
-      }
-      /* 静态方法 */
-      static hello() {
-        console.log("hello world!")
-      }
+ constructor(x, y) {
+this.x = x
+this.y = y
+ }
+ toString() {
+return `(${this.x},${this.y})`
+ }
+ /* 静态方法 */
+ static hello() {
+console.log("hello world!")
+ }
     }
 
     // 子类实例的构建，基于父类实例
     // super 方法调用父类的实例。使用了super后，才能用this
     class ColorPoint extends Point {
-      constructor(x, y, color) {
-        super(x, y) // super作为方法，用在子类的构造,必须在this之前先调用
-        this.color = color
-      }
-      toString() {
-        //  super作为对象（对象调用方法），指向的是父类的原型对象即Point.prototype
-        console.log(Point.prototype.toString === super.toString) // true
-        return `color: ${this.color}, ${super.toString()}`
-      }
+ constructor(x, y, color) {
+super(x, y) // super作为方法，用在子类的构造,必须在this之前先调用
+this.color = color
+ }
+ toString() {
+//  super作为对象（对象调用方法），指向的是父类的原型对象即Point.prototype
+console.log(Point.prototype.toString === super.toString) // true
+return `color: ${this.color}, ${super.toString()}`
+ }
     }
 ```
 
@@ -1647,7 +1873,7 @@ let point = new Point(3, 4)
 
    ```javascript
    class ColorPoint extends Point{
-       
+  
    }
    ```
 
@@ -1765,4 +1991,6 @@ let point = new Point(3, 4)
 
     ES6 是先新建父类的实例对象this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。
 
+    
+    
     

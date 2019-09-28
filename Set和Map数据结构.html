@@ -2,84 +2,84 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>set和map</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>set和map</title>
 </head>
 
 <body>
-    <div>1</div>
-    <div>2</div>
-    <div>3</div>
-    <div>4</div>
-    <div>4</div>
-    <script>
-        /* 
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>4</div>
+  <div>4</div>
+  <script>
+    /* 
         1，Set本身是一个构造函数，生成Set数据结构
         2，添加：通过add向Set结构加成员，但是Set结构不会加重复的值
         3，遍历：方法一：可以用for...of遍历Set结构；方法二：... 用扩展运算符遍历
          */
-        const s = new Set();
-        [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+    const s = new Set();
+    [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
 
-        console.log(s);
+    console.log(s);
 
-        for (let i of s) {
-            console.log(i);
-        }
-    </script>
+    for (let i of s) {
+      console.log(i);
+    }
+  </script>
 
-    <script>
-        /* 
+  <script>
+    /* 
     set结构初始化：
     1，数组作为参数
     2, 以类数组作为参数
      */
-        const s2 = new Set([3, 2, 1, 2, 2, 1]);
-        console.log(s2)
-        console.log(s2.size); //3
+    const s2 = new Set([3, 2, 1, 2, 2, 1]);
+    console.log(s2)
+    console.log(s2.size); //3
 
-        let divs = document.querySelectorAll('div');
-        const s3 = new Set(divs);
+    let divs = document.querySelectorAll('div');
+    const s3 = new Set(divs);
 
-        console.log(s3)
-        console.log(s3.size); //5
-    </script>
+    console.log(s3)
+    console.log(s3.size); //5
+  </script>
 
-    <script>
-        /* 
+  <script>
+    /* 
     去除数组重复成员方法：
     1，set方法去重
      */
-        let arr1 = [2, 1, 1, 5, 2];
-        let arr2 = [...new Set(arr1)];
-        console.log(arr2)
-    </script>
+    let arr1 = [2, 1, 1, 5, 2];
+    let arr2 = [...new Set(arr1)];
+    console.log(arr2)
+  </script>
 
-    <script>
-        /*
+  <script>
+    /*
     1，set加入值时，不会发生类型转换
     2，set内部判断值相等，类似于===，但是和精确相等运算符不同的是，NaN等于自身
     3，两个对象总是不等  */
-        const s4 = new Set();
-        let a = NaN;
-        let b = NaN;
-        s4.add(a);
-        console.log(s4.size); //1
-        s4.add(b);
-        console.log(s4.size); //1
+    const s4 = new Set();
+    let a = NaN;
+    let b = NaN;
+    s4.add(a);
+    console.log(s4.size); //1
+    s4.add(b);
+    console.log(s4.size); //1
 
-        const s5 = new Set();
-        s5.add({});
-        console.log(s5.size); //1
+    const s5 = new Set();
+    s5.add({});
+    console.log(s5.size); //1
 
-        s5.add({});
-        console.log(s5.size); //2
-    </script>
+    s5.add({});
+    console.log(s5.size); //2
+  </script>
 
-    <script>
-        /* 
+  <script>
+    /* 
     set实例的属性和方法
     1，set实例属性：
         ① set.prototype.constructor:构造函数，默认是Set函数
@@ -92,85 +92,271 @@
         ④ clear() 清除所有成员，无返回值
      */
 
-        const s6 = new Set();
-        s6.add(1).add(2);
-        s6.add(1).add(2).add(2);
+    const s6 = new Set();
+    s6.add(1).add(2);
+    s6.add(1).add(2).add(2);
 
-        let flag = s6.delete('1'); //当s6中有delete需要删除的参数时，flag是true，否则flag是false
-        let flag2 = s6.has(2); //true
+    let flag = s6.delete('1'); //当s6中有delete需要删除的参数时，flag是true，否则flag是false
+    let flag2 = s6.has(2); //true
 
-        let res1 = s6.clear(); //undefined  clear()方法无返回值
-        let flag3 = s6.has(1); //false
-    </script>
+    let res1 = s6.clear(); //undefined  clear()方法无返回值
+    let flag3 = s6.has(1); //false
+  </script>
 
-    <script>
-        //对象是否包含某个属性（并不是总能判断正确，要根据someName的值的类型对应的布尔值来判断）：obj[someName];  set是否包含某个属性：setName[someName]
+  <script>
+    //对象是否包含某个属性（并不是总能判断正确，要根据someName的值的类型对应的布尔值来判断）：obj[someName];  set是否包含某个属性：has[someName]
 
-        let obj = {
-            'width': 1,
-            'height': 1
-        }
-        console.log(obj['name']);
-        if (obj['width']) {
-            console.log('包含');
-        } else {
-            console.log('不包含');
-        }
+    let obj = {
+      'width': 1,
+      'height': 1
+    }
+    console.log(obj['name']);
+    if (obj['width']) {
+      console.log('包含');
+    } else {
+      console.log('不包含');
+    }
 
-        //set写法
-        let s7 = new Set();
-        s7.add('width');
-        s7.add('height');
-        if (s7.has('width')) {
-            console.log('set包含width')
-        }
-    </script>
+    //set写法
+    let s7 = new Set();
+    s7.add('width');
+    s7.add('height');
+    if (s7.has('width')) {
+      console.log('set包含width')
+    }
+  </script>
 
-    <script>
-        /* 
+  <script>
+    /* 
     1, Array.from将Set转化为数组
     2, 结合Array.from ，对数组进行去重
     
      */
-        const items = new Set([1, 2, 3, 4, 5]);
-        console.log(Array.from(items));
+    const items = new Set([1, 2, 3, 4, 5]);
+    console.log(Array.from(items));
 
-        function dedupe(arr) {
-            return Array.from(new Set(arr));
-        }
-        console.log(dedupe([1, '2', 2, 2, 3, 4, 3])); // [1, "2", 2, 3, 4]
-    </script>
+    function dedupe(arr) {
+      return Array.from(new Set(arr));
+    }
+    console.log(dedupe([1, '2', 2, 2, 3, 4, 3])); // [1, "2", 2, 3, 4]
+  </script>
 
-    <script>
-        /* 
+  <script>
+    /* 
     Set结构的遍历方法：
     keys(), 返回键名遍历器
     values(), 返回键值遍历器
     entries(),  返回键值对
     forEach()，使用回调函数遍历每个成员    
      */
-        let se = new Set(['red', 'yellow', 'blue']);
-        for (let item of se.keys()) {
-            console.log(item);
-        }
-        for(let item of se.entries()){
-            console.log(item);//["red", "red"] ["yellow", "yellow"] ["blue", "blue"]
-        }
+    let se = new Set(['red', 'yellow', 'blue']);
+    for (let item of se.keys()) {
+      console.log(item);
+    }
+    for (let item of se.entries()) {
+      console.log(item); //["red", "red"] ["yellow", "yellow"] ["blue", "blue"]
+    }
+  </script>
 
-    
-    </script>
-    
-    <script>
+  <script>
     /* Set 结构的实例默认可遍历，可以省略values方法，使用for...of循环遍历 Set */
-    let se1 = new Set([12,34,14]);
-    se1.forEach((item,key) => {
-        console.log(item,key)
+    let se1 = new Set([12, 34, 14]);
+    se1.forEach((item, key) => {
+      console.log(item, key)
     })
-    </script>
+  </script>
 
-    <script>
-    
-    </script>
+  <script>
+    // 遍历的应用
+    /* 
+    1，扩展运算符(...)将Set变为数组
+      应用： 给数组去重
+    2，map和filter间接作用于Set结构
+     */
+    let set = new Set([1, 2, 3])
+    set = new Set([...set].map(x => x * 2)) //Set { 2, 4, 6 }
+    set = new Set([...set].filter(x => (x % 2) === 0)) // Set { 2 }
+    /* 
+    3, 使用set做并集，交集和差集
+     */
+    let a = new Set([1, 2, 3, 4, 5])
+    let b = new Set([2, 3, 5, 7, 8])
+    // 并集
+    let union = new Set([...a, ...b])
+    console.log(union);
+    // 交集
+    let intersect = new Set([...a].filter(item => b.has(item)))
+    console.log(intersect);
+    // 差集
+    let difference = new Set([...a].filter(item => !b.has(item)))
+    console.log(difference);
+
+    /* 
+    4,在遍历操作时改变Set结构：将新的set结构赋值给原来set结构； 用Array.from方法
+     */
+    let set = new Set([1, 2, 3])
+    // 将新的set赋值给Set结构
+    set = new Set([...set].map(item => item * 2)) // Set { 2, 4, 6 }
+    // Array.from方法
+    set = new Set(Array.from(set, item => item * 2)) // Set { 2, 4, 6 }
+  </script>
+
+  <script>
+    // WeakSet结构
+    /* 
+    特点：
+    1， 成员只能是对象
+    2， 成员对象是弱引用，不计入垃圾回收机制，当其他对象不再引用此对象，垃圾回收机制会回收该对象占用的内存
+    3，WeakSet不可遍历（原因是上条，WeakSet的成员不稳定，会随时消失）
+    */
+
+    /* 
+  WeakSet语法
+  WeakSet是构造函数，可以接收数组或者类数组对象（Iterator接口的都行）
+ */
+    const a = [
+      [1, 2],
+      [3, 4]
+    ]
+    // 数组a作为构造函数传参时，a的所有成员，都会自动成为 WeakSet 实例对象的成员
+    const ws = new WeakSet(a) // WeakSet {Array(2), Array(2)}
+    // 由于ws的成员只能是对象，因此 如果a的元素是数值，则会报错
+
+    /* WeakSet实例有3个方法，都是继承自构造函数 */
+    WeakSet.prototype.add(obj) // 添加obj
+    WeakSet.prototype.delete(obj) // 删除obj
+    WeakSet.prototype.has(obj) // obj是否在实例中
+
+    /* 没有size属性，不能遍历，不能用forEach方法 */
+
+    // 使用 WeakSet的一个例子：限制一个类的某个方法，只能在实例中使用
+    const foos = new WeakSet()
+    class Foo {
+      constructor() {
+        foos.add(this)
+      }
+      method() {
+        //console.log(this === foo) // true
+        // console.log(this === Foo.prototype) // true
+        if (!foos.has(this)) {
+          throw new TypeError("Foo.prototype.method 只能在Foo实例上调用！")
+        } else {
+          console.log("找到组织啦，哈哈~~~");
+        }
+      }
+    }
+
+    let foo = new Foo()
+    // console.log(foos);
+    // foo.method()
+    Foo.prototype.method()
+
+    /*
+    this的指向是：谁调用就指向谁。
+    foo.method() 时，this指向的是foo实例
+    Foo.prototype.method()时，this指向的是 Foo.prorotype对象
+    */
+  </script>
+
+  <script>
+    /* Map */
+    /* 
+    Map结构和普通对象有什么区别？
+    Map是“值”“值”的对应；对象是“字符串”“值”的对应。Obj只能把字符串作为键值，而Map不限于字符串，各种类型的值都可以作为键值（包括对象）
+    */
+
+    // 下面是Map实例创建、添加成员，判断成员、删除成员的例子：
+    const m = new Map()
+    const o = {
+      p: "hello world!"
+    }
+    m.set(o, "content")
+    m.get(o) // content
+    m.has(o) // true
+    m.delete(o)
+    m.has(o) // false
+
+    // 下面是通过传参的方式，创建Map实例的例子
+    const map = new Map([
+      ["name", "张三"],
+      ["title", "Author"]
+    ])
+    /* 
+    通过传参的方式。接收的参数要满足两个条件：1，有 Iterator 接口  2，每个成员有一个双元素的数组
+    上例接收的是数组，数组里面是子数组，子数组含两个元素，分别对应 键-值 
+    */
+    // Map接收传参时，执行的过程是：创建一个新的Map实例，将传参数组中每个元素按数组解构为key,value,然后用map.set()加到map中
+    const items = [
+      ["name", "张三"],
+      ["title", "Author"]
+    ]
+    const map = new Map()
+    items.forEach(([key, value]) => map.set(key, value))
+
+    // 由于set和map都满足传参要求，因此都能作为Map构造函数的传参
+    // 1, Set实例作为参数，创建Map实例
+    const set = new Set([
+      ["foo", 1],
+      ["bar", 2]
+    ])
+    const m1 = new Map(set)
+    // 2, Map实例作为参数，创建Map实例
+    const map = new Map([["name", "kk"]])
+    const m2 = new Map(map)
+    m2.has("name") // true
+
+    // 对同一键值多次赋值时，后面的赋值会覆盖前面
+    const m = new Map([["name", "chenke"]])
+    m.set("name", "shenlele")
+    m.get("name") // shenlele
+    // 读取一个未知的键值，得到的是undefined
+    m.get("dkdkdkd")
+
+    //键值是对象和数组时，Map的键是和内存地址绑定的，只要内存地址不一样，就是不同的键值
+    // 键值是简单类型（数字，字符串，布尔值）时，则两个值严格相等时，Map视为同一个键
+    // 布尔值true和字符串“true”不是形同键，undefined 和null不是相同的键，NaN是同一个键，+0和-0是同一个键
+  </script>
+  <script>
+  // Map实例的属性和操作方法
+  /* 
+  size属性： Map成员总数
+  Map.prototype.set(key,value) : （方法定义在prototype属性上，说明任何Map实例都有set方法）设置键名key对应的键值为value。返回的是Map结构()【由于返回的是新的Map结构，因此可以采用链式写法】。
+  Map.prototype.get(key) : 获取键名为key的成员的键值。如果没找到则返回undefined。
+  Map.prototype.has(key): 判断键值key是否在Map实例中。是的话返回true，否的话返回false
+  Map.prototype.delete(key): 删除键值为key的成员，成功，返回true，失败，返回false
+  Map.prototype.clear(): 清空Map实例的所有成员，没有返回值
+  */
+  </script>
+
+  <script>
+  // Map 实例的遍历方法
+  /* 
+  Map.prototype.keys() 键名的遍历器
+  Map.prototype.values()  键值的遍历器
+  Map.prototype.entries()  所有成员的遍历器
+  Map.prototype.forEach()  遍历Map的所有成员
+  */
+  // Map的遍历顺序是插入的顺序，遍历器可以用for... of来获取到。下面是keys()和for...of一起使用的例子：
+  const m = new Map()
+  m.set("name", "kk").set("company", "abc").set("sex", "female")
+  for(let key of m.keys()){
+    console.log(key) // name company sex
+  }
+  // map[Symbol.iterator] === map.entries 直接for...of遍历Map实例时，效果和遍历m.entries()一样.下面两种写法效果一致：
+  for(let [key, value] of m){
+    consle.log(item)
+  }
+  // 等价于
+  for(let [key, value] of m.entries()){
+    console.log(item)
+  }
+
+  // map结构转化为数组结构： 扩展运算符 。看扩展运算符和keys()方法放在一起用的例子：
+  [...m.keys()] //[ 'name', 'company', 'sex' ]
+  [...m.values()] // [ 'kk', 'isoftstone', 'female' ]
+
+  // 和set一样，也可以结合数组的map和filter，实现对
+  </script>
 </body>
 
 </html>
