@@ -1507,6 +1507,8 @@ s.add(item)
 
     删除：`delete(key)`
 
+    清空： `clear()`
+
     ```javascript
         const m = new Map()
         const o = {
