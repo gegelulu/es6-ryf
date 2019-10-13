@@ -151,11 +151,15 @@
      */
     let se = new Set(['red', 'yellow', 'blue']);
     for (let item of se.keys()) {
-      console.log(item);
+      console.log(item);// red  yellow  blue
     }
     for (let item of se.entries()) {
-      console.log(item); //["red", "red"] ["yellow", "yellow"] ["blue", "blue"]
+      console.log(item); // ["red", "red"] ["yellow", "yellow"] ["blue", "blue"]
     }
+    se.forEach(item => {
+      console.log(typeof item);      
+      console.log(item)
+    })
   </script>
 
   <script>
@@ -301,12 +305,16 @@
     ])
     const m1 = new Map(set)
     // 2, Map实例作为参数，创建Map实例
-    const map = new Map([["name", "kk"]])
+    const map = new Map([
+      ["name", "kk"]
+    ])
     const m2 = new Map(map)
     m2.has("name") // true
 
     // 对同一键值多次赋值时，后面的赋值会覆盖前面
-    const m = new Map([["name", "chenke"]])
+    const m = new Map([
+      ["name", "chenke"]
+    ])
     m.set("name", "shenlele")
     m.get("name") // shenlele
     // 读取一个未知的键值，得到的是undefined
@@ -317,45 +325,155 @@
     // 布尔值true和字符串“true”不是形同键，undefined 和null不是相同的键，NaN是同一个键，+0和-0是同一个键
   </script>
   <script>
-  // Map实例的属性和操作方法
-  /* 
-  size属性： Map成员总数
-  Map.prototype.set(key,value) : （方法定义在prototype属性上，说明任何Map实例都有set方法）设置键名key对应的键值为value。返回的是Map结构()【由于返回的是新的Map结构，因此可以采用链式写法】。
-  Map.prototype.get(key) : 获取键名为key的成员的键值。如果没找到则返回undefined。
-  Map.prototype.has(key): 判断键值key是否在Map实例中。是的话返回true，否的话返回false
-  Map.prototype.delete(key): 删除键值为key的成员，成功，返回true，失败，返回false
-  Map.prototype.clear(): 清空Map实例的所有成员，没有返回值
-  */
+    // Map实例的属性和操作方法
+    /* 
+    size属性： Map成员总数
+    Map.prototype.set(key,value) : （方法定义在prototype属性上，说明任何Map实例都有set方法）设置键名key对应的键值为value。返回的是Map结构()【由于返回的是新的Map结构，因此可以采用链式写法】。
+    Map.prototype.get(key) : 获取键名为key的成员的键值。如果没找到则返回undefined。
+    Map.prototype.has(key): 判断键值key是否在Map实例中。是的话返回true，否的话返回false
+    Map.prototype.delete(key): 删除键值为key的成员，成功，返回true，失败，返回false
+    Map.prototype.clear(): 清空Map实例的所有成员，没有返回值
+    */
   </script>
 
   <script>
-  // Map 实例的遍历方法
-  /* 
-  Map.prototype.keys() 键名的遍历器
-  Map.prototype.values()  键值的遍历器
-  Map.prototype.entries()  所有成员的遍历器
-  Map.prototype.forEach()  遍历Map的所有成员
-  */
-  // Map的遍历顺序是插入的顺序，遍历器可以用for... of来获取到。下面是keys()和for...of一起使用的例子：
-  const m = new Map()
-  m.set("name", "kk").set("company", "abc").set("sex", "female")
-  for(let key of m.keys()){
-    console.log(key) // name company sex
-  }
-  // map[Symbol.iterator] === map.entries 直接for...of遍历Map实例时，效果和遍历m.entries()一样.下面两种写法效果一致：
-  for(let [key, value] of m){
-    consle.log(item)
-  }
-  // 等价于
-  for(let [key, value] of m.entries()){
-    console.log(item)
-  }
+    // Map 实例的遍历方法
+    /* 
+    Map.prototype.keys()  键名的遍历器
+    Map.prototype.values()  键值的遍历器
+    Map.prototype.entries()  所有成员的遍历器
+    Map.prototype.forEach()  遍历Map的所有成员
+    */
+    // Map的遍历顺序是插入的顺序，遍历器可以用for... of来获取到。下面是keys()和for...of一起使用的例子：
+    const m = new Map()
+    m.set("name", "kk").set("company", "abc").set("sex", "female")
+    for (let key of m.keys()) {
+      console.log(key) // name company sex
+    }
+    // map[Symbol.iterator] === map.entries 直接for...of遍历Map实例时，效果和遍历m.entries()一样.下面两种写法效果一致：
+    for (let [key, value] of m) {
+      consle.log(item)
+    }
+    // 等价于
+    for (let [key, value] of m.entries()) {
+      console.log(item)
+    }
 
-  // map结构转化为数组结构： 扩展运算符 。看扩展运算符和keys()方法放在一起用的例子：
-  [...m.keys()] //[ 'name', 'company', 'sex' ]
-  [...m.values()] // [ 'kk', 'isoftstone', 'female' ]
+    // map结构转化为数组结构： 扩展运算符 。看扩展运算符和keys()方法放在一起用的例子：
+    [...m.keys()] //[ 'name', 'company', 'sex' ]
+    [...m.values()] // [ 'kk', 'isoftstone', 'female' ]
 
-  // 和set一样，也可以结合数组的map和filter，实现对
+    // 和set一样，也可以结合数组的map和filter，实现对Map结构的处理和过滤。看例子：
+    const m = new Map()
+    m.set("name", "kk").set("company", "microsoft").set("sex", "female")
+
+    // Map结构的map方法
+    let map = new Map([...m].filter(([key, value]) => {
+      return key === "company"
+    }))
+    // Map结构的filter方法
+    let map2 = new Map([...m].map(([key, value]) => {
+      return [(key + "-cc"), (value + "-kk")]
+    }))
+
+    // Map的forEach()方法: 两个参数，一个回调fn(key, value, map) 一个thisArg(this指向的对象)
+    map.forEach((value, key, map) => {
+      console.log(`value: ${value}; key: ${key}; map: ${map}`);
+    })
+  </script>
+  <script>
+    // 与其他数据解构的互相转换
+    /* 
+    1，Map转为数组： 扩展运算符（...)或者Array.from()方法
+     */
+    const m = new Map()
+    m.set("name", "kk").set("company", "microsoft").set("sex", "female")
+    console.log([...m]) // [ [ 'name', 'kk' ], [ 'company', 'microsoft' ], [ 'sex', 'female' ] ]
+    // Array.from(m) 效果一样
+
+    /* 
+    2，数组转为Map结构: 二维数组作为参数，传入后，得到Map结构
+     */
+    const arr = [
+      ['name', 'kk'],
+      ['company', 'microsoft'],
+      ['sex', 'female']
+    ]
+    const m = new Map(arr)
+
+    /* 
+    3, Map转化为对象： 所有键值都是字符串时，可以无损转化为对象
+     */
+    //  借用上面的Map结构m
+    function transferToObj(map) {
+      let obj = Object.create(null) // 和 obj = {}有区别，没有Object对象自带的方法
+      map.forEach((value, key) => {
+        obj[key] = value
+      })
+      return obj
+    }
+    // 扩展: 用字面量定义的方法有Object对象上自带的hasOwnProperty等方法；用Object.create(null)得到的就是干干净净的对象
+
+    /* 
+    4，对象转为Map结构: 对象的key和value转化为Map实例的键-值。看下面代码：
+    */
+    function objToStrMap(obj) {
+      let map = new Map()
+      Object.keys(obj).forEach(key => {
+        map.set(key, obj[key])
+      })
+      return map
+    }
+    let m = objToStrMap({
+      name: "chen",
+      age: 30
+    })
+    /* 
+    5, Map转化为Json：分键名是字符串和键名不是字符串
+    */
+    //  键名是字符串时：借用Map转对象的方法 transferToObj，实现如下
+    function mapToJson(map) {
+      return JSON.stringify(transferToObj(map))
+    }
+    let str = mapToJson(m) // "{"name":"kk","company":"microsoft","sex":"female"}"
+    // 键名是非字符串时：选择转为数组 JSON
+    function mapToArrayJson(map) {
+      return JSON.stringify([...map])
+    }
+    let str = mapToArrayJson(m)
+
+    /* 
+    6, JSON转化为Map，怎样处理取决于 JSON.parse(jsonStr)得到的是对象还是数组
+    */
+    //  键名是字符串时，JSON.parse()转为对象之后，直接转
+    function jsonToStrMap(jsonStr) {
+      return objToStrMap(JSON.parse(jsonStr))
+    }
+    // 键名是数组的时候:  Map转为数组 JSON的逆操作
+    function jsonToMap(jsonStr) {
+      return new Map(JSON.parse(jsonStr));
+    }
+
+    jsonToMap('[[true,7],[{"foo":3},["abc"]]]')
+  </script>
+  <script>
+    // WeakMap 结构：生成键值对集合
+    /* 
+    WeakMap的特点: 
+    1，只接收对象(包括数组)作为键名（数组也是对象，同样也可以作为键值）
+    */
+    const map = new WeakMap()
+    let obj = {name: "kk"}
+    // map.set(2, 2) 键值是非对象就会报错
+    map.set(obj,2)
+    map.get(obj) // 2
+    /* 
+    2, WeakMap的键名所指向的对象，不计入垃圾回收机制.
+    只要所引用的对象的其他引用都被清除，垃圾回收机制就会释放该对象所占用的内存。
+    */
+   /* 
+   3,只要 get set has delete这四个方法可用。size属性还设有map有的四个遍历方法都没有。
+   */
   </script>
 </body>
 

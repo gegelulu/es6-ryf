@@ -134,6 +134,125 @@
 
 16.     includes表示什么意思？返回值是什么？可以接收几个参数？
 
+## set和map:
+
+1. Set是什么？
+
+2. Set结构有什么特点？
+
+3. 如何向Set结构中添加成员？
+
+4. 如何遍历Set实例？
+
+5. Set结构如何初始化？
+
+   传数组
+
+   ```javascript
+   const s2 = new Set([3,2,1,2,2,1])
+   s2.size// 3
+   ```
+
+   传类数组：
+
+   ```javascript
+   let divs = document.querySelectorAll("div")
+   const s3 = new Set(divs)
+   ```
+
+   
+
+6. 给数组去重的方法？
+
+   set方法
+
+   ```javascript
+   let arr1 = [2,1,1,5,2]
+   let arr2 = [...new Set(arr1)]
+   // arr2 [2, 1, 5]
+   ```
+
+   上面，计算arr2时用扩展运算符或者用`Array.from()`都可以
+
+   `Array.from(new Set(arr1))`
+
+7. set实例中加入数据时，会对数据进行类型转换吗？
+
+   加入数据时，不会发生类型转换。
+
+8. Set实例内部判断相等时，判断的条件是什么？
+
+   类似于===，但是NaN等于自身。也就是跟Object.is( )类似
+
+   加对象时，比的是对象的地址。所以，两个相同元素的对象，不相等，会add两次。
+
+9. Set的实例set（下文中的set都是代指Set实例）有哪些属性？
+
+   `set.prototype.constructor` 指向的是构造函数，默认的是Set构造函数
+
+   `set.prototype.size`返回的是s的成员总数
+
+10. Set的实例set有哪些方法？
+
+    `add(value)`给s添加成员，返回s实例
+
+    `delete(value)`删除成员`value`，返回的是布尔值，表示删除是否成功
+
+    `has(value)`返回布尔值，表示是否有成员`value`。有的话是true，没有是false
+
+    `clear()`清除所有成员，无返回值
+
+    ```javascript
+    let s = new Set()
+    let arr = ["kk","172", "female"]
+    arr.forEach(item => {
+    s.add(item)
+    })
+    s.has("172") // true
+    s.delete("172") // 删除“172”选项
+    s.clear() // 清空所有成员，得到的是一个空set结构
+    ```
+
+    
+
+11. Set实例可以用链式写法吗？为嘛？哪些可以用？
+
+    部分可以。`add`方法可以用，因为方法的返回值是新的实例`s`。看例子：
+
+    ```javascript
+    s.add(2).add(34)  // Set(2) {2, 34}
+    ```
+
+12. 判断是否含某个键值时，对象和s分别怎么判断？
+
+    对象直接用 `obj[property]`
+
+    s用has方法，`s.has(property)`
+
+13. 数组去重可以怎么做？
+
+    `Array.from`和 `s`结合使用，看例子:
+
+    ```javascript
+    // Set构造函数可以传数组，也可以传类数组
+    // 有重复元素的数组传进去，得到的是去重后的set结构
+    // set结构，经过Array.from（）的处理转化为真正的数组
+    Array.from(new Set([1,2,3,4,1,2,3]))  //[1, 2, 3, 4]
+    // 注意，Array.from()可以传2个参数，第二个参数是对得到的数组做map操作
+    ```
+
+    
+
+14. s有哪些遍历方法？
+
+    `keys()` 返回键名遍历器
+
+    `values()` 返回键值遍历器 .由于Set结构的键名和键值是同一个值
+
+​    
+
+15. 其他
+
 ## 解构赋值：
 
 1.        数组解构赋值的匹配模式是怎样的？

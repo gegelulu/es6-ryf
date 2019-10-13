@@ -254,13 +254,13 @@ num+” ” : 结果同String( )方法
 
 ③    应用场景：浮点数计算的误差范围
 
-​function **acceptError**(left,right){
+function **acceptError**(left,right){
 
-​  return Math.**abs**(left - right) < **Number**.EPSILON*Math.**pow**(2,2);
+  return Math.**abs**(left - right) < **Number**.EPSILON*Math.**pow**(2,2);
 
-​}*//**精度是**2**的**-50**次方*
+}*//**精度是**2**的**-50**次方*
 
-​let resError = **acceptError**(0.1+0.2,0.3);
+let resError = **acceptError**(0.1+0.2,0.3);
 
  
 
@@ -284,13 +284,13 @@ function **trusty**(left,right,result){
 
 ​    ){
 
-​return result;
+return result;
 
 ​    }
 
 ​    throw new **RangeError**('Operation cannot be trusted!');
 
-​} 
+} 
 
  
 
@@ -392,9 +392,9 @@ function **trusty**(left,right,result){
 
 ​    function **factorial**(n,total=1){
 
-​if(n == 1) return total;
+if(n == 1) return total;
 
-​return **factorial**(n-1,n*total);
+return **factorial**(n-1,n*total);
 
 ​    }
 
@@ -404,13 +404,13 @@ function **trusty**(left,right,result){
 
 function **fb**(n,ac1=1,ac2=1){
 
-​if(n <= 1){
+if(n <= 1){
 
 ​    return ac2;
 
-​}
+}
 
-​return **fb**(n-1,ac2,ac1+ac2);
+return **fb**(n-1,ac2,ac1+ac2);
 
 ​    }
 
@@ -442,7 +442,7 @@ let maxVal = Math.**max**(...[12,45,8,]);
 
 ②    将数组arr[1,2,3]，加到数组arr1[‘a’,’b’,’c’]
 
-​ let newArr = arr1.**push**(...arr);
+ let newArr = arr1.**push**(...arr);
 
 3.用ES5的方法实现数组复制。3种方法，用ES6实现数组复制。以上方法是浅拷贝还是深拷贝？如何实现深拷贝？
 
@@ -452,7 +452,7 @@ let maxVal = Math.**max**(...[12,45,8,]);
 
 ​    let arrTwo2 = arrTwo.**concat**();
 
-​ 一维数组深拷贝。当arrTwo改变时，arrTwo2没变
+ 一维数组深拷贝。当arrTwo改变时，arrTwo2没变
 
 ②    用ES6实现数组复制：
 
@@ -484,23 +484,23 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneArr**(arr){
 
-​let out = [],len = arr.length;
+let out = [],len = arr.length;
 
-​for(let i = 0; i < len; i ++){
+for(let i = 0; i < len; i ++){
 
 ​    if(arr[i] instanceof **Array**){
 
-​out[i] = **deepCloneArr**(arr[i]);
+out[i] = **deepCloneArr**(arr[i]);
 
 ​    }else{
 
-​out[i] = arr[i];
+out[i] = arr[i];
 
 ​    }
 
-​}
+}
 
-​return out;
+return out;
 
 ​    }
 
@@ -508,29 +508,29 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneArrObj**(arr){
 
-​let out = [],len = arr.length;
+let out = [],len = arr.length;
 
-​for(let i=0; i < len; i ++){
+for(let i=0; i < len; i ++){
 
 ​    if(arr[i].constructor === **Array**){
 
-​out[i] = **deepCloneArr**(arr[i]);
+out[i] = **deepCloneArr**(arr[i]);
 
 ​    }else if(arr[i].constructor === **Object**){
 
-​let str = JSON.**stringify**(arr[i]);
+let str = JSON.**stringify**(arr[i]);
 
-​out[i] = JSON.**parse**(str);
+out[i] = JSON.**parse**(str);
 
 ​    }else{
 
-​out[i] = arr[i];
+out[i] = arr[i];
 
 ​    }
 
-​}
+}
 
-​return out;
+return out;
 
 ​    }
 
@@ -540,15 +540,15 @@ let arrThree3 = [...arrThree]
 
 ​    function **deepCloneObj**(obj){
 
-​var newobj;
+var newobj;
 
-​if(typeof obj != "object"){
+if(typeof obj != "object"){
 
 ​    newobj = obj;
 
-​}
+}
 
-​else{
+else{
 
 ​    newobj = obj.constructor == **Array** ? [] : {};
 
@@ -556,9 +556,9 @@ let arrThree3 = [...arrThree]
 
 ​    newobj = JSON.**parse**(str);
 
-​}
+}
 
-​return newobj;}
+return newobj;}
 
 4.用ES5,ES6的方法，对三个数组arr1，arr2，arr3进行数组合并。
 
@@ -574,9 +574,9 @@ let arr = [].**concat**(arr1,arr2,arr3)
 
 let [...arr] = [...arr1,...arr2,...arr3];
 
-​  方法二：
+  方法二：
 
-​  let arrOne = [...arr1,...arr2,...arr3];
+  let arrOne = [...arr1,...arr2,...arr3];
 
  
 
@@ -604,7 +604,7 @@ let [first,...last] = [1,2,3,4];*//first: 1  last:[2,3,4]*
 
 ​    for(let i of strFour){
 
-​arrFour.**push**(i);
+arrFour.**push**(i);
 
 ​    }
 
@@ -658,11 +658,11 @@ let divArr = [...divs];
 
 ​    let mapItera1 = new **Map**([
 
-​[5,'one'],
+[5,'one'],
 
-​[9,'two'],
+[9,'two'],
 
-​[13,'three']
+[13,'three']
 
 ​    ]) //  {5 => "one", 9 => "two", 13 => "three"}
 
@@ -688,7 +688,7 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arr2 = **Array**.**from**(div2).**filter**(divEl => {
 
-​return divEl.innerHTML.length > 2
+return divEl.innerHTML.length > 2
 
 ​    })
 
@@ -696,19 +696,19 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arrLike = {
 
-​0:'a',
+0:'a',
 
-​1:'b',
+1:'b',
 
-​2:'c',
+2:'c',
 
-​length:2*//**必不可少*
+length:2*//**必不可少*
 
 ​    }
 
 ​    let arr3 = **Array**.**from**(arrLike,(item,index) => {
 
-​return item+item+index
+return item+item+index
 
 ​    }) // ["aa0", "bb1"]
 
@@ -724,9 +724,9 @@ let mapKeys = [...mapItera1.**keys**()];
 
 ​    let arrFour1 = **Array**.**from**(arrFour,(item)=>{
 
-​*// return item === undefined ? 0:item;  //**写法一*
+*// return item === undefined ? 0:item;  //**写法一*
 
-​return item || 0;*//**写法二*
+return item || 0;*//**写法二*
 
 ​    })
 
@@ -776,7 +776,7 @@ end（可选）：被复制的结束位置(复制时，不包括此位置)。复
 
 ​    arrSix.**copyWithin**(2,0);*//["a", "b", "a", "b", "c", "d", "e"]*
 
-​  *//**分析：从**arrSix[2]**开始，到后面的元素，被**arrSix**从第一个元素开始覆盖*
+  *//**分析：从**arrSix[2]**开始，到后面的元素，被**arrSix**从第一个元素开始覆盖*
 
  
 
@@ -794,7 +794,7 @@ end（可选）：被复制的结束位置(复制时，不包括此位置)。复
 
 ​    let itemSeven = arrSeven.**find**(item => {
 
-​return item < 0;
+return item < 0;
 
 ​    });*//-6*
 
@@ -808,7 +808,7 @@ find可接收的参数是函数。函数有三个参数.function(currentVal,curr
 
 ​    function **fnV**(v){
 
-​return v>this.age;
+return v>this.age;
 
 ​    }
 
@@ -828,7 +828,7 @@ find可接收的参数是函数。函数有三个参数.function(currentVal,curr
 
 ​    arrFill.**fill**('b',1,2);*//['a','b','a']*
 
-​  
+  
 
 ②    val：必填，填充的值
 
@@ -846,7 +846,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
 ​    for(let item of keysArrEight){
 
-​**console**.**log**(item);
+**console**.**log**(item);
 
 ​    }
 
@@ -875,9 +875,9 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
    ```javascript
    const o = {
-  method(){
+    method(){
    return "hello"
-  }
+    }
    }
    ```
 
@@ -889,7 +889,8 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    // 定义属性
    let proKey = "kkkk"
    let obj = {
-  [proKey]:true
+   ```
+[proKey]:true
    } //{kkkk: true}
    ```
 
@@ -914,12 +915,14 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    默认转化为[object object]字符串
 
    ```javascript
-  const keyA = {a: 1};
-  const keyB = {b: 2};
+    const keyA = {a: 1};
+    const keyB = {b: 2};
    
+   ```
+
   const myObject = {
-  [keyA]: 'valueA',
-  [keyB]: 'valueB'
+[keyA]: 'valueA',
+[keyB]: 'valueB'
   };
    // myObject得到的结果是：
    {[object Object]: "valueB"}
@@ -1054,9 +1057,9 @@ set foo(x){  }
     ```javascript
     const sourceSix = {
     	get fooNew(){
- 	console.log("get new thing~~")   
+	 	console.log("get new thing~~")   
     return 1
-}	
+	}	
     }
     const targetSix = {}
     let objSix7 = Object.assign(targetSix, sourceSix)
@@ -1077,9 +1080,9 @@ set foo(x){  }
     ```
 
     ②为对象添加方法
-
+    
     例如给prototype属性添加方法
-
+    
     ```JavaScript
     function Animal(name, age){
 this.name = name
@@ -1097,7 +1100,7 @@ getAge(){
     ```
 
     ③为对象克隆
-
+    
     ```javascript
     function clone(origin){
 return Object.assign({}, origin)
@@ -1105,9 +1108,9 @@ return Object.assign({}, origin)
     ```
 
     ④合并多个对象
-
+    
     ⑤为属性加默认值
-
+    
     ```javascript
     const Defaults = {
 logLevel: 0,
@@ -1118,7 +1121,7 @@ options = Object.assign({},Defaults,options )
     }
     ```
 
-    
+​    
 
 17. 如何获取对象属性的描述对象？
 
@@ -1191,19 +1194,25 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
 
     以新对象为原型对象，创建新对象： `Object.create(obj)`
 
-24. 什么关键字指向的是当前对象的原型对象？
+24. 用字面量定义一个空对象和用Object.create(null)定义一个空对象，有什么区别？
+
+    用字面量定义的空对象，有 `__proto__`属性，指向的是它的原型对象（此时是构造函数 `Object`的Prototype属性）。有原型对象的属性和方法，例如： `hasOwnProperty`， `toString`等 方法
+
+    用 `Object.create(null)`，因为原型对象是null，所以没有属性和方法可以继承，因此，得到的是一个干干净净的对象，没有任何属性。
+
+25. 什么关键字指向的是当前对象的原型对象？
 
     super关键字。看下面的例子：
 
     ```javascript
     const proto11 = {
-foo : "hello"
+    foo : "hello"
     }
     const obj11 = {
-foo: "world",
-find(){
+    foo: "world",
+    find(){
     return super.foo //原型对象的foo属性，即 hello
-}
+    }
     }
     Object.setPrototype(obj11,proto11)
     obj11.find() // "hello"
@@ -1211,22 +1220,22 @@ find(){
 
     super作为关键字时，只能放在对象的方法里。用在属性里就会报错。
 
-25. Object.keys( )遍历的对象属性有什么特点？
+26. Object.keys( )遍历的对象属性有什么特点？
 
     都是可遍历属性；不含继承属性；都会过滤掉Symbol值的属性
 
-26. Object.keys()， Object.values()和Object.entries()返回值分别是什么？给出他们三个和解构赋值，for...of一起用的例子？
+27. Object.keys()， Object.values()和Object.entries()返回值分别是什么？给出他们三个和解构赋值，for...of一起用的例子？
 
     ```javascript
     let { keys, values, entries } = Object
     for(let key of entries(obj)){
-consle.log(key)
+    consle.log(key)
     }
     ```
 
     
 
-27. ``Object.entries()`有哪两种用途？
+28. ``Object.entries()`有哪两种用途？
 
     1. 遍历对象，得到`[key, value]`键值对组成的数组
 
@@ -1275,11 +1284,11 @@ consle.log(key)
 
 3. 如何向Set结构中添加成员？
 
-   通过add方法，向Set解构的实例中添加成员。看例子：Set和Map
+   通过add方法，向Set结构的实例中添加成员。
 
    ```javascript
-   let s = new Set()
-   [2,3,4,5,5,1,2].forEach(item=>s.add(item))
+   let set = new Set()
+   [2,3,4,5,5,1,2].forEach(item=>set.add(item))
    // s是  Set(5) {2, 3, 4, 5, 1}
    ```
 
@@ -1289,11 +1298,13 @@ consle.log(key)
 
    两种方法： for...of方法遍历；扩展运算符遍历。看例子：
 
+   （可以用for ... of遍历的地方，就能用扩展运算符）
+
    ```javascript
-   for(let i of s){
-  console.log(i) // 依次打印 2,3,4,5,1
+   for(let i of set){
+     console.log(i) // 依次打印 2,3,4,5,1
    }
-   console.log(...s) // 结果是数组： [2, 3, 4, 5, 1]
+   let list = [...set]  // 结果是数组： [2, 3, 4, 5, 1]
    ```
 
    
@@ -1303,15 +1314,15 @@ consle.log(key)
    传数组
 
    ```javascript
-   const s2 = new Set([3,2,1,2,2,1])
-   s2.size// 3
+   const set = new Set([3,2,1,2,2,1])
+   set.size// 3
    ```
 
    传类数组：
 
    ```javascript
    let divs = document.querySelectorAll("div")
-   const s3 = new Set(divs)
+   const set = new Set(divs)
    ```
 
    
@@ -1340,13 +1351,22 @@ consle.log(key)
 
    加对象时，比的是对象的地址。所以，两个相同元素的对象，不相等，会add两次。
 
-9. Set的实例s（下文中的s都是代指Set实例）有哪些属性？
+   ```javascript
+   let set = new Set()
+   set.add({})
+   set.add({})
+   set.size // 2
+   ```
 
-   `s.prototype.constructor` 指向的是构造函数，默认的是Set构造函数
+   
 
-   `s.prototype.size`返回的是s的成员总数
+9. Set的实例set（下文中的set都是代指Set实例）有哪些属性？
 
-10. Set的实例s有哪些方法？
+   `set.prototype.constructor` 指向的是构造函数，默认的是Set构造函数
+
+   `set.prototype.size`返回的是s的成员总数
+
+10. Set的实例set有哪些方法？
 
     `add(value)`给s添加成员，返回s实例
 
@@ -1385,7 +1405,7 @@ s.add(item)
 
 13. 数组去重可以怎么做？
 
-    `Array.from`和 `s`结合使用，看例子:
+    `Array.from`和 `set`结合使用，看例子:
 
     ```javascript
     // Set构造函数可以传数组，也可以传类数组
@@ -1397,47 +1417,344 @@ s.add(item)
 
     
 
-14. s有哪些遍历方法？
+14. `set`有哪些遍历方法？
 
     `keys()` 返回键名遍历器
+    
+    `values()` 返回键值遍历器 
+    
+    `entries()` 返回键值对遍历器
+    
+    `forEach()`方法，访问到每个 成员，在回调里，对成员进行操作
+    
+    遍历器可以用for...of访问，因此要获取 `keys()` `values()` 和 `entries()` 的结果，可以用 `for...of `     
 
-`values()` 返回键值遍历器 .由于Set结构的键名和键值是同一个值，因此 
+15. Set的实例可以遍历吗？如何遍历？
 
-    `entries()`  返回键值对
+    Set实例都能遍历，用 `for...of...`方法。
 
-    `forEach()` 使用回调函数遍历每个成员
+16. Set结构的默认遍历器生成函数是什么？
 
-    具体用法，看例子：
+    Set结构的 `values`方法
+
+    `Set.prototype[Symbol.iterator] === Set.prototype.values`  // true
+
+17. Set有哪些使用场景（四点）?
+
+    1. 用扩展运算符，将Set变为数组
+    2. 用map和filter等数组方法，间接作用于Set结构
+    3. 使用Set的方法，做并集（根据Set结构的不重复特性）、交集（数组的filter和set的has 方法）、差集（数组的filter和set的has方法）
+    4. 遍历set时，改变set（将新的set赋值给原来的set  或者  用Array.from方法，对第一个和第二个参数进行处理 )
+
+18. WeakSet是什么？
+
+    WeakSet是构造函数，接收素组或者类数组（Iterator 接口都行）
+
+19. WeakSet结构有什么特点?
+
+    1. 成员只能是对象
+    2. 成员对象是弱引用，不计入js的垃圾回收机制。当其他对象不再引用此对象时，垃圾回收机制会回收该对象占用的内存
+    3. WeakSet实例不可遍历（原因是上条，WeakSet的成员不稳定，会随后消失)
+
+20. WeakSet实例有哪些遍历方法？
 
     ```javascript
-    let s = new Set(["orange", "blue", "red", "green"])
-    for(let item of s.keys()){
-    	console.log(item)
-    }
-    // 依次输出 orange，blue，red，green
-    // 用s.keys()得到的是 键名构造器： SetIterator {"orange", "blue", "red", "green"}
-    
-    for(let item of s.values()){
-console.log(item)
-    }
-    // 依次输出 orange，blue，red，green
-    // 用s.values()得到的是 键值构造去： SetIterator {"orange", "blue", "red", "green"}
-    
-    for(let item of s.entries()){
-console.log(item)
-    }
-    //依次输出 4个数组  ["orange", "orange"] ["blue", "blue"] ["red", "red"] ["green", "green"]
-    
-    s.forEach((item, key) => {
-console.log(item) // "orange"
-console.log(key) // "orange"
-    })
-    
+        WeakSet.prototype.add(obj) // 添加obj
+        WeakSet.prototype.delete(obj) // 删除obj
+        WeakSet.prototype.has(obj) // obj是否在实例中
     ```
 
     
 
-15. 其他
+21. WeakSet实现： 限制一个类的某个方法，只能在实例中使用
+
+    ```javascript
+        const foos = new WeakSet()
+        class Foo {
+          constructor() {
+            foos.add(this)
+          }
+          method() {
+            if (!foos.has(this)) {
+              throw new TypeError("Foo.prototype.method 只能在Foo实例上调用！")
+            } else {
+              console.log("找到组织啦，哈哈~~~");
+            }
+          }
+        }
+    
+        let foo = new Foo()
+        foo.method()  
+        Foo.prototype.method()
+    // this是谁调用指向谁。第一个this指向的是Foo的实例foo；第二个this指向的是Foo.prototype对象
+    ```
+
+    
+
+22. Map作为构造函数，Map实例和对象有什么区别？
+
+    Map生成的实例是 值-值 的形式；对象是 字符串-值 的形式。对象只能把字符串作为键值，而Map不限于字符串，各种类型的值都可以作为键值（包括对象）
+
+    珂珂的理解：Map是对象的补充
+
+23. Map的实例map（下文中的map均指代如此），有哪些方法？
+
+    存值： `set(key, value)`
+
+    取值： `get(key)`
+
+    判断：`has(key)`
+
+    删除：`delete(key)`
+
+    ```javascript
+        const m = new Map()
+        const o = {
+          p: "hello world!"
+        }
+        m.set(o, "content")
+        m.get(o) // content
+        m.has(o) // true
+        m.delete(o)
+        m.has(o) // false
+    ```
+
+24. 通过传参的方式创建Map实例
+
+    ```javascript
+        const map = new Map([
+          ["name", "张三"],
+          ["title", "Author"]
+        ])
+    ```
+
+    传参的方式时，参数需满足的条件是：
+
+    + 含有Iterator接口
+    + 可以用数组解构的方式，解构为key，value
+
+25. 除了数组，还有哪些类型的数据可以作为Map的参数 
+
+    满足上面两个条件的参数都可以。所以Set实例和Map实例也可以。
+
+    ```javascript
+    // 1, Set实例作为参数，创建Map实例
+    const set = new Set([
+        ["foo", 1],
+        ["bar", 2]
+    ])
+    const m1 = new Map(set)
+    // 2, Map实例作为参数，创建Map实例
+    const map = new Map([
+        ["name", "kk"]
+    ])
+    const m2 = new Map(map)
+    m2.has("name") // true
+    ```
+
+26. 通过传参的方式创建Map实例时，执行的过程是？
+
+    创建一个新的Map实例，将传参数组中每个元素按数组解构为key,value,然后用map.set()加到map中。代码演示分析如下：
+
+    ```javascript
+        const items = [
+          ["name", "张三"],
+          ["title", "Author"]
+        ]
+        const map = new Map()
+        items.forEach(([key, value]) => map.set(key, value))
+    ```
+
+27. 对同一键值多次赋值时，后面的赋值会覆盖前面的吗？
+
+    会，后面的值会覆盖前面的值。
+
+    ```JavaScript
+        const m = new Map([
+          ["name", "chenke"]
+        ])
+        m.set("name", "shenlele")
+        m.get("name") // shenlele
+    ```
+
+28. 读取一个为未知的值，得到的是什么？
+
+    ```javascript
+    const m = new Map([
+        ["name", "chenke"]
+    ])
+    m.get("kkww") // undefined
+    ```
+
+29. 键值是对象和数组时，“键”是和什么绑定的？
+
+    和内存地址绑定。同一个地址才是同一个键，否则不同。
+
+30. 如何判断键值相等？
+
+    布尔值true和字符串“true”不是相同键，undefined 和null不是相同的键，NaN是同一个键，+0和-0是同一个键
+
+31. Map实例的属性和操作方法有哪些？
+
+    属性：size， 获取成员个数
+
+    方法：
+        `Map.prototype.set(key,value)`   返回实例set
+        `Map.prototype.get(key)`   返回key的键值，没找到就返回undefined
+        `Map.prototype.has(key)`  找到键值key，返回true；没找到，返回false
+        `Map.prototype.delete(key)`  找到键值key，删除，并返回true；  没找到，返回false
+        `Map.prototype.clear( )`  清空map实例的所有成员，无返回值
+
+32. Map的遍历方法有哪些？
+
+    `Map.prototype.keys(  )` 键名的遍历器
+    `Map.prototype.values(  )`  键值的遍历器
+    `Map.prototype.entries(  )`  所有成员的遍历器
+    `Map.prototype.forEach(  )`  遍历Map的所有成员
+
+33. Map的遍历顺序是什么?
+
+    插入时候的顺序
+
+34. 遍历器可以用什么获取到？
+
+    用 `for...of`获取到遍历器。下面是用 `for...of`和 `keys()`进行遍历时的用法
+
+    ```javascript
+    const m = new Map()
+    m.set("name", "kk").set("company", "abc").set("sex", "female")
+    for (let key of m.keys()) {
+        console.log(key) // name company sex
+    }
+    ```
+
+35. map实例可以直接遍历吗？相当于 `keys()`, `values()`和 `entries()`中的哪一种？
+
+    map实例可以直接遍历。相当于`entries()`
+
+    ```javascript
+    map[Symbol.iterator] === map.entries  //true
+    ```
+
+36. map可以转化为数组吗？
+
+    可以。因为  `keys()`, `values()`和 `entries()` 返回的都是遍历器。用 `for...of`的时候`m`相当于 `m.entries()`，因此以上4种情况，都能用 `for..of`遍历 。
+
+    扩展运算符可以把遍历器转化为数组。
+
+    ```javascript
+    [...m.keys()] // [ 'name', 'company', 'sex' ]
+    [...m.values()] // [ 'kk', 'abc', 'female' ]
+    [...m.entreis()] // [ [ 'name', 'kk' ], [ 'company', 'abc' ], [ 'sex', 'female' ] ]
+    [...m] // [ [ 'name', 'kk' ], [ 'company', 'abc' ], [ 'sex', 'female' ] ]
+    ```
+
+37. 对Map实例做filter过滤和map处理，该怎么做？
+
+    filter和map都是数组的方法，所以要先转化为数组
+
+    ```javascript
+    	// Map结构的map方法
+        let map = new Map([...m].filter(([key, value]) => {
+          return key === "company"
+        }))
+        // Map结构的filter方法
+        let map2 = new Map([...m].map(([key, value]) => {
+          return [(key + "-cc"), (value + "-kk")]
+        }))
+    ```
+
+38. map的forEach方法，怎么用？
+
+    ```javascript
+    // Map的forEach()方法: 两个参数，一个回调fn(key, value, map) 一个		thisArg(this指向的对象)
+        map.forEach((value, key, map) => {
+          console.log(`value: ${value}; key: ${key}; map: ${map}`);
+        })
+    ```
+
+39. Map转化为数组，数组转化为Map，Map转化为对象，对象转化为Map结构，Map转化为JSON，JSON转化为Map
+
+    ① Map转化为数组: 扩展运算符或者Array.from( )
+
+    ```javascript
+    [...m] 
+    Array.from( m)
+    ```
+
+    ② 数组转化为Map： 二维数组作为 Map构造函数的参数
+
+    ```javascript
+    let arr = [[“name", "kk"], ["company, "microsoft"], [""]]
+    new Map(arr)  // 得到新Map
+    ```
+
+    ③ Map转化为对象：键值都是字符串时，可无损转化为对象
+
+    ```javascript
+    function transferToObj(map){
+        let obj = Object.create(null)
+        map.forEach(([key,value]) => {
+            obj[key] = value
+        })
+        return obj
+    }
+    ```
+
+    ④ 对象转化为map： 对象的key和value分别对应Map的键-值
+
+    ```javascript
+    function objToStrMap(obj){
+        let map = new Map()
+        Object.keys(obj).forEach(key => {
+            map.set(key, obj[key])
+        })
+        return map
+    }
+    // 获取到对象的key和value，然后用set方法，往map结构中添加
+    ```
+
+    ⑤ Map转化为json：
+
+    ```javascript
+    // 键名是字符串: 利用map转化为json
+    function transferToJson(map){
+        return JSON.stringify(transferToObj(map))
+    }
+    // 键名不是字符串: 转化为数组json。map转化为数组，然后数组作为JSON.stringify（）的参数
+    function transferToJson(map){
+        return JSON.stringify([...map])
+    }
+    ```
+
+    ⑥ json转化为map：
+
+    ```javascript
+    // 数组json，数组必须是二维数组
+    function jsonToMap(jsonArr){
+        let arr = JSON.parse(jsonArr)
+        return new Map(arr)	
+    }
+    // 对象json
+    function jsonToMap(jsonObj){
+        let obj = JSON.parse(jsonObj)
+        return objToStrMap(obj)
+    }
+    ```
+
+40. WeakMap是什么，有什么作用？
+
+    WeakMap是构造函数，用于生成键-值 对 的集合
+
+41. WeakMap有什么特点？
+
+    三点：
+
+    ① 只接收对象（包含数组）作为键名
+
+    ② WeakMap的键名所指向的对象，不计入垃圾回收机制 【只要所引用的对象的引用都被清除，该对象所占用的内存就会被垃圾回收机制释放】
+
+    ③ 只有get set has delete这四个方法可用。size属性没有。map有的四个遍历方法也没有。
 
 ## 解构赋值：
 
@@ -1507,13 +1824,13 @@ let {floor,abs} = Math;
 
 function **moveFn**({x =0,y=0}={}){
 
-​return [x,y];
+return [x,y];
 
 ​    }    
 
 ​    function **moveFn2** ({x,y} = {x:0,y:0}){
 
-​return [x,y];
+return [x,y];
 
 }
 
@@ -1531,7 +1848,7 @@ function **moveFn**({x =0,y=0}={}){
 
 let x1 = 12,y1 = 14;
 
-​[x1,y1] = [y1,x1];
+[x1,y1] = [y1,x1];
 
  
 
@@ -1541,7 +1858,7 @@ let x1 = 12,y1 = 14;
 
 function **fnPara**({x,y,z}){
 
-​return x*y+z;
+return x*y+z;
 
 ​    }
 
@@ -1553,13 +1870,13 @@ function **fnPara**({x,y,z}){
 
 function **returnPara**(pa){
 
-​let x = pa+1;
+let x = pa+1;
 
-​let y = pa*2;
+let y = pa*2;
 
-​let z = pa*3;
+let z = pa*3;
 
-​return[x,y,z]
+return[x,y,z]
 
 ​    }
 
@@ -1571,17 +1888,17 @@ function **returnPara**(pa){
 
 let datas = {
 
-​url:'www.baidu',
+url:'www.baidu',
 
-​time:'2018-8-8 17:59:58',
+time:'2018-8-8 17:59:58',
 
-​data:[12,23,34]    }
+data:[12,23,34]    }
 
  
 
 ​    let {url:target,time,data:number} = datas;
 
-​  target，time和number的值，对应datas的url，time和data
+  target，time和number的值，对应datas的url，time和data
 
 ⑤    函数参数的默认值
 
@@ -1693,13 +2010,13 @@ this.b = 2
    ```javascript
    class MyClass {
 constructor() {
-  // ...
+    // ...
 }
 get prop() {
-  return 'getter';
+    return 'getter';
 }
 set prop(value) {
-  console.log('setter: '+value);
+    console.log('setter: '+value);
 }
    }
    ```
@@ -1725,14 +2042,14 @@ set prop(value) {
 
     ```javascript
     let person = new class Me{
-  constructor(name){
+    constructor(name){
    this.name = name
-  } 
-  sayName(){
+    } 
+    sayName(){
    consle.log(this.name)
-  }
+    }
     }("joy")
-    ```
+   ```
 
     
 
@@ -1873,7 +2190,7 @@ return `color: ${this.color}, ${super.toString()}`
 
    ```javascript
    class ColorPoint extends Point{
-  
+    
    }
    ```
 
