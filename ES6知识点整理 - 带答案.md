@@ -1669,7 +1669,9 @@ s.add(item)
 38. map的forEach方法，怎么用？
 
     ```javascript
-    // Map的forEach()方法: 两个参数，一个回调fn(key, value, map) 一个		thisArg(this指向的对象)
+    // Map的forEach()方法: 两个参数，一个回调fn( value,key, thisArg)
+    // 注意三个参数的顺序。value在key之前，map是函数中this的指向
+    // map和set中的forEach方法的表现形式一致
         map.forEach((value, key, map) => {
           console.log(`value: ${value}; key: ${key}; map: ${map}`);
         })
