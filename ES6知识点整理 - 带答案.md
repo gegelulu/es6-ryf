@@ -1942,6 +1942,698 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
 ​    ({obj1,obj2} = {obj1:23,obj2:45});
 
+
+
+## export和import：
+
+1. css中模块的引入用的什么指令？
+
+   用@import引入。
+
+   ```javascript
+   @import  url(global.css)
+   @import "global.css"
+   ```
+
+   
+
+2. ES6和其它方式的区别？
+   ES6 模块的设计思想是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。而commonJS和AMD模块，都是在运行时确定这些东西。
+
+3. 如何从require来的模块中读取方法？
+
+   let { stat, exists, readFile } = require('fs'); 是整体加载fs模块，生成一个对象，然后再从这三个对象上读取这三个方法 
+
+4. 如何从import来的模块中读取方法？
+
+   import { stat, exists, readFile } from 'fs';   是编译时加载（或静态加载）。表示从fs模块中只加载这三个方法，其他不加载。 由于只加载部分，ES6的import加载无法引用模块本身，因为他并不是对象。
+
+5. ES6中需要指定严格模式（static）吗？
+
+   不需要。
+
+6. 严格模式下有什么特点？
+
+   顶层的this指向的是undefined。不能在顶层代码中使用this。
+
+7. export命令的作用是什么？
+
+   提供模块的对外接口。
+
+8. export能获取模块内部的实时值吗？为什么?
+
+   能获取模块内部的实时值。因为export输出的接口和它的值是一一对应的关系。可以取到模块内部实时值。
+
+9. export可以用在模块中间吗？
+
+   export可以用在模块任何位置，只要是顶层。但是不能放在块级作用域中，会报错。
+
+10. export如何输出单个变量（或方法，或类）？
+
+    常用的有三种输入方式
+
+    ```javascript
+    // 变量的定义和输出放在一起
+    export var m = 1
+    // 普通方法定义一个变量，然后花括号输出
+    var m = 1
+    export {m}
+    // 定义一个变量，重命名的方式输出
+    var m = 1
+    export { m as n}
+    ```
+
+    
+
+11. export批量如何输出？
+
+    ```javascript
+    var name = "kk"
+    var height = "172cm"
+    // 尾部批量输出
+    export {name, height as h}
+    ```
+
+    
+
+12. import 有提升效果吗？
+
+    有的。看例子
+
+    ```javascript
+    foo()
+    import { foo } from "myModule"
+    ```
+
+    以上不会报错，因为引入的那一行，被提升到模块的头部了
+
+13. import关键字后面能接表达式或计算吗？
+
+    不可以。因为表达式和计算是只有在运行时才能得到结果的用法。
+
+14. 当同时从一个module输入多次时，得到的是什么结果？
+
+    import同一个模块时，会合并import的内容。看例子
+
+    ```javascript
+    // 例子一：
+    import {foo} from "myModule"
+    import {bar} from "myModule"
+    // 不会报错，而且等价于下面
+    import {foo,bar} from "myModule"
+    // 例子二:重复执行多次所加载的模块时，只会执行一次
+    import "loadsh"
+    import "loadsh"
+    ```
+
+15. 如何实现模块的整体加载？
+
+    circle.js中export了两个function，用下面的语句，实现整体加载这两个方法，并重命名为circle。
+
+    ```javascript
+    import * as circle from "./circle.js" 
+    ```
+
+    输入的是circle.js中输出的非默认接口
+
+16. 能不能改变import进来的变量的值？
+
+    不可以。如果是简单类型的变量，不能直接改。如果是复杂类型的变量（对象或者数组），可以修改属性的值。
+
+    但是并不建议这么改，会让代码不好调试。
+
+    ```javascript
+    import * as circle from "./circle.js"
+    circle.foo = "hello"
+    circle.area = function(){ }
+    ```
+
+    这样会报错
+
+17. from后面接的什么？
+
+    绝对路径或相对路径。如果是模块名，就要自己做一下配置。文件的.js后缀可以省略。
+
+18. export default的使用场景
+
+    export时，需要对输出的变量命名。export default 的意思是，当前输出的变量命名为default
+
+    ```javascript
+    // circle.js中
+    export default fuction circle(){}  // circle可要可不要
+    // 输入时，为默认输出的内容命名
+    import area from "./circle"
+    ```
+
+    
+
+19. 一个模块中，可以使用多次export default输出多个默认变量吗？
+
+    不可以。export default是模块的默认输出，每个模块只能有1个。
+
+20. 如何输入模块的默认变量或方法？
+
+    `import ladash from  'lodash'`
+
+21. 如何输入模块的默认方法和其它接口
+
+    `import name, { each, forEach} from "loadsh"`
+
+22. export default 输出一个类
+
+    ```javascript
+    export default Point{
+        
+    }
+    ```
+
+23. export 和import的复合写法
+
+    ```javascript
+    export { foo, bar } from "my_module"
+    ```
+
+    合并为一行，只是将 foo和bar这两个接口转发出去。当前模块下并不能用foo和bar变量
+
+24. 具名接口改为默认接口和默认接口改为具名接口
+
+    ```javascript
+    export { es6 from default } from "./someModule"
+    export { default from es6 } from "./someModule"
+    ```
+
+25. 如何仅仅输出模块的非默认接口
+
+    `export * from "./someModule"`
+
+26. 模块之间可以继承吗？
+
+    可以实现继承 。看下面的例子：
+
+    ```javascript
+    // circleplus.js中
+    export {area as circleArea} from "./circle"
+    export var e = 2.718
+    export default function(x){
+        return Math.exp(x)
+    }
+    //main.js中
+    import * as math from "circleplus"
+    import exp from "circleplus"
+    console.log(exp(math.e))
+    ```
+
+    分析：
+
+    `circleplue.js`中，输出了两个具名接口，`circleArea`和 `e`，一个默认接口
+
+    `main.js`输入了 `circleplus.js` 具名接口和默认接口欧。具名接口是被整体加载，默认接口重命名为exp
+
+27. 常量可以跨模块共享吗？
+
+    可以的。
+
+    ```javascript
+    // constant.js
+    export const A = 1
+    export const B = 2
+    // test1.js
+    import * as consts from "/constant.js"
+    console.log(consts.A)
+    console.log(consts.B)
+    ```
+
+28. `import()`为什么会出现？
+
+    首先这里的 `import()`后面没接 `from`，是个方法。import和export命令能在模块顶层使用，不能写在代码块和函数里。当需要在运行时加载模块就不能加载实现。
+
+29. `import()`和Node的 `require`方法有什么区别？
+
+    `import()`是异步加载，`require`方法是同步加载
+
+30. `import()`使用的场合有哪些？
+
+    1. 按需加载： 例如写在事件的监听函数中
+
+       ```javascript
+       buttn.addEventListener("click", event => {
+       	import("./dialogBox.js")
+       })
+       ```
+
+       
+
+    2. 条件加载：
+
+       ```javascript
+       if(condition){
+           import("moduleA").then()
+       }else{
+           import("moduleB").then()
+       }
+       ```
+
+    3. 动态的模块路径：
+
+       ```javascript
+       import(f()).then(...)
+       ```
+
+31. `import("./myModule.js")`加载模块成功后，返回值是什么？如何获取？
+
+    返回值是输出接口组成的对象。通过 `.then()`方法获取。
+
+    比如 `myModule.js`输出了两个接口 `export1`和 `export2`。用 `import()` 方法加载之后，结合对象的解构赋值，处理过程如下。
+
+    ```javascript
+    import("./myModule.js").then(({export1, export2}) => {
+        // 逻辑处理
+    }).catch(() => {})
+    ```
+
+    如果 `myModule.js`只输出了一个 `default`, 那么then的参数就是`default`指代的变量（或方法或函数）。
+
+32. `import()`同时加载多个模块时，怎么用？结合 `Promise.all()`和 `async`一起说明。
+
+    结合`Promise.all()`一起用
+
+    ```javascript
+    Promise.all([
+        import("./myModule1.js"),
+        import("./myModule2.js"),
+        import("./myMudole3.js")
+    ]).then(([module1, module2, module3]) => {
+        ...
+    })
+    ```
+
+    结合`async`一起用
+
+    ```javascript
+    async function main(){
+        const myModule = await import("./myModule.js")
+        const { export1, export2 } = await import("./myModule.js")
+        const [module1, module2, module3] = 
+              await Promise.all([
+                  import("./module1.js"),
+                  import("./module2.js"),
+                  import("./module3.js")
+              ])
+    }
+    main()
+    ```
+
+## Promise对象
+
+2. Promise是什么？我们说的promise又是什么？Promise传什么参数?
+
+   Promise是构造函数，因为构造函数通过new关键字，得到的是对象。因此，通过下列赋值，`let promise = new Promise( /* some params */)`，得到的promise是对象。
+
+   `Promise`接收函数作为构造函数的参数，函数包含 `resolve`和`reject`参数，他们是两个函数，作用看例子。
+
+   ```javascript
+   let promise = new Promise(function(resolve, reject){
+       if(/* 异步调用成功*/){
+          // 将promise对象的状态从pending变为resolved，并将处理的结果传出去
+          resolve(value)
+        }else{
+          // 将promise对象的状态从pending变为rejected，并将处理的结果传出去
+          reject(error)
+        }       
+   })
+   ```
+
+   
+
+3. promise对象有哪几种状态？状态是怎么变化的？
+
+   `pending`， `fulfilled` ， `rejected`
+
+   状态只能从 `pending`变为 `fulfilled` 或者 `pending`变为 `rejected`
+   
+3. promise对象有什么用？
+
+   两个角度：
+
+   + 作用： 里面保存着异步操作的状态(pending, resolved, rejected)，并且状态锁定了（变为 `resolved`或者 `rejected`）之后就不能更改
+   + 语法：一个对象，从它可以获取异步操作的消息
+
+4. promise对象中的（异步操作状态）怎么获取？
+
+   通过 `then`方法获取。`then`方法接收两个函数作为参数。第一个参数是`promise`对象变为`resolved`状态时的回调函数，必填。第二个参数是`promise`变为`rejected`状态时的回调函数，非必填。看例子
+
+   ```javascript
+   function timeout(ms){
+       return new Promise((resolve, reject) => {
+           setTimeout (resolve, ms, "hahaha")
+       })
+   }
+   timeout(20000).then((value) => {
+       console.log(value)
+   })
+   ```
+
+   上面的执行结果是 20s之后输出 hahaha
+
+5. 下面`Promise`实例执行的结果
+
+   ```javascript
+   setTimeout(() => {
+     console.log("timeout!!")
+   }, 0);
+   
+   let promise = new Promise(function(resolve, reject){
+     console.log("Promise")
+     resolve()
+   })
+   
+   promise.then(function(){
+     console.log("resolved.")
+   })
+   
+   console.log("Hi")
+   ```
+
+   依次输出：  Promise  Hi  resolved  timeout!!
+
+   因为promise实例是在创建之后就马上执行。promise的then方法是当前脚本的所有同步任务执行完了之后，也就是`本轮事件循环`结束时执行。setTimeout是`下一轮事件循环`开始时执行。
+
+6. 用promise封装一个ajax请求的例子
+
+   ![promise封装的ajax](D:\vscodeProjects\es6-ryf\images\用promise写一个ajax请求.png)
+
+7. 如果promise2，resolve的是另一个promise1，那么promise2的自身的状态失效，promise2的状态由promise1的状态决定。看例子：
+
+   ![p1决定p2的状态](D:\vscodeProjects\es6-ryf\images\promise2的状态由promise1决定.png)
+
+8. `resolve`或者`reject`之后，`function(resolve, reject){ }`函数（构造函数 `Promise`的传参）还会继续往下执行吗？ 
+
+   会的。因此 `resolve`或者`reject`的值直接`return`出去。不要在后面继续写逻辑了。后续的逻辑，应该写在实例的 `then`方法中。
+
+9. promise实例是有哪些原型方法？
+
+   看图，主要有`catch,then,finally,constructor`
+
+   ![](D:\vscodeProjects\es6-ryf\images\promise实例打印出来的内容.png)
+
+10. `Promise.prototype.then`方法怎么用？
+
+    为实例添加状态改变时的回调函数。包含两个参数，都是函数。第一个函数是实例resolved状态时的回调，函数的参数是resolved时传出的值。第二个函数是实例rejected状态时的回调，参数是rejected时传出的值。
+
+    then方法返回的是一个新的Promise实例，前面的then的处理结果，可以作为后一个Promise实例的参数。看例子
+
+    ```javascript
+    getJSON("./posts.json").then(function(json){
+        return json.post
+    }).then((post) => { }) // josn.post作为参数给此处的then方法的第一个函数。
+    ```
+
+    
+
+11. `Promise.prototype.catch`方法怎么用？如何理解？
+
+    + rejected时，等同于抛出错误。
+    + catch会捕获rejected时或者then在运行时抛出的错误。
+    + promise对象的错误有冒泡性质，会一直向后传递，会被最后一个catch语句捕获。
+    + 不要在then方法里面定义rejected 状态的回调函数，总用链式的方法使用catch方法，可以捕获所有的rejected和then方法在处理数据时抛出的错误。
+    +  catch方法还是返回一个promise对象。
+
+12. promise对象抛出的错误会传递到外层代码吗？
+
+    不会，即使抛出了错误，promise外部的代码也会继续执行。
+
+13. `Promise.prototype.finally()`如何用？
+
+    + `finally`方法用于指定不管promise实例最后状态如何，都会执行的操作。
+    + `finally`方法的回调函数没有任何参数。`finally`方法里的操作，和promise的状态无关，不依赖promise的执行结果。
+
+14. `Promise.all()`方法的作用？
+
+    将多个promise实例，包装成一个新的promise实例。
+
+    ```javascript
+    const p = Promise.all([p1, p2, p3])
+    ```
+
+    注意的点：
+
+    + 参数是有Iterator数据解构的参数。比如数组。
+
+    + p1p2p3全部是fulfilled时，p才为fulfilled，此时p1p2p3的返回值组成数组，给p的then方法
+
+    + p1p2p3中有一个被rejected时，p为rejected，第一个rejected的实例的返回值，传给p的catch方法
+
+    + p1p1p3是Promise.all接收到的参数，如果参数不是promise，则会调用 `promise.resolve()`方法，转化为promise实例，再做进一步处理。这一点要特别注意，看下面的例子:
+
+      ```javascript
+      const p1 = new Promise((resolve, reject) => {
+        resolve('hello');
+      })
+      .then(result => {
+        return result + "_chenke"
+      });
+      
+      const p2 = new Promise((resolve, reject) => {
+        throw new Error('报错了');
+      })
+      .then(result => result)
+      .catch(e => console.log(e));
+      
+      Promise.all([p1, p2])
+      .then(result => {
+        console.log("resolved 了")
+        console.log(result)
+      })
+      .catch(e => {
+        console.log("reject 了")
+        console.log(e)
+      });
+      ```
+
+      上面例子中，p1是then方法返回的promise的状态，是 `Promise.resolve("result + "_chenke"")`, p2是catch方法返回的promise的状态，是`Promise.resolved(unefined)`。所以，Promise.all的状态是resolved。执行的是它自己的then方法。以上的自行结果是。
+
+      ![](D:\vscodeProjects\es6-ryf\images\Promise.all.png)
+
+      以上的 `promise.all`如果希望它的状态是rejected，可以把p2的catch删掉。此时p2是新创建的实例的promise，状态经过 `throw new Error('报错了')`，变为rejected
+
+      ```javascript
+      const p2 = new Promise((resolve, reject) => {
+        throw new Error('报错了');
+      })
+      .then(result => result)
+      ```
+
+15. `Promise.race()`方法的作用？
+
+    将多个Promise实例，包装成一个新的Promise实例。
+
+    ```javascript
+    const p = Promise.race([p1, p2, p3])
+    ```
+
+    注意点：
+
+    + p1p2p3中主要有一个实例先改变了状态，p的状态也随之改变。
+
+    + p1p1p3是Promise.all接收到的参数，如果参数不是promise，则会调用 `promise.resolve()`方法，转化为promise实例，再做进一步处理。
+
+    + 应用实例： 某个请求，设定一个默认时间，如果5秒没返回，则promise状态变为resolved
+
+      ```javascript
+      const p = Promise.race([
+        fetch('/resource-that-may-take-a-while'),
+        new Promise(function (resolve, reject) {
+          setTimeout(() => reject(new Error('request timeout')), 5000)
+        })
+      ]);
+      
+      p.then(console.log).catch(console.error);
+      ```
+
+16. `Promise.allSettled()`的语法
+
+    接收的参数： 一组promise实例，如p1,p2,p3
+
+    执行条件：所有promise状态定型了之后
+
+    返回值： 新的promise实例
+
+    返回值说明：
+
+    + 新的promise状态只能是fulfilled，不能是rejected
+    + 由于上面原因，用then方法，可以把返回的结果，在回调函数中进行处理。
+    + 回调函数的参数是一个数组，数组的每个成员是对象，和p1p2p3的结束状态相关
+    + 对象是 `{ status: "fulfilled", value: 42}` （fulfilled的promise）或者 `{status: "rejected", reason: 8}`(rejected的promise) 
+
+17. `Promise.allSettled( )`使用场景是什么？
+
+    也是接收一组promise实例。但是要等到所有的实例都有结束（包括resolved和rejected）时，allSettled才会结束。
+
+    使用场景： 不关心异步操作的结果，只关心操作有没有全部结束。`Promise.all()`无法确保所有的异步操作都结束。
+
+    ```javascript
+    const resolved = Promise.resolve(42);
+    const rejected = Promise.reject(-1);
+    
+    const allSettledPromise = Promise.allSettled([resolved, rejected]);
+    
+    allSettledPromise.then(function (results) {
+      console.log(results);
+    });
+    // [
+    //    { status: 'fulfilled', value: 42 },
+    //    { status: 'rejected', reason: -1 }
+    // ]
+    ```
+
+18. `Promise.any()`的语法
+
+    接收的参数： 一组promise实例，如p1,p2,p3
+
+    执行条件：三个传入的参数实例，有一个变为fulfilled，则`Promise.any( )`是fulfilled状态。三个都变成rejected，则`Promise.any( )`是rejected状态
+
+    返回值： 新的promise实例
+
+    最新版的chrome中，`Promise.any()`并不能用。因此， 看官网例子
+
+    ```JavaScript
+    var resolved = Promise.resolve(42);
+    var rejected = Promise.reject(-1);
+    var alsoRejected = Promise.reject(Infinity);
+    
+    Promise.any([resolved, rejected, alsoRejected]).then(function (result) {
+      console.log(result); // 42
+    });
+    
+    Promise.any([rejected, alsoRejected]).catch(function (results) {
+      console.log(results); // [-1, Infinity]
+    });
+    ```
+
+19. `Promise.resolve()`的语法？
+
+    `Promise.resolve(param)`是将传入的param转化为promise对象。等价写法是：
+
+    ```javascript
+    Promise.resolve("foo")
+    // 等价于
+    new Promise((resolve) => resolve("foo"))
+    ```
+
+    `Promise.resolve(param)`的参数 `param`有下面四种情况：
+
+    + 一个Promise实例： 原封不动返回实例
+
+    + `thenable`对象（具有then方法的对象）：先将对象转化为promise对象，然后立即执行thenable的then方法。看例子：
+
+      ```javascript
+      let obj = {
+        then: function(resolve, reject) {
+          resolve(42);
+        }
+      };
+      
+      let p1 = Promise.resolve(obj);
+      p1.then(function(value) {
+        console.log(value);  // 42
+      });
+      ```
+
+      `Promise.resolve(obj)`执行时，是先将obj转化为promise，然后马上执行 `obj.then()`。
+
+    + 不是promise实例，不是包含 `then`的对象： 返回一个状态是resolved的promise，并且传出来的值是这个数本身。看例子：
+
+      ```javascript
+      const p = Promise.resolve({ name: "cc", age: 32})
+      p.then( val => {console.log(val)}) // {name: "cc", age: 32}
+      ```
+
+    + 不传任何参数: 直接返回一个 resolved状态的promise对象。通常用于需要直接得到一个promise对象的时候。注意，立即resolve( )得到的promise对象，在本轮“事件循环”的结束执行。看例子：
+
+      ```javascript
+      setTimeout(() => {
+          console.log("three")
+      } )
+      Promise.resolve().then(() => {
+          console.log("two")
+      })
+      console.log("one")  
+      ```
+
+      依次输出 one, two ,three
+
+      setTimeout是下轮事件开始执行。Promise.resolve()是本轮事件结束之后执行.
+
+20. `Promise.reject()`方法的语法？
+
+    返回一个`rejected`状态的promise对象。但是它和 `Promise.resolve(param)`不同。接收的参数会原封不动编程后续方法的参数，不管这个参数是什么。看例子：
+
+    ```javascript
+    const thenable = {
+        then(resolve, reject){
+            reject("出错啦")
+        }
+    }
+    Promise.reject(thenable).catch(e => {
+        console.log(e === thenable)  // true
+    })
+    ```
+
+    
+
+21. `Promise.try()`提案的背景
+
+    不知道或不想区分，函数f是同步函数或是异步函数，但是想用Promise来处理它，都用then方法指定下一步流程，用catch处理f抛出的错误。
+
+22. 如何让同步函数同步执行，异步函数异步执行，并且有统一的api呢？
+
+    + `async`函数来写
+
+      ```javascript
+      const f = () => console.log('now');
+      (async () => f())();
+      console.log('next');
+      // now
+      // next
+      ```
+
+    + `new Promise()`来写
+
+      ```javascript
+      const f = () => console.log('now');
+      (
+        () => new Promise(
+          resolve => resolve(f())
+        )
+      )();
+      console.log('next');
+      // now
+      // next
+      ```
+
+23. `Promise.try()`的例子
+
+    ```javascript
+    function getUserName(){
+      return Promise.try(() => {
+        return database.user.get({id: userId});
+      }).then(user => {
+        return getMetadataFor(user);
+      }).then(userMetadata => {
+        return userMetadata.name;
+      }).catch((e) =>{
+        console.log(e)
+      })
+    }
+    ```
+
+    + 上面的例子是用 `Promise.try()`对函数做一个封装，catch中可以捕获到 `Promise.try()`中函数的所有同步和异步的异常。
+    + `Promise.try()`像 `.then`一样，但是前面不需要promise对象。
+
+24. `Promise.try()`的用法
+
+    
+
 ##  clsss用法：
 
 前置例子：
@@ -1974,8 +2666,8 @@ let point = new Point(3, 4)
 
    ```javascript
    let f = function (){
-this.a = 1
-this.b = 2
+   this.a = 1
+   this.b = 2
    }
    
    let o = new f()
@@ -1999,7 +2691,7 @@ this.b = 2
 
 3. 实例如何访问定义在类上的方法？
 
-    类上定义的方法，实例可以直接访问
+   类上定义的方法，实例可以直接访问
 
    ```javascript
    point.toString() // "(3,4)"
@@ -2013,15 +2705,15 @@ this.b = 2
 
    ```javascript
    class MyClass {
-constructor() {
+   constructor() {
     // ...
-}
-get prop() {
+   }
+   get prop() {
     return 'getter';
-}
-set prop(value) {
+   }
+   set prop(value) {
     console.log('setter: '+value);
-}
+   }
    }
    ```
 
@@ -2029,24 +2721,24 @@ set prop(value) {
 
 5. 类的属性名表达式是什么，怎么写的？
 
-    类的属性名用表达式来写。将变量写在方括号里，如下:
+   类的属性名用表达式来写。将变量写在方括号里，如下:
 
-    ```javascript
-    let methodName = "something"
-    [methodName](){
+   ```javascript
+   let methodName = "something"
+   [methodName](){
+   
+   }
+   ```
 
-    }
-    ```
-
-    
+   
 
 6. 类可以用表达式形式定义吗？写一个立即执行的类
 
-    可以。
+   可以。
 
-    ```javascript
-    let person = new class Me{
-    constructor(name){
+   ```javascript
+   let person = new class Me{
+   constructor(name){
    this.name = name
     } 
     sayName(){
@@ -2059,23 +2751,23 @@ set prop(value) {
 
 7. ES6内部还需要用use strict吗？
 
-    不需要。ES6 实际上把整个语言升级到了严格模式。
+   不需要。ES6 实际上把整个语言升级到了严格模式。
 
 8. 类有变量提升吗？
 
-    没有。因此子类要定义在父类后面。
+   没有。因此子类要定义在父类后面。
 
 9. 类的name属性怎么取？ 类对外是用的什么符号？
 
-    name是class后面的变量名。类对外的符号是等号左边的变量。
+   name是class后面的变量名。类对外的符号是等号左边的变量。
 
-    ```javascript
-    let myPoint = class Point{}
-    myPoint.name  // Point
-    // myPoint指代了Point类
-    ```
+   ```javascript
+   let myPoint = class Point{}
+   myPoint.name  // Point
+   // myPoint指代了Point类
+   ```
 
-    
+   
 
 10. 如何判别Generator方法？
 
