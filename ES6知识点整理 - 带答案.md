@@ -2923,7 +2923,9 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
          function* f(){
              for(var i = 1; true; i++){
                  _this.count = i
+                 console.log("before")
                  var reset = yield i;
+                 console.log(reset)
                  if(reset){ i = 0  } 
              }
          }
@@ -2932,13 +2934,23 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
              this.g4 = f()
          }
          // 上一步不是7的倍数时,不干预；是7的倍数时，传true
-         let valueObj = this.count % 7 ? this.g4.next() : this.g4.next(true)
+         let valueObj = this.count % 7 ? this.g4.next(false) : this.g4.next(true)
          console.log(valueObj)
          // 打印的内容从 {value: 1, done: false} 到 {value: 7, done: false}
      },
     ```
 
     给按钮绑定了click事件，事件处理函数是 `generator4`。本来f是一个可以无限执行的Generator函数，由于next传参的干预。不停的在1到7之间循环。
+
+    第二次整理:  
+
+    点第一下时，走到第一个yield。打印了 before，然后打印valueObj（遍历器的next( )方法的返回值）
+
+    点第二下时，`reset是上一个yield表达式的返回值`，是false。打印false，然后before，然后是valueObj
+
+    点第三下到第七下，打印的内容都和第二下相同
+
+    由于点第7下时，执行的是this.g4.next(true)，所以第8下，`reset的值就是true`，打印true。所以循环结束时，i的值是0。继续往下，打印before，然后是valueObj {value: 1, done: false}
 
 14. 第二个用next传参的例子：
 
@@ -2968,6 +2980,8 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
     以后每次next，返回的都是Generator函数运行完毕的结果 `{value: undefined, done: true}`
 
+    当执行的是 `this.g5.next(6)`时，value的值依次是： 6,4,23  xyz依次是5,12,6
+
     从上面可以按到，Generator函数内部的变量，在运行过程中，都会暂存在内部。
 
 15. 再看一个例子：
@@ -2992,7 +3006,102 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
     无效。因为next方法的参数是上一个yield表达式的返回值。
 
-17. 其他
+17. 使用for...of循环遍历Generator函数生成的Iterator对象，输出什么？
+
+    ```javascript
+    function* foo(){
+            yield 1;
+            yield 2;
+            yield 3;
+            yield 4;
+            yield 5;
+            return 6;
+          }
+          for(let v of foo()){
+            console.log(v)
+          }
+          /* 依次打印出 12345 */
+    ```
+
+    输出yield后面的值。遇到done是true的时候就终止，并且不会打印出返回的对象（return 后面的值），即return返回的值不会被打印出来。
+
+18. 使用 for...of的时候，需要用next方法吗？
+
+    不需要。可以直接获取到yield后面的值。
+
+19. 对象能不能用for..of 进行遍历？
+
+    对象没有遍历接口，无法用 for...of循环
+
+20. 如果要让对象用 for...of接口，怎么做？
+
+    + 通过Generator函数，加上这个接口
+
+      for...of  遍历Generator函数，返回的是yield后面的值
+
+    + 将Generator函数加到对象的Symbol.iterator属性上
+
+      ```javascript
+      obj[Symbol.iterator] = generatorFn;
+      ```
+
+      
+
+21. 除了for...of，还有哪些可以用遍历器接口？
+
+    Array.from（），扩展运算符（...），解构赋值
+
+    比如：
+
+    numbers 是一个Generator函数，则可以将numbers返回的Iterator对象作为参数，做以下处理：
+
+    ```javascript
+    [...numbers()]
+    Array.from(numbers())
+    let [x,y] = numbers()
+    for(let n of numbers()){
+        console.log(n)
+    }
+    ```
+
+    
+
+22. General.prototype.throw() 是什么？
+
+    Generator函数返回的遍历器对象，都有throw方法，可以在函数体外抛出错误，然后在Generator函数体内捕获。
+
+23. Generator函数体内部没有部署 try...catch...，那么throw抛出的错误，去哪里了？
+
+    + throw抛出的错误，会被外部的try...catch... 方法catch住
+    + 如果内部和外部都没有catch，程序将直接报错，中断执行
+
+24. Iterator对象的throw方法，可以第一次被内部catch住吗？
+
+    throw方法抛出的错误要被内部捕获，前提是必须至少执行过一次next方法。否则会报错。
+
+25. Generator函数内部部署了 try...catch... 块，遍历器的throw方法抛出的错误，会影响下一次遍历吗？
+
+    不会，不影响下一次遍历。每次throw方法被捕获后，会附带执行一次遍历器的next方法。
+
+26. Generator函数体外抛出的错误，可以被函数体内捕获；Generator函数体内抛出的错误，可以被函数体外的catch捕获
+
+27. Generator执行过程中抛出错误，且没有被内部捕获，就不会执行下去。如果继续调用next，则指针对象对Generator函数的遍历将终结，返回 `{value: undefined, done: true}`
+
+28. 遍历器对象的return方法，有什么用？
+
+    + 终结遍历Generator函数，继续next后，返回 ` value: undefined, done: true `
+    + 返回一个对象，value是return后给定的值  ` {value: "foo", done: true} `
+
+29. 遍历器对象的return方法和try..finally一起的时候，执行顺序是什么？
+
+    + 当遍历器的return方法写在try中时，return后面的try代码将不会执行，直接跳到finally，执行finally部分的代码，finally的代码执行完后，再回头去执行return
+    + return方法出现子finally中，finally会继续执行。只有在finally执行完后，继续调用next方法，return代码才会继续执行。继续next，将终结遍历Generator函数。
+
+30. `next()`, `throw()`, `return()`的共同点是什么？
+
+    让Generator函数回复执行，并且用不同的语句替换yield表达式
+
+31. 其他
 
 ##  clsss用法：
 
