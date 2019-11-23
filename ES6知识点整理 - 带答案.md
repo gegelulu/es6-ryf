@@ -2877,7 +2877,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
    不可以，会报错。
 
-   注意很隐蔽的地方，比如 `forEach`的参数。
+   注意很隐蔽的地方，比如 `forEach`的回调函数参数。
 
 9. `yield`表达式如果要用在另一个表达式中，怎么用？
 
@@ -2944,13 +2944,17 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
     第二次整理:  
 
-    点第一下时，走到第一个yield。打印了 before，然后打印valueObj（遍历器的next( )方法的返回值）
+    点第一下时，走到第一个yield。打印了 before，然后打印valueObj（遍历器的next( )方法的返回值）。
 
     点第二下时，`reset是上一个yield表达式的返回值`，是false。打印false，然后before，然后是valueObj
 
     点第三下到第七下，打印的内容都和第二下相同
 
     由于点第7下时，执行的是this.g4.next(true)，所以第8下，`reset的值就是true`，打印true。所以循环结束时，i的值是0。继续往下，打印before，然后是valueObj {value: 1, done: false}
+
+    第三次整理：
+
+    【每走一步，会得到一个valueObj,并暂停在当前的yield表达式所在行】
 
 14. 第二个用next传参的例子：
 
@@ -3064,7 +3068,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
     }
     ```
 
-    
+    **四种遍历 Iterator对象的方式**，后面还有`yield*`,也可以遍历Iterator接口。
 
 22. General.prototype.throw() 是什么？
 
@@ -3101,7 +3105,394 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
     让Generator函数回复执行，并且用不同的语句替换yield表达式
 
-31. 其他
+    `next(param)`相当于将上一个yield表达式替换为值param。如果param不传，相当于替换为undefined。
+
+    
+
+31. yield* 表达式出现的背景是什么？
+
+    Generator函数foo和bar，如果要在bar部调用foo，则需要在bar内部，手动完成对foo的遍历
+
+    ```javascript
+    function* foo() {
+      yield 'a';
+      yield 'b';
+    }
+    function* bar(){
+        yield "x";
+        yield* foo()
+        yield "y"
+    }
+    ```
+
+    由上可知，`yeld*`后面跟的是 `Generator`表达式的执行结果。
+
+    上面表示， `yield* foo()`  相当于  `yield "a"; yield "b"`
+
+32. yield* 表达式的语法意义是什么？
+
+    如果yield表达式后边跟的是一个遍历器对象，则需要在yield后面跟一个星号 `*` 
+
+33. 两个Generator函数A，B，在A里面使用yield* B，是什么意思？
+
+    分两种情况
+
+    + B里面没有return：相当于在A里面部署了一个 `for...of`循环
+
+      ```javascript
+      yield* B
+      // 相当于
+      for(var value of B){
+      	yield value
+      }
+      ```
+
+      
+
+    + B里面有return：此时，return后面的结果不会被遍历到，需要用 `var value = yield* iterator`的形式获取return语句的值。
+
+      ```javascript
+      function* A(){
+          yield "hello";
+          let c = yield* B();
+          console.log(c)
+          yield "chenke!"
+      
+      }
+      function* B(){
+          yield "how";
+          yield "are";
+          return "you"
+      }
+      let arr = [...A()]
+      console.log(arr)
+      ```
+
+      上面代码的运行结果是，先打印出 `you`，然后打印数组 `["hello", "hao", "are", "chenke!"]`
+
+34. `yield*`后面跟的是  Iterator 接口 时，处理结果会如何？比如数组
+
+    ```javascript
+    function* A(){
+        yield* ["a","b","c"]
+    }
+    let i = 0
+    let obj = A()
+    while(i < 4){
+        console.log(obj.next())
+        i++
+    }
+    ```
+
+    跟数组时，`yield* ["a","b","c"]`返回的是数组的遍历器对象。
+
+    任何数据结构只要有Iterator接口，就可以被 `yield*`遍历。
+
+    [^被yield*遍历]: 如果把yield something 看成一个代码块，那么yield* 就是代码块的集合.每次执行obj.next( ) 移动遍历器指针，移到yield* 时会停留多次，直到代码块集合都被遍历完为止。
+
+35. 被代理的Generator函数中有return语句时，可以向代理它的Generator函数返回数据，具体怎么处理呢？
+
+    ```javascript
+    function* foo() {
+      yield 2;
+      yield 3;
+      return "foo";
+    }
+    function* bar() {
+      yield 1;
+      var v = yield* foo();
+      console.log(v);
+      yield 4;
+    }
+     let i = 1;
+        let it = bar()
+        while(i < 7){
+            console.log(`打印第${i}次`)
+            console.log(it.next())
+            i ++
+        }
+    ```
+
+    函数foo的return语句向bar提供了返回值
+
+    第4次打印时，会先 打印出 foo，然后打印  {value: 4, done: false} 
+
+36. 用`yield*`写个方法，取出嵌套数组的所有成员
+
+    ```javascript
+    function* iterTree(data){
+        if(!Array.isArray(data)){
+            yield data
+        }else{
+            // 这里遍历数组，不能用forEach，因为yield表达式不能放在普通函数里
+           for(let i = 0; i < data.length; i ++){
+               yield* iterTree(data[i])
+           } 
+        }    
+    }
+    let tree = ["a","b",[1,2,[3,4,[5]]]]
+    console.log([...iterTree(tree)]) // ["a", "b", 1, 2, 3, 4, 5]
+    ```
+
+    上面的方法可以展开任何层级的数组
+
+    实现的思路是：
+
+    + data不需要继续遍历时，直接yield data
+    + data需要继续遍历时，用yield* 再遍历一次  yield* iterTree(data[i])
+
+37. 用 `yield*`遍历二叉树
+
+    ```javascript
+    function Tree(left, label, right){
+        this.left = left;
+        this.label = label;
+        this.right = right;
+    }
+    // 中序遍历
+    function* inorder(t){
+        if(t){
+            yield* inorder(t.left);
+            yield t.label;
+            yield* inorder(t.right);
+        }
+    }
+    ```
+
+    
+
+38. 对象属性的Generator函数，如何简写？
+
+    ```javascript
+    let obj = {
+    	* generatorMethod(){
+            
+        }
+    }
+    ```
+
+    完整形式：
+
+    ```javascript
+    let obj = {
+        generatorMethod: function* (){
+            
+        }
+    }
+    ```
+
+39. Generator函数G的返回值g（iterator遍历器）和G是什么关系？
+
+    g是G的一个实例。会继承G的prototype对象上的方法。
+
+    ```javascript
+    function* G(){
+        
+    }
+    G.prototype.hello = function(){
+        return "hi"
+    }
+    let g = G()
+    console.log(g.hello()) // hi
+    ```
+
+40. g是G的实例，那G和普通的构造函数F有什么区别？
+
+    两点：
+
+    + G返回的**总是**遍历器对象，F默认返回的是this对象。在G里面，给this绑定属性，g是获取不到的
+    + G不能跟new命令一起使用，会报错
+
+41. 写一个方法，实现Generator函数返回一个正常的对象实例，既可以用next方法，也可以用正常的this？
+
+    ```javascript
+    function* G(){
+        this.a = 1;
+        yield this.b = 2;
+        yield this.c = 3;
+    }
+    function F(){
+        return G.cal(G.prototype)
+    }
+    let f = new F()
+    console.log(f.next())
+    console.log(f.next())
+    console.log(f.next())
+    // f的prototype属性（一个对象）上还有a，b，c三个属性
+    ```
+
+    当yield后面跟的是一个赋值语句时，用next方法返回的结果对象的value属性的值是此赋值语句等号右边的值。比如：
+
+    `yield this.b = 2;`，当`f.next()`遍历到这一句时，返回的是 `{value: 2, done: false}`。
+
+    此时做了两个操作:
+
+    + 返回`{value: 2, done: false}`
+    + 给b赋值  `this.b = 2`
+
+42. Generator函数的应用场景有哪些？
+
+    + 异步操作同步化（比如用 同步的写法，写ajax请求）
+
+      思路是： 用yield表达式，让程序暂停在ajax请求这一步，在请求成功的回调里，用`g.next(response)`，把请求的结果返回出来，赋值给`yield`表达式的左边
+
+      ```javascript
+      function* main(){
+          let result = yield request(someUrl)
+          let resp = JSON.parse(result)
+          console.log(resp.value)
+      }
+      function request(url){
+          makeAjaxCall(url, function(){
+              it.next(response)
+          })
+      }
+      let it = main()
+      it.next()
+      ```
+
+      两个next(  )方法。第一个启动yield后面的 request(someUrl)。第二个将ajax的请求结果返回出来，给result
+
+    + 控制流管理（多个同步请求，前面的结果是后面的请求参数）
+
+      ```javascript
+      function* longRunningTask(value1){
+          try{
+              var value2 = yield step1(value1);
+              var value3 = yield step2(value2);
+              var value4 = yield step3(value3);
+              var value5 = yield step4(value4);
+              // do something
+          }catch(e){
+              // handle any error from step1 through step4
+          }
+      }
+      scheduler(longRunningTask(initialValue))
+      function scheduler(task){
+          let taskObj = task.next(task.value)
+          if(!taskObj.done){
+              task.value = taskObj.value
+              scheduler(task)
+          }
+      }
+      ```
+
+    + 部署Iterator接口
+
+      Generator函数中yield关键字后面的值可以直接通过for...of遍历出来。根据这个思路可在对象、数组等上面部署Iterator接口
+
+      ```javascript
+      function* iteratorForObj(obj){
+          let keys = Object.keys(obj)
+          for(let i = 0; i < keys.length; i ++){
+              yield [keys[i], obj[keys[i]]]
+          }
+      }
+      let datas = {name: "chen", age: "30", height: "172cm"}
+      for(let [key, value] of iteratorForObj(datas)){
+          console.log(`key是${key},value是${value}`)
+      }
+      // 依次打印 key是name,value是chen 等
+      ```
+
+      
+
+    + 作为数据结构
+
+      Generator函数的返回值可以为任何表达式，提供类似数组的接口。
+
+      ```javascript
+      function* doStuff(){
+          yield fs.readFile.bind(null, "hello.txt")
+          yield fs.readFile.bind(nul, "world.txt")
+          yield fs.readFile.bind(nul, "and-such.txt")
+      }
+      for(let task of doStuff()){
+          //task是个函数，可认为是回调函数
+      }
+      ```
+
+## Generator函数的异步应用
+
+1. 传统异步调用有哪些？
+
+   四种：回调函数，事件监听，发布/订阅，Promise对象
+
+2. Generator有什么特点？用它实现异步操作有什么好处？
+
+   在yield处暂停，等到执行权返回，再从暂停的地方继续往后执行。用Generator的优点是代码的写法像同步操作。
+
+3. Generator函数异步任务的的思路？
+
+   关键是函数的返回值（指针对象，也叫遍历器）的next方法。
+
+   next方法执行过程： 调用指针g的next方法，会移动内部指针，指向第一个遇到的yield语句，并把yield语句后面的内容执行完。
+
+   next方法返回值：包含value和done属性的对象。value是yield后面表达式的值，是当前阶段的值，done是布尔值，表示是否执行完毕，即是否还有下一个阶段。
+
+4. Generator能完美封装异步任务的原因？
+
+   + 可以暂停和恢复执行（根本原因）
+   + Generator函数体内外可以进行数据交换
+   + Generator函数有错误处理机制
+
+5. Generator函数内外是如何进行交换？
+
+   ```javascript
+   function* gen(x){
+       var y = yield x + 2;
+       return y;
+   }
+   var g = gen(1)
+   console.log(g.next())
+   console.log(g.next(2))
+   ```
+
+   内 =》 外： `yield`是Generator函数内部的关键字，它后面表达式的值，会作为`next`方法的返回值（含value和done的对象）的value属性，传出来。执行第一个`g.next()`时，得到的对象中 value就是 1+2
+
+   外 =》 内：`next()`是Generator函数外部的方法，它里面的参数，会作为参数传给上一个yield表达式左边的变量（如果左边变量有的话）。所以第二个执行next，`g.next(2)`时，会在上一个yield处恢复执行，先把2赋给y，然后继续往下走。
+
+6. Generator函数体内部如何捕获函数体外的代码？
+
+   Generator函数体外，用`iterator`对象的`g.throw("出错了")`抛出错误
+
+   Genernator函数体内，用`try...catch`代码块捕获异常
+
+7. 什么是Thunk函数？
+
+   在“传名调用”中将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就加做Thunk函数。例子：
+
+   ```javascript
+   //前置条件，定义了函数f(m)，调用了f(x+5).
+   // 相当于
+   var thunk = function(){
+       return x + 5;
+   }
+   function f(thunk){
+       return thunk() * 2;
+   }
+   ```
+
+   
+
+8. JavaScript语言中的Thunk函数有什么不同？
+
+   替换的不是表达式，而是多参数函数，将其替换成一个只接受回调函数作为参数的单参数函数。
+
+   ```javascript
+   // 原始版，接收两个参数
+   fs.readFile(fleName, callback)
+   //Thunk版
+   var Thunk = function(fileName){
+       return function (calback) {
+           return fs.readFile(fileName, callback)
+       }
+   }
+   var readFileThunk = Thunk(fileName)
+   readFileThunk(callback)
+   ```
+
+9. 请求
 
 ##  clsss用法：
 
