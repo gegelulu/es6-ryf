@@ -3492,7 +3492,341 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
    readFileThunk(callback)
    ```
 
-9. 请求
+9. co模块原理：后面再补充
+
+## async函数
+
+1. async是什么？它和Genernator函数外观上的区别是什么？
+
+   ```javascript
+   const asyncReadFile = async function(){
+       const f1 = await readFile(url1)
+       const f2 = await readFile(url2)
+   }
+   ```
+
+   async是Genernator函数的语法糖。
+
+   `async`和`Genernator`的区别有两点：
+
+   + `Genernator`的 `*`编程`async` 
+   + `yield`变成  `await`
+
+2. `async`对`Genernator`做了哪些改进？
+
+   + 内置执行器。
+
+     执行时和普通函数一样，只需要调用函数就完了，不需要 `next()`方法
+
+   + 更好的语义。
+
+     `async`表示它后面的函数里有异步操作；`await`表示紧跟在后面的表达式需要等待结果
+
+   + 更广的适用性。
+
+     await后面可以`Genernator`Promise对象和原始类型的值。（原始类型的值会被自动转化为resolved状态的Promise对象）
+
+   + 返回值是Promise
+
+     `async`函数返回的是`Promise`对象，方便用 `then`进行下一步操作
+
+   总的来说：`async`函数可看成多个异步操作，包装成一个`Promise`对象，而`await`命令就是内部`then`命令的语法糖。
+
+3. `async`执行的例子：
+
+   ```javascript
+   function timeout(ms){
+     return new Promise((resolve) => {
+       setTimeout(resolve, ms)
+     })
+   }
+   async function asyncPrint(value, ms){
+     await timeout(ms);
+     console.log(value)
+   }
+   
+   asyncPrint("你好啊", 5000)
+   ```
+
+   5s之后打印 “你好啊”  
+
+   以上 `asyncPrint`的意思是，等待timeout函数执行完了之后，才会继续执行 `console.log(value)`
+
+4. async函数的几种使用场景？
+
+   五种场景下：
+
+   + 函数声明
+
+   ```javascript
+   async function foo(){}
+   ```
+
+   + 函数表达式
+
+   ```javascript
+   const foo = async function(){}
+   ```
+
+   + 箭头函数
+
+   ```javascript
+   const foo = async () => {}
+   ```
+
+   + 对象的方法
+
+   ```javascript
+   let obj = {
+   	async foo(){
+           
+      	}
+   }
+   obj.foo().then(...)
+   ```
+
+   + class方法
+
+   ```javascript
+   class Storage{
+   	constructor(){
+           this.cachePromise = caches.open("avatars")
+       }
+       async getAvatar(name){
+           const cache = await this.cachePromise;
+           return cache.match()
+       }
+   }
+   const storage  = new Storage()
+   storage.getAvatar("joy").then(...)
+   ```
+
+   
+
+5. async函数返回什么？
+
+   返回一个 `Promise`对象。
+
+   `async`函数内部 return语句的返回值，会成为`then`方法回调函数的参数。
+
+   `async`函数内部抛出的错误，会导致返回的`Promise`对象变为 `rejected`状态
+
+6. ``async`函数中`Promise`对象是如何变化的？
+
+   `async`函数返回的是`Promise`对象P。必须等到内部 `await`命令的`Promise`对象执行完后，P才会发生状态改变，除非遇到return语句，或者抛出了错误。
+
+   换言之，`async`函数 内部的异步操作执行完了，才会执行调用它时后面`then`方法指定的回调函数。
+
+7. `await`命令的返回值是什么？
+
+   + 正常情况下，`await`后面是`Promise`对象，会返回此对象的结果；如果不是`Promise`对象，直接返回对应的值
+   + `await`命令后面跟了 `thenable`对象，会把 `thenable`对象当做 `Promise`对象来处理
+
+8. `await`后面的`Promise`对象如果变为 `rejected`会怎样？
+
+   + rejected的参数会被`async`函数catch方法的回调函数接收到。
+
+     ```javascript
+     async function f() {
+       await Promise.reject('出错了');
+     }
+     
+     f()
+     .then(v => console.log(v))
+     .catch(e => console.log(e))
+     ```
+
+   + 任何一个`await`语句的`Promise`对象变为reject状态，整个`async`函数都会被中断
+
+     ```javascript
+     async function f() {
+       await Promise.reject('出错了');
+       await Promise.resolve('hello world'); // 不会执行
+     }
+     ```
+
+9. 如果希望前一个异步操作失败，不中断后面的异步操作，怎么处理？
+
+   两种方法：
+
+   + 把第一个`await`放到 `try...catch`里面
+
+     ```javascript
+     async function f(){
+     	try{
+             await Promise.reject("出错了")
+         }catch(e){}
+         return await Promise.resolve("hello world")
+     }
+     f().then(v =>console.log(v)).catch(e => console.log(e))
+     // 打印的是  hello world
+     ```
+
+     
+
+   + `await`后面的`Promise`对象再跟一个 `catch`方法，处理前面可能出现的错误
+
+     ```javascript
+     async function f(){
+       await Promise.reject("出错啦").catch(e => {
+         console.log("await 内部promise被reject了")
+       })
+       return await Promise.resolve("hello world");
+     }
+     f().then(v => console.log(v)).catch(e => console.log(e))
+     ```
+
+     打印的内容是：
+
+      await 内部promise被reject了
+        hello world
+
+10. await后面的异步操作出错了（例如某行代码throw 了一个Error），是什么意思？
+
+    `async`函数返回的`Promise`对象被`reject`了
+
+    ```javascript
+    async function f() {
+      await new Promise(function (resolve, reject) {
+        throw new Error('出错了');
+      });
+    }
+    
+    f()
+    .then(v => console.log(v))
+    .catch(e => console.log(e)) // catch执行了， e就是抛出的错误对象 new Error('出错了')
+    ```
+
+    
+
+11. 如何防止出错呢？
+
+    还是将其放到`try{ }catch(e){ }`代码块中。
+
+    如果有多个`await`命令，可以将其同意放到`try{ }catch(e){ }`结构里
+
+    ```javascript
+    async function test(){
+      let i;
+      for(i = 0; i < NUM_RETRIES; ++i){
+        try{
+          await superagent.get(url)
+          break;
+        }catch(err){}
+      }
+      console.log(i)
+    }
+    test()
+    ```
+
+    如果`await`操作成功，则会break，跳出for循环；如果`await`操作不成功，则会被catch住，然后继续下一轮for循环，直到超过 NUM_RETRIES或者 `await`操作成功。
+
+12. `async`和`await`有哪些使用上注意的点？
+
+    + `await`命令后的`Promise`对象可能`reject`，因此`await`命令最好放在`try{ }catch(e){ }`代码块中
+
+      ```javascript
+      async function myFunction() {
+        try {
+          await somethingThatReturnsAPromise();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      
+      // 另一种写法
+      
+      async function myFunction() {
+        await somethingThatReturnsAPromise()
+        .catch(function (err) {
+          console.log(err);
+        });
+      }
+      ```
+
+      
+
+    + 多个`await`异步操作时，如果不存在继发关系，让它们同时触发比较好
+
+      可以结合 `Promise.all`方法
+
+      ```
+      // 写法一
+      let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+      
+      // 写法二
+      let fooPromise = getFoo();
+      let barPromise = getBar();
+      let foo = await fooPromise;
+      let bar = await barPromise;
+      ```
+
+      
+
+    + `await`命令只能用在`async`函数中，用在普通函数里会报错
+
+      注意`forEach`的回调函数，`await`也不能出现在回调函数里
+
+    + `async`函数可以保留运行堆栈
+
+      看例子：
+
+      ```javascript
+      const a = () => {
+          b().then(() => c()) ;
+      }
+      
+      const a = async () => {
+          await b();
+          c();
+      }
+      ```
+
+      上面的例子中，b运行时，a可能已经执行完了。如果此时b或c报错，错误堆栈将不包括a
+
+      下面例子中，b运行时，a只是暂停，若此时b或者c报错了，错误堆栈中将包括a
+
+13. 与`Promise`写法和`Genernator`写法，`async`有什么好处？
+
+    `Promise`写法有很多`catch`和`then`，语义性不强。
+
+    `Genernator`函数需要有一个任务运行器，自动执行`Genernator`函数，并且 `yield`后面的表达式，必须返回`Promise`对象
+
+    `async`最简洁，最符合语义，将`Genernator`写法的自动执行器，改在 语言层面提供，不暴露给用户，代码量最少。
+
+    ```javascript
+    async function chainAnimationAsync(elem, ainmations){
+        let ret = null
+        try{
+            for(letanim of animations){
+                ret = await anim(elem);
+            }
+        }catch(e){}
+        return ret
+    }
+    ```
+
+    
+
+14. `async`的实例： 按顺序完成异步操作——依次远程读取一组URL，然后按照读取顺序输出结果
+
+    ```javascript
+    async function logInOrder(urls){
+      const textPromises = urls.map(async url => {
+        const response = await fetch(url)
+        return response.text()
+      })
+      for(const textPromise of textPromises){
+        console.log(await textPromise)
+      }
+    }
+    ```
+
+    map的参数是`async`函数。这几个`async`是并发的。只有`async`函数内部才是继发的【`const response = await fetch(url)` 比 `return response.text()` 先执行】，外部并不受影响。
+
+    后面在 `for...of`循环内部使用了 `await`，这几个`await`是顺序执行。
+
+15. 顶层`await`的用法和场景、后面再补充。
 
 ##  clsss用法：
 
