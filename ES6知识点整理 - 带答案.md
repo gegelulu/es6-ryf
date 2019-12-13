@@ -1116,7 +1116,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     `enumerable`是可枚举属性。为`true`时表示可枚举，为`false`时表示不可枚举。
 
-    `Object.keys(  )`遍历对象时会忽略掉不可枚举的属性。其他几个和`Object.keys(  )`有相同表现形式的有 `for ...in`,`Object.keys(  )`,`JSON.stringify()`,`Object.assign()`
+    `Object.keys(  )`遍历对象时会忽略掉不可枚举的属性。其他几个和`Object.keys(  )`有相同表现形式的有 `for ...in`,`Object.keys(  )`,`JSON.stringify()`,`Object.assign()`。这四个都会忽略对象 `enumerable`为 `false`的属性。
 
     `for...in`会返回继承的可枚举属性。`Object.keys(  )`不会返回，所以获取自身的可枚举属性，用`Object.keys(  )`。看下面的例子：
 
@@ -1141,19 +1141,19 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
 
     ③   Object.getOwnPropertyNames(obj)  // 和Object.keys(  )结果一样
 
-    ④   Object.getOwnPropertySymbols(obj)  //是 [ ]
+    ④   Object.getOwnProperty`Symbol`s(obj)  //是 [ ]
 
     ⑤   Reflect.ownKeys(obj)  // 和Object.keys(  )结果一样
 
     
 
-21. 属性的遍历规则是什么？（从数值，字符串，symbol考虑）
+21. 属性的遍历规则是什么？（从数值，字符串，`Symbol`考虑）
 
     数值键： 按升序排列
 
     字符串 ：按加入时间升序
 
-    Symbol键：按照加入时间升序
+    `Symbol`键：按照加入时间升序
 
 22. `Object.getOwnPropertyDescriptors()`是用来干嘛？
 
@@ -1199,7 +1199,7 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
 
 26. Object.keys( )遍历的对象属性有什么特点？
 
-    都是可遍历属性；不含继承属性；都会过滤掉Symbol值的属性
+    都是可遍历属性；不含继承属性；都会过滤掉`Symbol`值的属性
 
 27. Object.keys()， Object.values()和Object.entries()返回值分别是什么？给出他们三个和解构赋值，for...of一起用的例子？
 
@@ -1245,6 +1245,87 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
     obj.b  //2
     targetObj.b // undefined
     ```
+
+## Symbol实现：
+
+1. `Symbol`解决了什么问题？
+
+   保证每个属性名的独一无二，从根本上防止属性名的冲突
+
+2. JavaScript语言里有哪几种数据类型？
+
+   undefined  null  布尔值  字符串  数值  对象 
+
+3. `Symbol`值如何生成？ 
+
+   通过`Symbol`函数生成。
+
+4. 对象的属性名有哪几种类型？
+
+   两种类型，字符串类型和`Symbol`类型。
+
+5. `Symbol`函数前能够加new运算符吗？
+
+   不行。因为生成的`Symbol`是基础类型，用new运算符得到的是对象。
+
+6. 函数`Symbol()`生成的`Symbol`实例能添加属性吗？
+
+   不能，原因也和上一条一样。
+
+7. Symbol的参数是什么？Symbol的传参有什么作用？
+
+   可以接收一个字符串作为参数。例如 `Symbol("foo")`
+
+   参数是对`Symbol`的描述，传参是为了控制台显示，或者转化为字符串时，比较容易区分。
+
+   ```javascript
+   // 对一个Symbol类型的值，转化为字符串
+   let s1 = Symbol("nice")
+   // 结果是 "Symbol(nice)"
+   s1.toString()  
+   ```
+
+8. 相同参数的`Symbol`函数的返回值相等吗？
+
+   不相等。参数只是对`Symbol`值的描述。`Symbol`函数的返回值都是独一无二的。
+
+   ```javascript
+   let s1 = Symbol("xiaoke")
+   let s2 = Symbol("xiaoke")
+   s1 === s2   //  false
+   ```
+
+9. `Symbol`值可以进行运算吗？
+
+   不可以。`Symbol`参与运算会报错。
+
+10. `Symbol`可以转化为哪些数据类型？
+
+    `Symbol`类型的值，可以转化为字符串和布尔值
+
+    转化成字符串
+
+    ```javascript
+    let sym = Symbol("my symbol")
+    String(sym)
+    //或者 sym.toString() ， 得到的结果都是： "Symbol(My symbol)""
+    ```
+
+    转化成布尔值
+
+    ```javascript
+    let sym = Symbol()
+    let flag = !!sym // 得到的结果是true
+    ```
+
+11. 获取`Symbol`的描述
+
+    ```javascript
+    const sym = Symbol("foo")
+    let str = sym.description // "foo"
+    ```
+
+12. 其他
 
 ## set和map:
 
@@ -1411,7 +1492,7 @@ s.add(item)
 
     Set结构的 `values`方法
 
-    `Set.prototype[Symbol.iterator] === Set.prototype.values`  // true
+    `Set.prototype[`Symbol`.iterator] === Set.prototype.values`  // true
 
 17. Set有哪些使用场景（四点）?
 
@@ -1609,7 +1690,7 @@ s.add(item)
     map实例可以直接遍历。相当于`entries()`
 
     ```javascript
-    map[Symbol.iterator] === map.entries  //true
+    map[`Symbol`.iterator] === map.entries  //true
     ```
 
 36. map可以转化为数组吗？
@@ -2632,14 +2713,14 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
 4. 默认的Iterator接口部署在哪里？
 
-   数据结构的 Symbol.iterator 属性上。
+   数据结构的 `Symbol`.iterator 属性上。
 
 5. 如何判断一个数据结构是否可遍历？
 
    两种方法：
 
    + 一种数据结构只要部署了Iterator接口，就称为这种数据结构可遍历。
-   + 一个数据结构只要有Symbol.iterator属性，，它也是可遍历的。
+   + 一个数据结构只要有`Symbol`.iterator属性，，它也是可遍历的。
 
 6. 原生具备Iterator接口的数据结构如下？
 
@@ -2652,13 +2733,13 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
    + Generator对象
    + NodeList对象
 
-7. 给对象定义一个`Symbol.iterable`属性后，对象就是可遍历的。看例子：
+7. 给对象定义一个``Symbol`.iterable`属性后，对象就是可遍历的。看例子：
 
    例子1：
 
    ```javascript
    const obj = {
-       [Symbol.iterator]: function(){
+       [`Symbol`.iterator]: function(){
            return {
                next: function(){
                    return {
@@ -2680,7 +2761,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
        this.stop = stop;
      }
    
-     [Symbol.iterator]() { return this; }
+     [`Symbol`.iterator]() { return this; }
    
      next() {
        var value = this.value;
@@ -2700,7 +2781,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
    
 
-8. `Symbol.iterator`方法返回的是什么？
+8. ``Symbol`.iterator`方法返回的是什么？
 
    返回的是遍历器生成函数。
 
@@ -2715,7 +2796,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
    用 `while`方法循环。看例子：
 
    ```javascript
-   let iterator = this.arr[Symbol.iterator]()
+   let iterator = this.arr[`Symbol`.iterator]()
    // iterator是一个遍历器对象，有next方法，没执行一次next方法，都会得到一个{value,done}对象。遍历一次一共会调用len +1次，最后一次的结果是 {value: undefined, done:true}
    let result = iterator.next()
    while(!result.done){
@@ -2727,7 +2808,7 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
 10. 调用`Iterator`接口的场合
 
-    + 解构赋值：数组和 `set`做解构赋值时，会自动调用 `Symbol.iterator`方法
+    + 解构赋值：数组和 `set`做解构赋值时，会自动调用 ``Symbol`.iterator`方法
 
       ```
       let set = new Set().add("a").add("b")
@@ -2903,14 +2984,14 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
 11. `Generator`函数和`Iterator`接口有什么关系？
 
-    任何一个对象 `obj` 的 `Symbol.iterator`方法（**方法也叫函数**），都是它的遍历器对象生成函数。`obj[Symbol,iterator]()`的结果是一个遍历器对象。
+    任何一个对象 `obj` 的 ``Symbol`.iterator`方法（**方法也叫函数**），都是它的遍历器对象生成函数。`obj[`Symbol`,iterator]()`的结果是一个遍历器对象。
 
-    `Generator`函数是 **遍历器生成函数**。因此 `Generator`和 `Symbol.iterator`是同种作用的函数。因此 ，可以将`Generator`函数赋值给 `Symbol.iterator`方法。
+    `Generator`函数是 **遍历器生成函数**。因此 `Generator`和 ``Symbol`.iterator`是同种作用的函数。因此 ，可以将`Generator`函数赋值给 ``Symbol`.iterator`方法。
 
-12. `Generator`函数执行后生成遍历器对象，这个遍历器对象`g`和 `Symbol.iterator`有什么关系？
+12. `Generator`函数执行后生成遍历器对象，这个遍历器对象`g`和 ``Symbol`.iterator`有什么关系？
 
     ```javascript
-    g[Symbol.iterator]() === g
+    g[`Symbol`.iterator]() === g
     ```
 
 13. 如何干预 `Generator`函数的执行过程？
@@ -3043,10 +3124,10 @@ const { SourceMapConsumer, SourceNode } = **require**("source-map");
 
       for...of  遍历Generator函数，返回的是yield后面的值
 
-    + 将Generator函数加到对象的Symbol.iterator属性上
+    + 将Generator函数加到对象的`Symbol`.iterator属性上
 
       ```javascript
-      obj[Symbol.iterator] = generatorFn;
+      obj[`Symbol`.iterator] = generatorFn;
       ```
 
       
@@ -4006,7 +4087,7 @@ Foo.classMethod() //静态方法在类上调用
 
 私有方法和私有属性，是只能在类的内部访问的方法和属性，外部不能访问。私有属性的方法：
 
-①命名区别  ②方法移除到模块外  ③利用Symbol值的唯一
+①命名区别  ②方法移除到模块外  ③利用`Symbol`值的唯一
 
 私有属性的提案：
 
