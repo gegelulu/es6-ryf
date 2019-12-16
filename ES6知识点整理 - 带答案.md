@@ -1325,7 +1325,81 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
     let str = sym.description // "foo"
     ```
 
-12. 其他
+12. `Symbol`作为属性名如何用？
+
+    `Symbol`作为属性名时，定义方法有两种：
+
+    + 写在方括号里面
+
+    ```javascript
+    // 用方括号
+    let mySymbol = Symbol()
+    let a = {
+        [mySymbol]: "hello"
+    }
+    ```
+
+    + 用 `defineProperty` 定义
+
+    ```javascript
+    let mySymbol = Symbol()
+    Object.defineProperty(a, mySymbol, {value: "Hello!"})
+    ```
+
+    取`Symbol`属性时，只能用方括号，不能用点号，因为点号后面永远是字符串
+
+    ```javascript
+    let a = {[mySymbol]: "Hello"}
+    a.mySymbol  // undefined
+    a[mySymbol] // "Hello"
+    ```
+
+13. `Symbol`定义一组常量的例子
+
+    ```javascript
+    const COLOR_RED    = Symbol();
+    const COLOR_GREEN  = Symbol();
+    
+    function getComplement(color) {
+      switch (color) {
+        case COLOR_RED:
+          return COLOR_GREEN;
+        case COLOR_GREEN:
+          return COLOR_RED;
+        default:
+          throw new Error('Undefined color');
+        }
+    }
+    ```
+
+14. `Symbol`值作为属性名时，该属性是私有属性还是公开属性？
+
+    公开属性。
+
+15. `Symbol`值用来消除魔术变量的例子：
+
+    ```javascript
+    const shapeType = {
+        triangle: Symbol();
+    }
+    function getArea(shape, options){
+        let area = 0;
+        switch(shape){
+            case shapeType.triangle:
+                area = .5 * options.width * options.height
+                break;
+        }
+        return area;
+    }
+    ```
+
+16. 如何获取对象的所有`Symbol`属性名？
+
+    用 `Object.getOwnPropertySymbols()`方法，可以获取对象中国所有的`Symbol`属性名。
+
+    该方法返回一个数组，成员是当前对象的所有用作属性名的`Symbol`值。
+
+17. 其他
 
 ## set和map:
 
