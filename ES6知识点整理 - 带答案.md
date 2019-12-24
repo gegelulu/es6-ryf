@@ -44,21 +44,25 @@ function var let const import export   一共6种方法
 
 ①    用for…of循环
 
-**let** s **=** '𠮷a'**;**
+```javascript
+let s = '𠮷a';
 
-**for** **(****let** ch **of** s**)** **{**
+for (let ch of s) {
 
-  console**.**log**(**ch**.**codePointAt**(**0**).**toString**(**16**));**
+  console.log(ch.codePointAt(0).toString(16));
 
-**}**
+}
+```
 
 5.如何检测一个字符是2字节还是4字节？请写函数is32Bit(c).
 
-**function** is32bit**(**ch**){**
+```javascript
+function is32bit(ch){
 
-​    **return****(**ch**.**codePointAt**(**0**)>** 0xFFFF**);//****测试有效**
+    return (ch.codePointAt(0)>  0xFFFF);// 测试有效 
 
-**}**
+}
+```
 
 6.es5如何从码点返回一个对应的字符串？这个方法有什么局限？es6又是如何实现的？
 
@@ -90,21 +94,15 @@ function var let const import export   一共6种方法
 
 ②    尾部补零：s.padEnd(len,str)：将字符串s尾部用str补充，直到长度是len，返回新字符串
 
-**function** getToday**(){**
-
-​    **var** now **=** **new** Date**();**
-
-​    **let** year **=** now**.**getFullYear**();**
-
-​    **let** month **=** **(**now**.**getMonth**()+**1**+**''**).**padStart**(**2**,**'0'**);**
-
-​    **let** day **=** **(**now**.**getDate**()+**''**).**padStart**(**2**,**'0'**);**
-
-​    console**.**log**(**year**+**'-'**+**month**+**'-'**+**day**);**
-
-**}**
-
- 
+```javascript
+function getToday(){
+    var now = new Date();
+    let year = now.getFullYear();
+    let month = (now.getMonth()+1+'').padStart(2,'0');
+    let day = (now.getDate()+'').padStart(2,'0');
+    console.log(year+'-'+month+'-'+day);
+}
+```
 
 11.反引号是怎么用的？用在什么场合？（两个基本使用方法）
 
@@ -114,11 +112,11 @@ function var let const import export   一共6种方法
 
 12.数字转化为字符串有哪几种方法？（三种）
 
-toString()方法： num.toString() num为null或者undefined时，会报错
+ `toString()`方法：  `num.toString()` num为`null`或者`undefined`时，会报错
 
-String()方法: String(num)  num为null时，转化为“null”，为undefined时，转化为“undefined”
+`String()`方法: `String(num)`  num为`null`时，转化为`“null”`，为`undefined`时，转化为`“undefined”`
 
-num+” ” : 结果同String( )方法
+`num+” ”` : 结果同`String( )`方法
 
 ## 正则的扩展：
 
@@ -1100,151 +1098,170 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
         options = Object.assign({},Defaults,options )
     }
     ```
+    
 17. 如何获取对象属性的描述对象？
 
-    用Object.getOwnPropertyDescriptor
+     用Object.getOwnPropertyDescriptor
 
-    `Object.getOwnPropertyDescriptor(objEight,'foo')`
+     `Object.getOwnPropertyDescriptor(objEight,'foo')`
 
 18. 对象`objEight = {foo:123}`， 属性foo的描述对象包含哪4个属性？
 
-    ```javascript
-    {value: 123, writable: true, enumerable: true, configurable: true}
-    ```
+     ```javascript
+     {value: 123, writable: true, enumerable: true, configurable: true}
+     ```
 
 19. `enumerable`是描述对象的什么属性？`Object.keys(  )`跟它有什么关系？
 
-    `enumerable`是可枚举属性。为`true`时表示可枚举，为`false`时表示不可枚举。
+     `enumerable`是可枚举属性。为`true`时表示可枚举，为`false`时表示不可枚举。
 
-    `Object.keys(  )`遍历对象时会忽略掉不可枚举的属性。其他几个和`Object.keys(  )`有相同表现形式的有 `for ...in`,`Object.keys(  )`,`JSON.stringify()`,`Object.assign()`。这四个都会忽略对象 `enumerable`为 `false`的属性。
+     `Object.keys(  )`遍历对象时会忽略掉不可枚举的属性。其他几个和`Object.keys(  )`有相同表现形式的有 `for ...in`,`Object.keys(  )`,`JSON.stringify()`,`Object.assign()`。这四个都会忽略对象 `enumerable`为 `false`的属性。
 
-    `for...in`会返回继承的可枚举属性。`Object.keys(  )`不会返回，所以获取自身的可枚举属性，用`Object.keys(  )`。看下面的例子：
+     `for...in`会返回继承的可枚举属性。`Object.keys(  )`不会返回，所以获取自身的可枚举属性，用`Object.keys(  )`。看下面的例子：
 
-    ```javascript
-    let obj = {name: "xiaokeai"}
-    let targetObj = Object.create(obj)
-    targetObj.age = 30 // name是继承的属性,age是自身的属性
-    console.log( Object.keys(targetObj)) // ["age"] ,  Object.keys只能获取自身属性
-    for(let key in targetObj){
-console.log(key, targetObj[key]) // for ... in还可以获取继承属性
-    }
-    // 
-    ```
+     ```javascript
+     let obj = {name: "xiaokeai"}
+     let targetObj = Object.create(obj)
+     targetObj.age = 30 // name是继承的属性,age是自身的属性
+     console.log( Object.keys(targetObj)) // ["age"] ,  Object.keys只能获取自身属性
+     for(let key in targetObj){
+     console.log(key, targetObj[key]) // for ... in还可以获取继承属性
+     }
+     // 
+     ```
+
+     `obj.hasOwnProperty(key)`只能判断属性key是不是属于obj自身，自身有时，才返回true。其他情况，返回false，所以继承的属性，返回的是false。看mdn上的例子：
+
+     ```JavaScript
+     var triangle = {a: 1, b: 2, c: 3};
+     
+     function ColoredTriangle() {
+       this.color = 'red';
+     }
+     
+     ColoredTriangle.prototype = triangle;
+     
+     var obj = new ColoredTriangle();
+     obj.hasOwnProperty("color") // true  其他情况下都是false
+     ```
+
+     
 
 20. 属性有哪些遍历方法？
 
-    四种方法。
+     四种方法。
 
-    ①   Object.keys(  )
+     ①   Object.keys(  )
 
-    ②   for ... in // 继承属性也会遍历出来
+     ②   for ... in // 继承属性也会遍历出来
 
-    ③   Object.getOwnPropertyNames(obj)  // 和Object.keys(  )结果一样
+     ③   Object.getOwnPropertyNames(obj)  // 和Object.keys(  )结果一样
 
-    ④   Object.getOwnProperty`Symbol`s(obj)  //是 [ ]
+     ④   Object.getOwnPropertySymbols(obj)  //是 [ ]
 
-    ⑤   Reflect.ownKeys(obj)  // 和Object.keys(  )结果一样
+     ⑤   Reflect.ownKeys(obj)  // 和Object.keys(  )结果一样
 
-    
+     
 
 21. 属性的遍历规则是什么？（从数值，字符串，`Symbol`考虑）
 
-    数值键： 按升序排列
+     数值键： 按升序排列
 
-    字符串 ：按加入时间升序
+     字符串 ：按加入时间升序
 
-    `Symbol`键：按照加入时间升序
+     `Symbol`键：按照加入时间升序
 
 22. `Object.getOwnPropertyDescriptors()`是用来干嘛？
 
-    解决Object.assign（ ）无法正确拷贝set和get属性的问题
+     解决Object.assign（ ）无法正确拷贝set和get属性的问题
 
-    ```JavaScript
-    let objNine2 = Object.getOwnPropertyDescriptors(objNine)
-    ```
+     ```JavaScript
+     let objNine2 = Object.getOwnPropertyDescriptors(objNine)
+     ```
 
 23. 如何设置和读取对象的prototype对象？如何将已有对象为原型，创建新对象？
 
-    设置对象的原型对象： `Object.setPrototypeOf({  })`
+     设置对象的原型对象： `Object.setPrototypeOf({  })`
 
-    获取对象的原型对象：`Object.getPrototypeOf( {  } )`
+     获取对象的原型对象：`Object.getPrototypeOf( {  } )`
 
-    以新对象为原型对象，创建新对象： `Object.create(obj)`
+     以新对象为原型对象，创建新对象： `Object.create(obj)`
 
 24. 用字面量定义一个空对象和用Object.create(null)定义一个空对象，有什么区别？
 
-    用字面量定义的空对象，有 `__proto__`属性，指向的是它的原型对象（此时是构造函数 `Object`的Prototype属性）。有原型对象的属性和方法，例如： `hasOwnProperty`， `toString`等 方法
+     用字面量定义的空对象，有 `__proto__`属性，指向的是它的原型对象（此时是构造函数 `Object`的Prototype属性）。有原型对象的属性和方法，例如： `hasOwnProperty`， `toString`等 方法
 
-    用 `Object.create(null)`，因为原型对象是null，所以没有属性和方法可以继承，因此，得到的是一个干干净净的对象，没有任何属性。
+     用 `Object.create(null)`，因为原型对象是null，所以没有属性和方法可以继承，因此，得到的是一个干干净净的对象，没有任何属性。
 
 25. 什么关键字指向的是当前对象的原型对象？
 
-    super关键字。看下面的例子：
+     super关键字。看下面的例子：
 
-    ```javascript
-    const proto11 = {
-    foo : "hello"
-    }
-    const obj11 = {
-    foo: "world",
-    find(){
-    return super.foo //原型对象的foo属性，即 hello
-    }
-    }
-    Object.setPrototype(obj11,proto11)
-    obj11.find() // "hello"
-    ```
+     ```javascript
+     const proto11 = {
+     foo : "hello"
+     }
+     const obj11 = {
+     foo: "world",
+     find(){
+     return super.foo //原型对象的foo属性，即 hello
+     }
+     }
+     Object.setPrototype(obj11,proto11)
+     obj11.find() // "hello"
+     ```
 
-    super作为关键字时，只能放在对象的方法里。用在属性里就会报错。
+     super作为关键字时，只能放在对象的方法里。用在属性里就会报错。
 
 26. Object.keys( )遍历的对象属性有什么特点？
 
-    都是可遍历属性；不含继承属性；都会过滤掉`Symbol`值的属性
+     都是可遍历属性；不含继承属性；都会过滤掉`Symbol`值的属性
 
 27. Object.keys()， Object.values()和Object.entries()返回值分别是什么？给出他们三个和解构赋值，for...of一起用的例子？
 
-    ```javascript
-    let { keys, values, entries } = Object
-    for(let key of entries(obj)){
-    consle.log(key)
-    }
-    ```
+     ```javascript
+     let { keys, values, entries } = Object
+     for(let key of entries(obj)){
+     consle.log(key)
+     }
+     ```
 
-    
+     
 
 28. ``Object.entries()`有哪两种用途？
 
-    1. 遍历对象，得到`[key, value]`键值对组成的数组
-2. 将对象转化为真正的map解构。看例子：
-   
-    ```javascript
-          const obj = {foo: "bar", baz:42}
-          const map = new Map(Object.entries(obj))
-    ```
+     1. 遍历对象，得到`[key, value]`键值对组成的数组
 
-28. 对象中可以用扩展运算符吗？
+29. 将对象转化为真正的map解构。看例子：
 
-    可以用。但是扩展运算符只能用在尾部。看例子：
+     ```javascript
+           const obj = {foo: "bar", baz:42}
+           const map = new Map(Object.entries(obj))
+     ```
 
-    ```javascript
-    let { x13, y13, ...z13} = { x13: 1, y13: 2, a13: "c", d13: "b"}  
-    // z13的值是：{a13: "c", d13: "b"}
-    ```
+30. 对象中可以用扩展运算符吗？
 
-    
+     可以用。但是扩展运算符只能用在尾部。看例子：
 
-29. 扩展运算符能不能继承原型对象的属性？
+     ```javascript
+     let { x13, y13, ...z13} = { x13: 1, y13: 2, a13: "c", d13: "b"}  
+     // z13的值是：{a13: "c", d13: "b"}
+     ```
 
-    不行。扩展运算符只能复制对象自身的属性，不能复制继承属性。例如下面代码中，obj有b属性，但是targetObj没有。因为b属性是继承自obj的原型对象proObj。
+     
 
-    ```javascript
-    let obj = {a: 1}
-    let proObj = {b: 2}
-    Object.setPrototypeOf(obj, proObj)
-    let {...targetObj} = obj
-    obj.b  //2
-    targetObj.b // undefined
-    ```
+31. 扩展运算符能不能继承原型对象的属性？
+
+     不行。扩展运算符只能复制对象自身的属性，不能复制继承属性。例如下面代码中，obj有b属性，但是targetObj没有。因为b属性是继承自obj的原型对象proObj。
+
+     ```javascript
+     let obj = {a: 1}
+     let proObj = {b: 2}
+     Object.setPrototypeOf(obj, proObj)
+     let {...targetObj} = obj
+     obj.b  //2
+     targetObj.b // undefined
+     ```
 
 ## Symbol实现：
 
@@ -1399,7 +1416,79 @@ console.log(key, targetObj[key]) // for ... in还可以获取继承属性
 
     该方法返回一个数组，成员是当前对象的所有用作属性名的`Symbol`值。
 
-17. 其他
+17. 如何返回所有类型的键名？【包括常规键名和`Symbol`键名】
+
+    `Reflect.ownKeys()`返回常规键名和 `Symbol`键名
+
+18. 如何给对象定义一些非私有，但又希望只用于内部的方法？
+
+    利用`Symbol`值作为键名不会被常规方法遍历到的特点。
+
+19. `Symbol.for()`使用场景是什么？
+
+    重新使用同一个 `Symbol`值。
+
+20. `Symbol.for()`是如何用的？
+
+    `Symbol.for()`接收一个字符串作为参数。然后搜索有没有该参数作为名称的`Symbol`值。如果有，就返回这个`Symbol`值，如果没有，就新建一个该字符串为名称的`Symbol`值，并注册到全局。
+
+    有三层意思：
+
+    + 新旧的`Symbol`值，必须全部是`Symbol.for()`方法生成，才可能相等
+    + 由`Symbol.for()`生成的`Symbol`值，因为注册在全局，因此两个`Symbol`相等，可以发生在不同作用域里 
+    + 新旧的`Symbol`值，如果全部用`Symbol()`函数生成，则永远不可能相等
+
+21. 如何获取一个已登记的 `Symbol` 类型值的key？
+
+    `Symbol.key()`方法
+
+    ```javascript
+    let s1 = Symbol("symbol test")
+    let key1 = Symbol.keyFor(s1)
+    
+    let s2 = Symbol.for("symbol test")
+    let key2 = Symbol.keyFor(s2)
+    ```
+
+    key1和key2 分别是 undefined和“symbol test”
+
+22. 什么是模块的 `Singleton` 模式？
+
+    调用一个类，任何时候返回的都是同一个实例。
+
+    非`Symbol`的方式实现：思路是把实例放到顶层对象global
+
+    ```javascript
+    function A() {
+      this.foo = 'hello';
+    }
+    
+    if (!global._foo) {
+      global._foo = new A();
+    }
+    
+    module.exports = global._foo;
+    ```
+
+    `Symbol`方式实现：思路是把实例
+
+    ```javascript
+    const FOO_KEY = Symbol.for('foo');
+    
+    function A() {
+      this.foo = 'hello';
+    }
+    
+    if (!global[FOO_KEY]) {
+      global[FOO_KEY] = new A();
+    }
+    
+    module.exports = global[FOO_KEY];
+    ```
+
+    
+
+23. 其他
 
 ## set和map:
 
