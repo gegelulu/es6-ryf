@@ -1581,7 +1581,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
    set方法用来拦截某个属性的赋值操作。
 
-   set方法接收四个参数，一次是目标对象、属性名、属性值和Proxy实例本身，最后一个参数可选。
+   set方法接收四个参数，依次是目标对象、属性名、属性值和Proxy实例本身，最后一个参数可选。
 
 10. Proxy实例的set方法的例子
 
@@ -1598,9 +1598,330 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
       }
       ```
 
-    + 其他
+    + 对象发生变化时，自动更新dom
 
-11. 嗯嗯
+    + 防止下划线开头的内部属性，被外部读写
+
+11. set方法对什么样的属性不起作用?
+
+    如果目标对象自身的某个属性，不可写且不可配置，那么set方法将不起作用
+
+    ```javascript
+    const obj = {}
+    Object.defineProperty(obj, "foo", {
+        value: "bar",
+        writable: false
+    })
+    const handler = {
+        set(obj, prop, value, receiver){
+            obj[prop] = "baz"
+        }
+    }
+    const proxy = new Proxy(obj, handler);
+    proxy.foo = "baz"
+    proxy.foo // bar
+    ```
+
+12. 在严格模式下，如果set代理返回false或者undefined，会怎样？
+
+    会报错。
+
+13. apply方法有什么作用？
+
+    apply方法拦截`函数`的调用、call和apply操作。
+
+    apply方法可以接收三个参数，目标对象、目标对象上下文（this）和目标对象参数数组。
+
+    ```javascript
+    let handler = {
+    	apply(target, ctx, args){
+            return Reflect.apply(...arguments)
+        }
+    }
+    ```
+
+14. has()方法有什么用？使用场景是什么？
+
+    has方法用来拦截HasProperty操作。当 `return false`时，表示拦截成功。
+
+    典型的操作是in运算符的时候 。
+
+    看例子：
+
+    ```javascript
+    let handler = {
+    	has(target, key){
+            if(key[0] === "_"){
+                return false  // 对_开头的属性拦截成功
+            }
+            return key in target
+        }
+    }
+    let target = {_prop: "foo", prop: "foo"}
+    let proxy = new Proxy(target, handler)
+    "_prop" in proxy    // false
+    ```
+
+15. has拦截什么时候会报错？
+
+    如果目标对象不可扩展，或者某个属性不可配置，则has拦截就会报错。
+
+16. has方法拦截的是 `hasProperty`还是 `hasOwnProperty`?对 `for...in`有效吗？
+
+    拦截的是 `hasProperty`
+
+    has拦截对 `for...in`循环不生效
+
+17. construct方法有什么用？接收几个参数？
+
+    `construct`方法，用于拦截new命令。
+
+    接收三个参数。target  【目标对象】, args【构造函数的参数对象】, newTarget【创造实例对象时，new命令作用的构造函数】
+
+18. deleteProperty的使用场景是什么？
+
+    deleteProperty用于拦截delete操作。如果这个方法抛出错误或者返回false，则当前属性无法被delete命令删除。
+
+19. deleteProperty方法什么时候会报错？
+
+    目标对象自身的不可配置属性，不能被deleteProperty方法拦截，否则会报错。
+
+20. defnieProperty的使用场景是什么？
+
+    `defineProperty`方法 拦截 `Object.defineProperty`操作。
+
+    当 `defineProperty`返回的是fanlse时，拦截生效。
+
+21. getOwnPropertyDescriptor方法的使用场景是什么？
+
+    getOwnPropertyDescriptor方法拦截 `Object.getOwnPropertyDescriptor()`，返回一个属性的描述对象或者undefined
+
+22. getPrototypeOf 方法的使用场景是什么？
+
+    拦截获取原型对象，返回值是对象或者null，否则报错。
+
+    拦截的操作包括：
+
+    ```javascript
+    Object.prototype.__proto__
+    Object.prottype.isPrototypeOf()
+    Object.getPrototypeOf()
+    Reflect.getPrototypeOf()
+    instanceof
+    ```
+
+23. isExtesible（）方法的作用是什么？返回值是什么
+
+    isExtensible方法拦截Object.isExtensible操作，返回的是布尔值。
+
+    返回值必须与目标对象的isExtensible属性保持一致，否则会抛出错误。
+
+24. ownKeys()方法的作用是什么？
+
+    拦截对象自身属性的读取操作。拦截的操作有：
+
+    `Object.getOwnPropertyNames()`
+
+    `Object.getOwnpropertySymbols()`
+
+    `Object.keys()`
+
+    `for...in` 
+
+25. ownKeys()方法的返回值是什么？
+
+    是数组。准确说是所有可能`属性名`组成的数组。
+
+26. 使用 `Object.keys()`方法时，有哪三类属性会被 `ownKeys`方法自动过滤？
+
+    + 目标对象不存在的属性
+    + 属性名为Symbol的属性
+    + 不可遍历（enumerable）的属性
+
+    ```javascript
+    let target = { a: 1, b: 2, c: 3, [Symbol.for('secret')]: '4'};
+    Object.defineProperty(target, 'key', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: 'static'
+    });
+    
+    let handler = {
+      ownKeys(target) {
+        return ['a', 'd', Symbol.for('secret'), 'key'];
+      }
+    };
+    let proxy = new Proxy(target, handler);
+    Object.keys(proxy)
+    // ['a']
+    ```
+
+    不存在的属性（d）、Symbol 值（Symbol.for('secret')）、不可遍历的属性（key），都被自动过滤掉了。
+
+27. `ownKeys`在使用时有哪些注意的点？
+
+    + ownKeys方法返回的数组成员，只能是字符串或 Symbol 值。如果有其他类型的值，或者返回的根本不是数组，就会报错
+    + 如果目标对象自身包含不可配置的属性，则该属性必须被ownKeys方法返回，否则报错
+    + 如果目标对象是不可扩展的（non-extensible），这时ownKeys方法返回的数组之中，必须包含原对象的所有属性，且不能包含多余的属性，否则报错
+
+28. preventExtensions方法的作用是什么？返回值是什么？
+
+    拦截 `Object.preventExtensions()`。
+
+    返回值是布尔值，如果不是，则会自动转化为布尔值。
+
+29. 使用时有哪些注意的点？
+
+    只有目标对象不可扩展时（即`Object.isExtensible(proxy)`为`false`），`proxy.preventExtensions`才能返回`true`，否则会报错。
+
+    所以，通常要在`proxy.preventExtensions`方法里面，调用一次`Object.preventExtensions`。
+
+30. `setPrototypeOf`方法的作用是什么？返回值什么？
+
+    作用是： 拦截 `Object.setPrototype`方法。
+
+    返回值是布尔值，如果不是布尔值，则自动转化为布尔值
+
+31. Proxy.revocable()方法的作用是什么？
+
+    Proxy.revocable()方法返回一个可取消的Proxy实例。
+
+    ```javascript
+    let target = {};
+    let handler = {};
+    let {proxy, revoke} = Proxy.revocable(target, handler);
+    proxy.foo = 123;
+    proxy.foo // 123
+    revoke(); // 访问结束后，就收回代理权，不允许再次访问
+    proxy.foo // TypeError: Revoked
+    ```
+
+32. Proxy代理的情况下，目标对象内部的this指向的是什么？
+
+    指向的是 Proxy 代理。
+
+     有些原生对象的内部属性，只有通过正确的`this`才能拿到，所以 Proxy 也无法代理这些原生对象的属性。 
+
+    ```javascript
+    const target = new Date();
+    const handler = {};
+    const proxy = new Proxy(target, handler);
+    proxy.getDate(); // 报错
+    ```
+
+## Reflect
+
+1. `Reflect`对象设计的目的有哪些？
+
+   + 将 `Object`对象的一些明显属于语言内部的方法，放到`Reflect`对象上
+
+   + 修改`Object`方法的返回结果，使其变得更合理。
+
+   + 让Object操作变为函数行为。比如 for...in  和 delete方法
+
+     ```javascript
+     name in obj => Reflect.has(obj, name)
+     delete obj[name] => Reflect.deleteProperty(obj,name)
+     ```
+
+   + Reflect对象的方法与proxy对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。 不敢`Proxy`怎么修改默认行为，总能在`Reflect`上获取默认行为。
+
+2. `Reflect`对象有哪13个静态方法？
+
+   ```javascript
+   Reflect.apply(target, thisArg, args)
+   Reflect.construct(target, args)
+   Reflect.get(target, name, receiver)
+   Reflect.set(target, name, value, receiver)
+   Reflect.defineProperty(target, name, desc)
+   Reflect.deleteProperty(target, name)
+   Reflect.has(target, name)
+   Reflect.ownKeys(target)
+   Reflect.isExtensible(target)
+   Reflect.preventExtensions(target)
+   Reflect.getOwnPropertyDescriptor(target, name)
+   Reflect.getPrototypeOf(target)
+   Reflect.setPrototypeOf(target, prototype)
+   ```
+
+   大部分和`Object`对象的同名方法的作用是相同的，而且它与`Proxy`对象的方法是一一对应的。
+
+3. `Reflect.get`方法查找并返回`target`对象的`name`属性，如果没有该属性，则返回`undefined`。
+
+   ```javascript
+   var myObject = {
+     foo: 1,
+     bar: 2,
+     get baz() {
+       return this.foo + this.bar; // 如果有get，里面的this是第三个参数receiver
+     },
+   };
+   
+   var myReceiverObject = {
+     foo: 4,
+     bar: 4,
+   };
+   
+   Reflect.get(myObject, 'baz', myReceiverObject) // 8
+   ```
+
+4. `Reflectset`方法 设置 `target`对象的 `name`属性等于 `value`
+
+   ```javascript
+   var myObject = {
+     foo: 4,
+     set bar(value) {
+       return this.foo = value; // 如果name属性设置了赋值函数，则赋值函数的this绑定receiver，此时是 myReceiverObject
+     },
+   };
+   
+   var myReceiverObject = {
+     foo: 0,
+   };
+   
+   Reflect.set(myObject, 'bar', 1, myReceiverObject);
+   myObject.foo // 4
+   myReceiverObject.foo // 1
+   ```
+
+5. 如果`Proxy`对象和`Reflect`对象联合使用，而且`Reflect`操作完成了赋值的默认行为，而且传入了receiver，则`Reflect.set`会触发`Proxy.defineProperty`拦截。为什么呢？
+
+   这是因为`Proxy.set`的`receiver`参数总是指向当前的 `Proxy`实例（即上例的obj），而`Reflect.set`一旦传入`receiver`，就会将属性赋值到`receiver`上面（即obj），导致触发`defineProperty`拦截。如果`Reflect.set`没有传入`receiver`，那么就不会触发`defineProperty`拦截。
+
+6. `Reflect.has(obj, name)`的用法是什么？
+
+   `Reflect.has`对应 `name in obj`里的`in`运算
+
+   ```javascript
+   var myObj = {
+       foo: 1
+   }
+   Reflect.has(myObj, "foo") // true
+   ```
+
+7. `Reflect.deleteProperty(obj, name)`的用法是什么？
+
+   对应`delete myObj.foo`，如果删除成功，或者不存在，则返回true，否则返回false
+
+   ```javascript
+   Reflect.deleteProperty(myObj, "foo")
+   ```
+
+8. `Reflect.construct(targetFn, args)`的用法是什么？
+
+   等同于 `new target(...args)`，不使用new来调用构造函数的方法。
+
+   ```javascript
+   function Greeting(name){
+   	this.name = name;
+   }
+   const instance = new Greeting("张三")
+   // or
+   cost instanc = Reflect.construct(Greeting, ["张三"])
+   ```
+
+9. 其他
 
 ## set和map:
 
