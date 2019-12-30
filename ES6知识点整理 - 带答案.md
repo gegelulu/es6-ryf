@@ -1918,10 +1918,32 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    }
    const instance = new Greeting("张三")
    // or
-   cost instanc = Reflect.construct(Greeting, ["张三"])
+   cost instance = Reflect.construct(Greeting, ["张三"])
+   // 第一个参数是函数，第二个参数是 参数数组
    ```
 
-9. 其他
+9. `Reflect.getPrototypeOf`的作用是什么？
+
+   `Reflect.getPrototypeOf`方法用于读取对象的__proto__属性，对应 `Object.getPrototypeOf(obj)`.。区别是，当参数param不是对象时，`Object.getPrototypeOf(param)`会将param转化为对象，而 `Reflect.getPrototypeOf(param)`会报错。
+
+   ```javascript
+   const myObj = new FancyThing()
+   Object.getPtototypeOf(myObj) === FancyThing.prototype   // true
+   Reflect.getPrototypeOf(myObj) === FancyThing.prototype  // true
+   ```
+
+10. `Reflect.setPrototypeOf(obj, newProto)`的用法
+
+    设置目标对象的原型。返回一个布尔值，表示是否设置成功。和`Object.setPrototypeOf(obj，newProto)`相对应。
+
+    ```javascript
+    // 旧写法
+    Object.setPrototypeOf(myObj, Array.prototype);
+    // 新写法
+    Reflect.setPrototypeOf(myObj, Array.prototype);
+    ```
+
+11. 其他
 
 ## set和map:
 
