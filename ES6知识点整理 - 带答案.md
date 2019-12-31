@@ -1825,7 +1825,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
      delete obj[name] => Reflect.deleteProperty(obj,name)
      ```
 
-   + Reflect对象的方法与proxy对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。 不敢`Proxy`怎么修改默认行为，总能在`Reflect`上获取默认行为。
+   + Reflect对象的方法与proxy对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。 不管`Proxy`怎么修改默认行为，总能在`Reflect`上获取默认行为。
 
 2. `Reflect`对象有哪13个静态方法？
 
@@ -1866,7 +1866,7 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
    Reflect.get(myObject, 'baz', myReceiverObject) // 8
    ```
 
-4. `Reflectset`方法 设置 `target`对象的 `name`属性等于 `value`
+4. `Reflect.set`方法 设置 `target`对象的 `name`属性等于 `value`
 
    ```javascript
    var myObject = {
@@ -1943,7 +1943,19 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
     Reflect.setPrototypeOf(myObj, Array.prototype);
     ```
 
-11. 其他
+    如果第一个参数是 undefined或者 null，Object.setPrototypeOf和Reflect.setPrototypeOf都会报错
+
+    除开第一种情况，如果第一个参数不是对象，则Object.setPrototypeOf会返回第一个参数本身，而Reflect.setPrototypeOf会报错。
+
+11. `Reflect.apply(func, thisArg, args)`的用法？
+
+    用于绑定this对象后执行给定函数。
+
+    等价于`Function.prototype.apply.call(func, thisArg, args)`
+
+12. 
+
+13. 其他
 
 ## set和map:
 
