@@ -1953,9 +1953,91 @@ end：非必填，结束位置的后一位，默认是数组最后一位的下�
 
     等价于`Function.prototype.apply.call(func, thisArg, args)`
 
-12. 
+    看例子：
 
-13. 其他
+    ```javascript
+    const ages = [11,33,12,5,18,96]
+    const youngest = Reflect.apply(Math.min, Math, ages)  // 5
+    ```
+
+12. `Reflect.defineProperty(target, proppertyKey, attributes)`的用法？
+
+    此方法等同于`Object.defineProperty` ，用来为对象定义属性。它和 `Proxy.defineProperty` 配合使用的例子：
+
+    ```javascript
+    const p = new Proxy({}, {
+        defineProperty(target, prop, descriptor){
+            console.log(descriptor)
+            descriptor.value = "bar-haha"
+            return Reflect.defineProperty(target, prop, descriptor)
+        }
+    })
+    // {value: "bar", writable: true, enumerable: true, configurable: true}
+    p.foo = "bar"
+    // bar-haha
+    console.log(p.foo)
+    ```
+
+13. `Reflect.getOwnPropertyDescrptor(target, proppertyKey)`的用法？
+
+    等同于 `Object.getOwnPropertyDescriptor`用于得到指定属性的描述对象.
+
+    区别是如果`target`参数不是对象， `Object.getOwnPropertyDescriptor`  不报错，发挥undefined，而`Reflect.getOwnPropertyDescrptor`会报错。
+
+    ```
+    var myObject = {};
+    Object.defineProperty(myObject, 'hidden', {
+      value: true,
+      enumerable: false,
+    });
+    var theDescriptor = Reflect.getOwnPropertyDescriptor(myObject, 'hidden');
+    ```
+
+14. `Reflect.isExtensible(target)`的用法？
+
+    `Reflect.isExtensible(target)`方法对应 ` Object.isExtensible `，返回一个布尔值，表示对象是否可扩展。
+
+15. ` Reflect.preventExtensions (target)`的用法？
+
+     `Reflect.preventExtensions`对应 `Object.preventExtensions`方法，用于让一个对象变为不可扩展。它返回一个布尔值，表示是否操作成功。 
+
+    ```javascript
+    var myObject = {};
+    Reflect.preventExtensions(myObject) // true
+    ```
+
+16. `Reflect.ownKeys(target)`的用法？
+
+    方法用于返回对象的所有属性，等同于  `Object.getOwnPropertyNames`与`Object.getOwnPropertySymbols`之和 。
+
+    ```javascript
+    var myObject = {
+        foo: 1,
+        bar: 2,
+        [Symbol.for("baz")]: 3,
+        [Symbol.for("bing")]: 4
+    }
+    Reflect.ownKeys(myObject)  // ["foo", "bar", Symbol(baz), Symbol(bing)]
+    ```
+
+17. 什么是观察者模式？
+
+    函数自动观察数据对象，一旦对象有变化，函数自动执行。
+
+    使用`Proxy`写一个观察者模式的例子：
+
+    ```javascript
+    const queuedObservers = new Set();
+    
+    const observe = fn => queuedObservers.add(fn);
+    const observable = obj => new Proxy(obj, {set});
+    
+    function set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver);
+      queuedObservers.forEach(observer => observer());
+      return result;
+    }
+    ```
 
 ## set和map:
 
